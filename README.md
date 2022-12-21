@@ -6,6 +6,7 @@ sail artisan make:controller ScreenShotController --invokable
 sail artisan make:model Site -a
 
 sail php artisan migrate:fresh --seed
+sail php artisan migrate:fresh --env=testing
 
 sail artisan make:command SiteAccessCommand
 

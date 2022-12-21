@@ -8,9 +8,6 @@ use KubAT\PhpSimple\HtmlDomParser;
 final class LinkPreviewRuntimeException extends RuntimeException{}
 final class LinkPreview implements LinkPreviewInterface
 {
-    private GetLinkPreviewResponse $response;
-    private SenseOfColor $senseOfColor;
-
     public function get(string $url): GetLinkPreviewResponse
     {
         $parsed_url = parse_url($url);
@@ -26,34 +23,32 @@ final class LinkPreview implements LinkPreviewInterface
         }
         $dom = HtmlDomParser::file_get_html($url);
         $title = trim($dom->find('title', 0)->plaintext);
-        $description = trim($dom->find('meta[name=description]', 0)->content);
-        
-        $this->senseOfColor = new SenseOfColor($fileData);
-        $modeColor = $this->getModeColor();
+        $description = trim($dom->find('meta[name=description]', 0)?->content);
+        $modeColor = $this->getModeColor(new SenseOfColor($fileData));
 
-        $this->response = new GetLinkPreviewResponse(
+        $response = new GetLinkPreviewResponse(
           title: $title,
           description: $description,
           fileData: $fileData,
           domain: $domain,
           modeColor: $modeColor,
         );
-        $this->store();
+        $this->store($response);
 
-        return $this->response;
+        return $response;
     }
 
-    public function store(): void
+    private function store(GetLinkPreviewResponse $response): void
     {
-      $path = storage_path('app/public/images'). "/". $this->response?->domain. ".jpeg";
+      $path = storage_path('app/public/images'). "/". $response?->domain. ".jpeg";
       if (!file_exists($tmp_file_dir = storage_path('app/public/images'))) {
           mkdir($tmp_file_dir, 0777, true);
       }
-      file_put_contents($path, $this->response?->fileData);
+      file_put_contents($path, $response?->fileData);
     }
 
-    public function getModeColor(): string
+    private function getModeColor(SenseOfColor $senseOfColor): string
     {
-      return $this->senseOfColor?->getModeColor();
+      return $senseOfColor?->getModeColor();
     }
 }

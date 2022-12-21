@@ -8,7 +8,20 @@
   overflow: hidden;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 }
+.alert-success {
+  background-color: #a1dd11;
+}
 </style>
+<div>
+  @if (session('message'))
+    <div class="alert alert-{{ session('status') }}">
+        {{ session('message') }}
+    </div>
+  @endif
+</div>
+<div>
+  <a href="{{ route('sites.create') }}">新規追加</a>
+</div>
 <div class="grid-auto-fit"> 
 @foreach ($sites as $site)
 <div>
