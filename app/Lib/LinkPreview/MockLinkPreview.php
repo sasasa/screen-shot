@@ -13,6 +13,8 @@ final class MockLinkPreview implements LinkPreviewInterface
             fileData: "xxx",
             domain: $domain,
             modeColor: "ffffff",
+            secondColor: "ff0000",
+            thirdColor: "0000ff",
         );
     }
 }
