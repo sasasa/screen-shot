@@ -1,5 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Lib\SenseOfColor;
+
+use function PHPUnit\Framework\isNull;
 
 final class SenseOfColor
 {
@@ -19,16 +23,15 @@ final class SenseOfColor
                 $r = ($rgb >> 16) & 0xFF; //赤を10進数に
                 $g = ($rgb >> 8) & 0xFF; //緑を10進数に
                 $b = $rgb & 0xFF; //青を10進数に
-                if(!isset($rgbMap[(str_pad(dechex($r), 2, 0, STR_PAD_LEFT).str_pad(dechex($g), 2, 0, STR_PAD_LEFT).str_pad(dechex($b), 2, 0, STR_PAD_LEFT). " ")])) {
-                    $rgbMap[(str_pad(dechex($r), 2, 0, STR_PAD_LEFT).str_pad(dechex($g), 2, 0, STR_PAD_LEFT).str_pad(dechex($b), 2, 0, STR_PAD_LEFT). " ")] = 0;
+                if(!isset($rgbMap[(str_pad(dechex($r), 2, '0', STR_PAD_LEFT).str_pad(dechex($g), 2, '0', STR_PAD_LEFT).str_pad(dechex($b), 2, '0', STR_PAD_LEFT). " ")])) {
+                    $rgbMap[(str_pad(dechex($r), 2, '0', STR_PAD_LEFT).str_pad(dechex($g), 2, '0', STR_PAD_LEFT).str_pad(dechex($b), 2, '0', STR_PAD_LEFT). " ")] = 0;
                 } else {
-                    $rgbMap[(str_pad(dechex($r), 2, 0, STR_PAD_LEFT).str_pad(dechex($g), 2, 0, STR_PAD_LEFT).str_pad(dechex($b), 2, 0, STR_PAD_LEFT). " ")] += 1;
+                    $rgbMap[(str_pad(dechex($r), 2, '0', STR_PAD_LEFT).str_pad(dechex($g), 2, '0', STR_PAD_LEFT).str_pad(dechex($b), 2, '0', STR_PAD_LEFT). " ")] += 1;
                 }
             }
         }
         arsort($rgbMap);
-        // dd($rgbMap);
-        // $rgbMap = array_slice($rgbMap, 0, 100);
+        // $rgbMap = array_slice($rgbMap, 0, 5);
         $colors = array_map('trim', array_keys($rgbMap));
         $firstColor = array_shift($colors);
         while($this->isCloseColor($firstColor, $secondColor = array_shift($colors))) {
@@ -50,10 +53,10 @@ final class SenseOfColor
                 $r = ($rgb >> 16) & 0xFF; //赤を10進数に
                 $g = ($rgb >> 8) & 0xFF; //緑を10進数に
                 $b = $rgb & 0xFF; //青を10進数に
-                if(!isset($rgbMap[(str_pad(dechex($r), 2, 0, STR_PAD_LEFT).str_pad(dechex($g), 2, 0, STR_PAD_LEFT).str_pad(dechex($b), 2, 0, STR_PAD_LEFT). " ")])) {
-                    $rgbMap[(str_pad(dechex($r), 2, 0, STR_PAD_LEFT).str_pad(dechex($g), 2, 0, STR_PAD_LEFT).str_pad(dechex($b), 2, 0, STR_PAD_LEFT). " ")] = 0;
+                if(!isset($rgbMap[(str_pad(dechex($r), 2, '0', STR_PAD_LEFT).str_pad(dechex($g), 2, '0', STR_PAD_LEFT).str_pad(dechex($b), 2, '0', STR_PAD_LEFT). " ")])) {
+                    $rgbMap[(str_pad(dechex($r), 2, '0', STR_PAD_LEFT).str_pad(dechex($g), 2, '0', STR_PAD_LEFT).str_pad(dechex($b), 2, '0', STR_PAD_LEFT). " ")] = 0;
                 } else {
-                    $rgbMap[(str_pad(dechex($r), 2, 0, STR_PAD_LEFT).str_pad(dechex($g), 2, 0, STR_PAD_LEFT).str_pad(dechex($b), 2, 0, STR_PAD_LEFT). " ")] += 1;
+                    $rgbMap[(str_pad(dechex($r), 2, '0', STR_PAD_LEFT).str_pad(dechex($g), 2, '0', STR_PAD_LEFT).str_pad(dechex($b), 2, '0', STR_PAD_LEFT). " ")] += 1;
                 }
             }
         }
@@ -65,14 +68,17 @@ final class SenseOfColor
     /**
      * Find out if the colors are close.
      */
-    private function isCloseColor(string $color1, string $color2): bool {
+    private function isCloseColor(?string $color1, ?string $color2): bool {
+        if(is_null($color1) || is_null($color2)) {
+            return false;
+        }
         $color1 = $this->hex2rgb($color1);
         $color2 = $this->hex2rgb($color2);
         $r = $color1[0] - $color2[0];
         $g = $color1[1] - $color2[1];
         $b = $color1[2] - $color2[2];
         $distance = sqrt($r * $r + $g * $g + $b * $b);
-        return $distance < 125;
+        return $distance < 122;
     }
 
     private function hex2rgb(string $hex): array {
