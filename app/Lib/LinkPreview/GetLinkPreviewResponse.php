@@ -9,5 +9,7 @@ final class GetLinkPreviewResponse
         readonly public string $fileData,
         readonly public string $domain,
         readonly public string $modeColor,
+        readonly public string $secondColor,
+        readonly public string $thirdColor,
     ){}
 }

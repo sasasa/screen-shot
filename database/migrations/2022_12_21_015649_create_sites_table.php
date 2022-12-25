@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('description')->nullable();
             $table->string('mode_color')->nullable();
+            $table->string('second_color')->nullable();
+            $table->string('third_color')->nullable();
             $table->timestamps();
         });
     }

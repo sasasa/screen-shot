@@ -56,6 +56,8 @@ class SiteController extends Controller
             'title' => $response->title,
             'description' => $response->description,
             'mode_color' => $response->modeColor,
+            'second_color' => $response->secondColor,
+            'third_color' => $response->thirdColor,
         ]);
 
         return to_route('sites.index')->with([

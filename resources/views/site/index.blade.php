@@ -40,6 +40,12 @@
   <p style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->mode_color }};">
     {{ $site->mode_color }}
   </p>
+  <p style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->second_color }};">
+    {{ $site->second_color }}
+  </p>
+  <p style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->third_color }};">
+    {{ $site->third_color }}
+  </p>
 </div>
 @endforeach
 </div>

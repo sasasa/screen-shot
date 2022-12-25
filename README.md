@@ -1,4 +1,11 @@
 <!--
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
+
 sail composer require dusterio/link-preview
 
 sail artisan make:controller ScreenShotController --invokable
@@ -20,6 +27,11 @@ sail artisan storage:link
 
 composer require kub-at/php-simple-html-dom-parser
 
+
+sail artisan cache:clear
+sail artisan config:clear
+sail artisan route:clear
+sail artisan view:clear
 -->
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 

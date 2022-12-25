@@ -24,14 +24,16 @@ final class LinkPreview implements LinkPreviewInterface
         $dom = HtmlDomParser::file_get_html($url);
         $title = trim($dom->find('title', 0)->plaintext);
         $description = trim($dom->find('meta[name=description]', 0)?->content);
-        $modeColor = $this->getModeColor(new SenseOfColor($fileData));
-
+        $modeColors = $this->getTreeTypicalColors(new SenseOfColor($fileData));
+        // dd($modeColors);
         $response = new GetLinkPreviewResponse(
           title: $title,
           description: $description,
           fileData: $fileData,
           domain: $domain,
-          modeColor: $modeColor,
+          modeColor: $modeColors[0],
+          secondColor: $modeColors[1],
+          thirdColor: $modeColors[2],
         );
         $this->store($response);
 
@@ -50,5 +52,9 @@ final class LinkPreview implements LinkPreviewInterface
     private function getModeColor(SenseOfColor $senseOfColor): string
     {
       return $senseOfColor?->getModeColor();
+    }
+    private function getTreeTypicalColors(SenseOfColor $senseOfColor): array
+    {
+      return $senseOfColor?->getTreeTypicalColors();
     }
 }
