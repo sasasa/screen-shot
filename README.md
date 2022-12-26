@@ -32,6 +32,11 @@ sail artisan cache:clear
 sail artisan config:clear
 sail artisan route:clear
 sail artisan view:clear
+
+sail composer require --dev barryvdh/laravel-ide-helper
+sail artisan ide-helper:model --nowrite
+sail artisan ide-helper:generate
+sail artisan ide-helper:meta
 -->
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 

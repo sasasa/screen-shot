@@ -51,7 +51,7 @@ class SiteController extends Controller
             ]);
         }
 
-        Site::create([
+        $site = Site::create([
             'url' => $request->url,
             'title' => $response->title,
             'description' => $response->description,
@@ -63,7 +63,7 @@ class SiteController extends Controller
         ]);
 
         return to_route('sites.index')->with([
-            'message' => '登録okです',
+            'message' => "{$site->title} の登録okです",
             'status' => 'success',
         ]);;
     }
