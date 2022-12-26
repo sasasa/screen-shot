@@ -49,6 +49,9 @@ final class LinkPreview implements LinkPreviewInterface
         return $response;
     }
 
+    /**
+     * @param GetLinkPreviewResponse $response
+     */
     private function store(GetLinkPreviewResponse $response): void
     {
       $path = storage_path('app/public/images'). "/". $response?->domain. ".jpeg";

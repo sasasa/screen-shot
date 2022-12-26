@@ -11,6 +11,7 @@ final class SenseOfColor
 
     /**
      * Get the brightest color in the image
+     *  @return string
      */
     public function getBrightestColor(): string {
         $image = imagecreatefromstring($this->file);
@@ -33,6 +34,7 @@ final class SenseOfColor
     }
     /**
      * Get the darkest color of the image
+     * @return string
      */
     public function getDarkestColor(): string {
         $image = imagecreatefromstring($this->file);
@@ -55,6 +57,7 @@ final class SenseOfColor
     }
 
     /**
+     * 異なる色合いの3つの最頻値を取得する
      * @return string[]
      */
     public function getTreeTypicalColors(): array {
@@ -85,7 +88,10 @@ final class SenseOfColor
         }
         return [$firstColor, $secondColor, $thirdColor];
     }
-
+    /**
+     * 色の最頻値を取得する
+     * @return string[]
+     */
     public function getModeColor(): string
     {
         $img  = imagecreatefromstring($this->file);
@@ -112,6 +118,9 @@ final class SenseOfColor
 
     /**
      * Find out if the colors are close.
+     * @param string|null $color1
+     * @param string|null $color2
+     * @return bool
      */
     private function isCloseColor(?string $color1, ?string $color2): bool {
         if(is_null($color1) || is_null($color2)) {
@@ -126,6 +135,11 @@ final class SenseOfColor
         return $distance < 122;
     }
 
+    /**
+     * Convert hex to rgb
+     * @param string $hex
+     * @return array
+     */
     public static function hex2rgb(string $hex): array {
         $hex = str_replace("#", "", $hex);
         if(strlen($hex) == 3) {
@@ -138,5 +152,16 @@ final class SenseOfColor
             $b = hexdec(substr($hex,4,2));
         }
         return [$r, $g, $b];
+    }
+
+    /**
+     * Get brightness from rgb
+     * @param int $r
+     * @param int $g
+     * @param int $b
+     * @return float
+     */
+    public static function getBrightness(int $r, int $g, int $b): float {
+        return round(((intval($r) * 299) + (intval($g) * 587) + (intval($b) * 114)) / 1000);
     }
 }
