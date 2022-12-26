@@ -8,6 +8,11 @@ use KubAT\PhpSimple\HtmlDomParser;
 final class LinkPreviewRuntimeException extends RuntimeException{}
 final class LinkPreview implements LinkPreviewInterface
 {
+
+    /**
+     * @param string $url
+     * @return GetLinkPreviewResponse
+     */
     public function get(string $url): GetLinkPreviewResponse
     {
         $parsed_url = parse_url($url);
@@ -24,7 +29,9 @@ final class LinkPreview implements LinkPreviewInterface
         $dom = HtmlDomParser::file_get_html($url);
         $title = trim($dom->find('title', 0)->plaintext);
         $description = trim($dom->find('meta[name=description]', 0)?->content);
-        $modeColors = $this->getTreeTypicalColors(new SenseOfColor($fileData));
+
+        $senseOfColor = new SenseOfColor($fileData);
+        $modeColors = $senseOfColor->getTreeTypicalColors();
         // dd($modeColors);
         $response = new GetLinkPreviewResponse(
           title: $title,
@@ -34,6 +41,8 @@ final class LinkPreview implements LinkPreviewInterface
           modeColor: $modeColors[0],
           secondColor: $modeColors[1],
           thirdColor: $modeColors[2],
+          darkestColor: $senseOfColor->getDarkestColor(),
+          brightestColor: $senseOfColor->getBrightestColor(),
         );
         $this->store($response);
 
@@ -49,12 +58,4 @@ final class LinkPreview implements LinkPreviewInterface
       file_put_contents($path, $response?->fileData);
     }
 
-    private function getModeColor(SenseOfColor $senseOfColor): string
-    {
-      return $senseOfColor?->getModeColor();
-    }
-    private function getTreeTypicalColors(SenseOfColor $senseOfColor): array
-    {
-      return $senseOfColor?->getTreeTypicalColors();
-    }
 }

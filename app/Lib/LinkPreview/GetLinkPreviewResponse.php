@@ -11,5 +11,7 @@ final class GetLinkPreviewResponse
         readonly public string $modeColor,
         readonly public ?string $secondColor,
         readonly public ?string $thirdColor,
+        readonly public string $darkestColor,
+        readonly public string $brightestColor,
     ){}
 }

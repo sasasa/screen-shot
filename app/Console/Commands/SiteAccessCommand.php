@@ -40,6 +40,8 @@ class SiteAccessCommand extends Command
                 $site->mode_color = $response->modeColor;
                 $site->second_color = $response->secondColor;
                 $site->third_color = $response->thirdColor;
+                $site->darkest_color = $response->darkestColor;
+                $site->brightest_color = $response->brightestColor;
                 $site->save();
                 $this->info("save: ". $site->url);
                 sleep(5);
