@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Lib\LinkPreview\LinkPreviewInterface;
 use App\Lib\LinkPreview\LinkPreviewRuntimeException;
 use Dusterio\LinkPreview\Client;
-
 class ScreenShotController extends Controller
 {
     /**
