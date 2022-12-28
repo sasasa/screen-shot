@@ -8,7 +8,7 @@
   padding: 10px;
   margin: 1em 0 2em;
   overflow: hidden;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(1000px, 1fr));
 }
 .alert-success {
   background-color: #a1dd11;

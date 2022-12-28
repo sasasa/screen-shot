@@ -28,7 +28,7 @@ class SiteSeeder extends Seeder
                 'url' => 'https://toyota.jp/passo/',
             ],
             [
-                'url' => 'https://itainews.com/',
+                'url' => 'https://www.akagi.com/products/index.html?tab01=garigari',
             ],
         ];
         foreach($urls as $url) {
