@@ -15,6 +15,8 @@ final class MockLinkPreview implements LinkPreviewInterface
             modeColor: "ffffff",
             secondColor: "ff0000",
             thirdColor: "0000ff",
+            darkestColor: "000000",
+            brightestColor: "ffffff",
         );
     }
 }

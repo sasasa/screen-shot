@@ -10,6 +10,54 @@ final class SenseOfColor
     public function __construct(private string $file){}
 
     /**
+     * Get the brightest color in the image
+     *  @return string
+     */
+    public function getBrightestColor(): string {
+        $image = imagecreatefromstring($this->file);
+        $width = imagesx($image);
+        $height = imagesy($image);
+        $brightestColor = 0;
+        $brightestColors = null;
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                $rgb = imagecolorat($image, $x, $y);
+                $colors = imagecolorsforindex($image, $rgb);
+                if($brightestColor < $colors['red'] + $colors['green'] + $colors['blue']) {
+                    $brightestColor = $colors['red'] + $colors['green'] + $colors['blue'];
+                    $brightestColors = $colors;
+                    // dump($brightestColors);
+                }
+            }
+        }
+        return str_pad(dechex($brightestColors['red']), 2, '0', STR_PAD_LEFT).str_pad(dechex($brightestColors['green']), 2, '0', STR_PAD_LEFT).str_pad(dechex($brightestColors['blue']), 2, '0', STR_PAD_LEFT);
+    }
+    /**
+     * Get the darkest color of the image
+     * @return string
+     */
+    public function getDarkestColor(): string {
+        $image = imagecreatefromstring($this->file);
+        $width = imagesx($image);
+        $height = imagesy($image);
+        $darkestColor = 255 + 255 + 255;
+        $darkestColors = null;
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                $rgb = imagecolorat($image, $x, $y);
+                $colors = imagecolorsforindex($image, $rgb);
+                if($darkestColor > $colors['red'] + $colors['green'] + $colors['blue']) {
+                    $darkestColor = $colors['red'] + $colors['green'] + $colors['blue'];
+                    $darkestColors = $colors;
+                    // dump($darkestColors);
+                }
+            }
+        }
+        return str_pad(dechex($darkestColors['red']), 2, '0', STR_PAD_LEFT).str_pad(dechex($darkestColors['green']), 2, '0', STR_PAD_LEFT).str_pad(dechex($darkestColors['blue']), 2, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * 異なる色合いの3つの最頻値を取得する
      * @return string[]
      */
     public function getTreeTypicalColors(): array {
@@ -40,7 +88,10 @@ final class SenseOfColor
         }
         return [$firstColor, $secondColor, $thirdColor];
     }
-
+    /**
+     * 色の最頻値を取得する
+     * @return string[]
+     */
     public function getModeColor(): string
     {
         $img  = imagecreatefromstring($this->file);
@@ -67,13 +118,16 @@ final class SenseOfColor
 
     /**
      * Find out if the colors are close.
+     * @param string|null $color1
+     * @param string|null $color2
+     * @return bool
      */
     private function isCloseColor(?string $color1, ?string $color2): bool {
         if(is_null($color1) || is_null($color2)) {
             return false;
         }
-        $color1 = $this->hex2rgb($color1);
-        $color2 = $this->hex2rgb($color2);
+        $color1 = self::hex2rgb($color1);
+        $color2 = self::hex2rgb($color2);
         $r = $color1[0] - $color2[0];
         $g = $color1[1] - $color2[1];
         $b = $color1[2] - $color2[2];
@@ -81,7 +135,12 @@ final class SenseOfColor
         return $distance < 122;
     }
 
-    private function hex2rgb(string $hex): array {
+    /**
+     * Convert hex to rgb
+     * @param string $hex
+     * @return array
+     */
+    public static function hex2rgb(string $hex): array {
         $hex = str_replace("#", "", $hex);
         if(strlen($hex) == 3) {
             $r = hexdec(substr($hex,0,1).substr($hex,0,1));
@@ -93,5 +152,16 @@ final class SenseOfColor
             $b = hexdec(substr($hex,4,2));
         }
         return [$r, $g, $b];
+    }
+
+    /**
+     * Get brightness from rgb
+     * @param int $r
+     * @param int $g
+     * @param int $b
+     * @return float
+     */
+    public static function getBrightness(int $r, int $g, int $b): float {
+        return round(((intval($r) * 299) + (intval($g) * 587) + (intval($b) * 114)) / 1000);
     }
 }

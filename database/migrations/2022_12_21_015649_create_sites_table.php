@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('mode_color')->nullable();
             $table->string('second_color')->nullable();
             $table->string('third_color')->nullable();
+            $table->string('darkest_color')->nullable();
+            $table->string('brightest_color')->nullable();
             $table->timestamps();
         });
     }

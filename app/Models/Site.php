@@ -17,6 +17,8 @@ class Site extends Model
         'mode_color',
         'second_color',
         'third_color',
+        'darkest_color',
+        'brightest_color',
     ];
 
     protected function domain(): Attribute

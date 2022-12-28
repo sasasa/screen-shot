@@ -35,11 +35,7 @@ class SiteAccessCommand extends Command
         try {
             Site::query()->whereNull('mode_color')->each(function($site) use($linkPreview){
                 $response = $linkPreview->get($site->url);
-                $site->title = $response->title;
-                $site->description = $response->description;
-                $site->mode_color = $response->modeColor;
-                $site->second_color = $response->secondColor;
-                $site->third_color = $response->thirdColor;
+                $site->fill($response->toArray());
                 $site->save();
                 $this->info("save: ". $site->url);
                 sleep(5);

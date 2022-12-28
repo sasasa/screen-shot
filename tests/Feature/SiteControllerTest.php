@@ -58,7 +58,7 @@ class SiteControllerTest extends TestCase
             'url' => $url,
         ]);
         if($result === 'success') {
-            $response->assertSessionHas('message', '登録okです');
+            $response->assertSessionHas('message', 'モックのタイトル の登録okです');
             $response->assertSessionHas('status', 'success');
             $response->assertRedirect(route('sites.index'));
             $this->assertDatabaseHas('sites', [
