@@ -33,6 +33,10 @@ sail artisan config:clear
 sail artisan route:clear
 sail artisan view:clear
 
+sail composer require --dev laravel/dusk
+sail artisan dusk:install
+sail dusk
+
 sail composer require --dev barryvdh/laravel-ide-helper
 sail artisan ide-helper:model --nowrite
 sail artisan ide-helper:generate
