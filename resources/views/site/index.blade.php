@@ -8,7 +8,7 @@
   padding: 10px;
   margin: 1em 0 2em;
   overflow: hidden;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 .alert-success {
   background-color: #a1dd11;
@@ -16,8 +16,14 @@
 .text-white {
   color: #fff;
 }
+
 .site__url {
   word-wrap: break-word;
+}
+.site__img img {
+  /* aspect-ratio: 125 / 87;
+  object-fit: cover; */
+  width: 100%;
 }
 </style>
 <div>
@@ -44,12 +50,12 @@
 <div class="grid-auto-fit"> 
 @foreach ($sites as $site)
 <div class="site">
+  <p class="site__img">
+    <img src="{{ asset("storage/images/$site->imgsrc") }}">
+  </p>
   <p class="site__url">
     {{ $site->url }}<br>
     ({{ $site->domain }})
-  </p>
-  <p>
-    <img src="{{ asset("storage/images/$site->imgsrc") }}">
   </p>
   <p>
     {{ $site->title }}
