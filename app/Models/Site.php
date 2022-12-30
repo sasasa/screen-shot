@@ -5,11 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Events\SiteSaved;
 
 class Site extends Model
 {
     use HasFactory;
-    
+
+    protected $dispatchesEvents = [
+        'created' => SiteSaved::class
+        //saved
+    ];
+
     protected $fillable = [
         'url',
         'title',
@@ -30,7 +36,10 @@ class Site extends Model
     protected function imgsrc(): Attribute
     {
         return Attribute::make(
-            get: fn($value, $attributes) => parse_url($attributes['url'])['host']. ".jpeg",
+            get: fn($value, $attributes) => str_replace('=', '', str_replace('?', '', str_replace(':', '', str_replace('/', '_', $attributes['url'])))). ".jpeg",
         );
+    }
+    public function site_colors() {
+        return $this->hasMany('App\Models\SiteColor', 'site_id', 'id');
     }
 }

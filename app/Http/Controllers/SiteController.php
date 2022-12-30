@@ -10,6 +10,8 @@ use App\Lib\LinkPreview\LinkPreviewRuntimeException;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
+use Illuminate\Database\Query\JoinClause;
 class SiteController extends Controller
 {
     /**
@@ -17,10 +19,22 @@ class SiteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->color) {
+            $query = Site::query()
+                ->join('site_colors', function (JoinClause $join) use($request){
+                    $join->on('site_colors.site_id', '=', 'sites.id');
+                    $join->where('site_colors.color', '=', $request->color);
+                })
+                ->select('sites.*')
+                ->orderBy('site_colors.order', 'DESC');
+        } else {
+            $query = Site::query()->orderBy('sites.id', 'ASC');
+        }
+
         return view('site.index', [
-            'sites' => Site::all(),
+            'sites' => $query->get(),
         ]);
     }
 

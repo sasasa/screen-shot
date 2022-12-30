@@ -18,7 +18,11 @@ final class SenseOfColor
         $width = imagesx($image);
         $height = imagesy($image);
         $brightestColor = 0;
-        $brightestColors = null;
+        $brightestColors = [
+            'red' => 0,
+            'green' => 0,
+            'blue' => 0
+        ];;
         for ($x = 0; $x < $width; $x++) {
             for ($y = 0; $y < $height; $y++) {
                 $rgb = imagecolorat($image, $x, $y);
@@ -41,7 +45,11 @@ final class SenseOfColor
         $width = imagesx($image);
         $height = imagesy($image);
         $darkestColor = 255 + 255 + 255;
-        $darkestColors = null;
+        $darkestColors = [
+            'red' => 255,
+            'green' => 255,
+            'blue' => 255
+        ];
         for ($x = 0; $x < $width; $x++) {
             for ($y = 0; $y < $height; $y++) {
                 $rgb = imagecolorat($image, $x, $y);

@@ -7,7 +7,7 @@ use App\Lib\SenseOfColor\SenseOfColor;
 class ColorService
 {
     public function isTextColorWhite(?string $hexColor): bool {
-        if (is_null($hexColor)) {
+        if (is_null($hexColor) || $hexColor === '') {
             return false;
         }
         $rgb = SenseOfColor::hex2rgb($hexColor);

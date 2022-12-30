@@ -32,25 +32,27 @@ class SiteAccessCommand extends Command
     public function handle(LinkPreviewInterface $linkPreview)
     {
         $this->line("start site:access");
-        try {
-            Site::query()->whereNull('mode_color')->each(function($site) use($linkPreview){
+        Site::query()->whereNull('mode_color')->each(function($site) use($linkPreview){
+            try {
                 $response = $linkPreview->get($site->url);
                 $site->fill($response->toArray());
                 $site->save();
                 $this->info("save: ". $site->url);
                 sleep(5);
-            });
-        } catch (LinkPreviewRuntimeException $e) {
-            // dd($e);
-            $this->error('LinkPreviewRuntimeException');
-            $this->error($e->getMessage());
-            return Command::FAILURE;
-        } catch (Exception $e) {
-            // dd($e);
-            $this->error('Exception');
-            $this->error($e->getMessage());
-            return Command::FAILURE;
-        }
+            } catch (LinkPreviewRuntimeException $e) {
+                // dd($e);
+                $this->error('LinkPreviewRuntimeException');
+                $this->error($e->getMessage());
+                sleep(5);
+                // return Command::FAILURE;
+            } catch (Exception $e) {
+                // dd($e);
+                $this->error('Exception');
+                $this->error($e->getMessage());
+                sleep(5);
+                // return Command::FAILURE;
+            }
+        });
         $this->line("end site:access");
         return Command::SUCCESS;
     }
