@@ -5,12 +5,13 @@ use RuntimeException;
 use App\Lib\SenseOfColor\SenseOfColor;
 use KubAT\PhpSimple\HtmlDomParser;
 use App\Lib\ScreenShot\ScreenShot;
+use thiagoalessio\TesseractOCR\TesseractOCR;
 
 final class LinkPreviewRuntimeException extends RuntimeException{}
 final class LinkPreview implements LinkPreviewInterface
 {
-
     /**
+     * スクリーンショットを取得して、色を解析する
      * @param string $url
      * @return GetLinkPreviewResponse
      */
@@ -20,9 +21,19 @@ final class LinkPreview implements LinkPreviewInterface
         $domain = $parsed_url['host'];
         $fileData = ScreenShot::getScreenshot($url);
         // dd($fileData);
-        if($fileData) {
+        $options = stream_context_create(['ssl' => [
+            'verify_peer'      => false,
+            'verify_peer_name' => false
+        ]]);
+        ob_start();
+        imagepng(imagecreatefromstring($fileData), null, 0);
+        $size = ob_get_length();
+        $data = ob_get_clean();
+        $ocrContents = (new TesseractOCR())->imageData($data, $size)->lang('eng')->run();
+        if($fileData && !preg_match('/SSL.*handshake.*failed/i', $ocrContents)) {
+            // SSL handshake failedという画像でないとき
         } else {
-            if($image = @file_get_contents("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$url&screenshot=true")){
+            if($image = @file_get_contents("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$url&screenshot=true", false, $options)){
                 //ここにコンテンツの取得が成功した場合の処理
                 $image = json_decode($image, true);
                 $image = $image["lighthouseResult"]["audits"]["final-screenshot"]["details"]["data"];
@@ -32,7 +43,7 @@ final class LinkPreview implements LinkPreviewInterface
                 throw new LinkPreviewRuntimeException($url);
             }
         }
-        $dom = HtmlDomParser::file_get_html($url);
+        $dom = HtmlDomParser::file_get_html($url, false, $options);
         $title = trim($dom->find('title', 0)->plaintext);
         $description = trim($dom->find('meta[name=description]', 0)?->content);
 

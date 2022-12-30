@@ -30,6 +30,12 @@ class ScreenShotController extends Controller
     public function __invoke(Request $request, string $url, LinkPreviewInterface $linkPreview)
     {
         try {
+            // phpinfo();
+            $options = stream_context_create(['ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false
+            ]]);
+            dd(file_get_contents('https://www.akagi.com/products/index.html?tab01=garigari', false, $options));
             dd($this->fibonacciSequence(113));
 
             // $previewClient = new Client("https://www.google.com/maps/place/".urlencode("〒814-0001+福岡県福岡市早良区百道浜４丁目５−３"));

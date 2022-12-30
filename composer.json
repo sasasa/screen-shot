@@ -10,7 +10,8 @@
         "kub-at/php-simple-html-dom-parser": "^1.9",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "thiagoalessio/tesseract_ocr": "^2.12"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",

@@ -42,10 +42,12 @@ class SiteAccessCommand extends Command
             });
         } catch (LinkPreviewRuntimeException $e) {
             // dd($e);
+            $this->error('LinkPreviewRuntimeException');
             $this->error($e->getMessage());
             return Command::FAILURE;
         } catch (Exception $e) {
             // dd($e);
+            $this->error('Exception');
             $this->error($e->getMessage());
             return Command::FAILURE;
         }

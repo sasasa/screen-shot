@@ -39,6 +39,9 @@ RUN apt-get update \
     && apt-get install -y ubuntu-desktop \
     && apt-get install -y xvfb \
     && apt-get install -y cutycapt \
+    && apt-get install -y tesseract-ocr tesseract-ocr-jpn \
+    && apt-get install -y tesseract-ocr-jpn-* \
+    && apt-get install -y gimagereader \
     && apt-get install -y yarn \
     && apt-get install -y mysql-client \
     && apt-get install -y postgresql-client-$POSTGRES_VERSION \
