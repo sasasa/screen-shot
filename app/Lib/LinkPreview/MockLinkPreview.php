@@ -8,11 +8,11 @@ final class MockLinkPreview implements LinkPreviewInterface
         $parsed_url = parse_url($url);
         $domain = $parsed_url['host'];
         return new GetLinkPreviewResponse(
+            url: $url,
+            domain: $domain,
             title: 'モックのタイトル',
             description: 'モックのdescription',
             fileData: "xxx",
-            domain: $domain,
-            url: $url,
             modeColor: "ffffff",
             secondColor: "ff0000",
             thirdColor: "0000ff",

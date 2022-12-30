@@ -46,6 +46,9 @@ class SiteSaved
     public function __construct(Site $site)
     {
         $path = storage_path('app/public/images'). "/". $site->imgsrc;
+        if(!file_exists($path)) {
+            return;
+        }
         $palette = Palette::fromFilename($path);
         $all_color_count = 0;
         $extracted_color_counts = [

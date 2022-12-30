@@ -52,13 +52,12 @@ class SiteControllerTest extends TestCase
      */
     public function store_登録に成功する場合と失敗する場合($url, $result, $sessionError)
     {
-        
-        
         $response = $this->from(route('sites.create'))->post(route('sites.store'),[
             'url' => $url,
         ]);
         if($result === 'success') {
-            $response->assertSessionHas('message', 'モックのタイトル の登録okです');
+            // dd($response);
+            $response->assertSessionHas('message', '【モックのタイトル】の登録okです');
             $response->assertSessionHas('status', 'success');
             $response->assertRedirect(route('sites.index'));
             $this->assertDatabaseHas('sites', [

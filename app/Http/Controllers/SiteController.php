@@ -65,19 +65,10 @@ class SiteController extends Controller
             ]);
         }
 
-        $site = Site::create([
-            'url' => $request->url,
-            'title' => $response->title,
-            'description' => $response->description,
-            'mode_color' => $response->modeColor,
-            'second_color' => $response->secondColor,
-            'third_color' => $response->thirdColor,
-            'darkest_color' => $response->darkestColor,
-            'brightest_color' => $response->brightestColor,
-        ]);
+        $site = Site::create($response->toArray());
 
         return to_route('sites.index')->with([
-            'message' => "{$site->title} の登録okです",
+            'message' => "【{$site->title}】の登録okです",
             'status' => 'success',
         ]);;
     }
