@@ -135,6 +135,21 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://opencare-taxi.com/',
             ],
+            [
+                'url' => 'https://r-equal.com/recruit/',
+            ],
+            [
+                'url' => 'https://jp.creativesurvey.com/',
+            ],
+            [
+                'url' => 'https://whatever.co/nandemo-day/ja/',
+            ],
+            [
+                'url' => 'https://edex.adobe.com/jp/college-creative-jam-2021',
+            ],
+            [
+                'url' => 'https://www.bt.com/about/annual-reports/2020summary/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);

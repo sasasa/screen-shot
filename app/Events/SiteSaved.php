@@ -29,6 +29,7 @@ class SiteSaved
         'brown' => [106, 52, 39],
         'skyblue' => [0, 125, 200],
         'yellow' => [200, 230, 0],
+        'orange' => [250, 100, 0],
         'purple' => [128, 0, 128],
         'black' => [0, 0, 0],
         'gray' => [128, 128, 128],
@@ -58,6 +59,7 @@ class SiteSaved
             'yellow' => 0,
             'purple' => 0,
             'black' => 0,
+            'orange' => 0,
         ];
 
         foreach($palette as $color => $count) {
@@ -74,7 +76,7 @@ class SiteSaved
                     $color_key = $key;
                 }
             }
-            if(in_array($color_key, ['pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'])) {
+            if(in_array($color_key, ['orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'])) {
                 $extracted_color_counts[$color_key] += $count;
                 $all_color_count += $count;
             }
@@ -82,7 +84,7 @@ class SiteSaved
 
         foreach($extracted_color_counts as $color_key => $count) {
             $percentage = $count / $all_color_count * 100;
-            if($count > 0 && in_array($color_key, ['pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'])) {
+            if($count > 0 && in_array($color_key, ['orange', 'pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'])) {
                 if($percentage > self::THRESHOLD) { // しきい値より大きければ保存する
                     $site_color = new SiteColor();
                     $site_color->site_id = $site->id;

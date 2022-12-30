@@ -3,12 +3,12 @@
 <style>
 .grid-auto-fit {
   display: grid;
-  border: 1px solid #ddd;
-  grid-gap: 10px;
-  padding: 10px;
-  margin: 1em 0 2em;
+  border: 1px solid #bbb;
+  grid-gap: 20px;
+  padding: 16px 20px;
   overflow: hidden;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  border-radius: 5px;
 }
 .alert-success {
   background-color: #a1dd11;
@@ -16,7 +16,11 @@
 .text-white {
   color: #fff;
 }
-
+.site {
+  border: 1px solid #bbb;
+  padding: 4px 16px;
+  border-radius: 5px;
+}
 .site__url {
   word-wrap: break-word;
 }
@@ -41,13 +45,13 @@
     <button type="submit">色検索</button>
     <select name="color">
       <option value="">色指定無し</option>
-      @foreach (['pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'] as $color)
+      @foreach (['orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'] as $color)
         <option value="{{ $color }}" @selected($color == request()->color)>{{ $color }}</option>
       @endforeach
     </select>
   </form>
 </div>
-<div class="grid-auto-fit"> 
+<div class="grid-auto-fit">
 @foreach ($sites as $site)
 <div class="site">
   <p class="site__img">
