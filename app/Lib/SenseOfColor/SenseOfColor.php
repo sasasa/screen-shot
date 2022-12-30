@@ -81,10 +81,11 @@ final class SenseOfColor
         arsort($rgbMap);
         // $rgbMap = array_slice($rgbMap, 0, 5);
         $colors = array_map('trim', array_keys($rgbMap));
-        $firstColor = array_shift($colors);
-        while($this->isCloseColor($firstColor, $secondColor = array_shift($colors))) {
+        while(($firstColor = array_shift($colors)) && ($this->isCloseColor($firstColor, '000000') || $this->isCloseColor($firstColor, 'ffffff'))) {
         }
-        while($this->isCloseColor($secondColor, $thirdColor = array_shift($colors)) || $this->isCloseColor($firstColor, $thirdColor)) {
+        while($this->isCloseColor($firstColor, $secondColor = array_shift($colors)) || ($this->isCloseColor($secondColor, '000000') || $this->isCloseColor($secondColor, 'ffffff'))) {
+        }
+        while(($this->isCloseColor($secondColor, $thirdColor = array_shift($colors)) || $this->isCloseColor($firstColor, $thirdColor)) || ($this->isCloseColor($thirdColor, '000000') || $this->isCloseColor($thirdColor, 'ffffff'))) {
         }
         return [$firstColor, $secondColor, $thirdColor];
     }
