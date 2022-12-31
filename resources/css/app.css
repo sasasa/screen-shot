@@ -1,4 +1,20 @@
 /*
+サイト登録
+*/
+.inputbox {
+  padding: 16px 20px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.inputbox__inner.flex-container {
+  display: flex;
+  gap: 16px;
+}
+/*
 サイト一覧
 */
 .sites-container {
@@ -36,4 +52,38 @@
 }
 .site .site__item:not(:last-child) {
   border-bottom: 1px solid #bbb;
+}
+
+/* ローディング画面 */
+#loading {
+  width: 100vw;
+  height: 100vh;
+  transition: all 1s;
+  background-color: #bbb;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: none;
+}
+.loaded {
+  opacity: 0;
+  visibility: hidden;
+}
+.spinner {
+  width: 100px;
+  height: 100px;
+  margin: 200px auto;
+  background-color: #fff;
+  border-radius: 100%;
+  animation: sk-scaleout 1.0s infinite ease-in-out;
+}
+/* ローディングアニメーション */
+@keyframes sk-scaleout {
+  0% {
+    transform: scale(0);
+  } 100% {
+    transform: scale(1.0);
+    opacity: 0;
+  }
 }

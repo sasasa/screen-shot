@@ -8,29 +8,34 @@
     </div>
   @endif
 </div>
-<div>
-  <a href="{{ route('sites.create') }}">新規追加</a>
-</div>
-<div>
-  <form method="GET">
-    <button type="submit">色検索</button>
-    <select name="color">
-      <option value="">色指定無し</option>
-      @foreach (['orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'] as $color)
-        <option value="{{ $color }}" @selected($color == request()->color)>{{ $color }}</option>
-      @endforeach
-    </select>
-  </form>
+<div class="inputbox">
+  <div>
+    <a href="{{ route('sites.create') }}">新規追加</a>
+  </div>
+  <div>
+    <form method="GET">
+      <select name="color">
+        <option value="">色指定無し</option>
+        @foreach (['orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'] as $color)
+          <option value="{{ $color }}" @selected($color == request()->color)>{{ $color }}</option>
+        @endforeach
+      </select>
+    </form>
+  </div>
 </div>
 <div class="sites-container">
 @foreach ($sites as $site)
 <div class="site">
   <p class="site__item site__img">
-    <img src="{{ asset("storage/images/$site->imgsrc") }}">
+    <a href="{{ $site->url }}" target="_brank">
+      <img src="{{ asset("storage/images/$site->imgsrc") }}">
+    </a>
   </p>
   <p class="site__item site__url">
-    {{ $site->url }}<br>
-    ({{ $site->domain }})
+    <a href="{{ $site->url }}" target="_brank">
+      {{ $site->url }}<br>
+      ({{ $site->domain }})
+    </a>
   </p>
   <p class="site__item site__title">
     {{ $site->title }}
@@ -58,4 +63,17 @@
 </div>
 @endforeach
 </div>
+@once
+@push('scripts')
+<script>
+/**
+ * selectboxの値を変更したら、formをsubmitする
+ */
+const selectbox = document.querySelector('select[name="color"]');
+selectbox.addEventListener('change', function() {
+  this.form.submit();
+});
+</script>
+@endpush
+@endonce
 </x-layouts.app>
