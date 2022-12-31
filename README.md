@@ -12,7 +12,8 @@ sail artisan make:controller ScreenShotController --invokable
 
 sail artisan make:model Site -a
 
-sail php artisan migrate:fresh --seed
+sail artisan migrate:fresh --seed
+sail artisan site:access
 sail php artisan migrate:fresh --env=testing
 
 sail artisan make:command SiteAccessCommand
@@ -57,6 +58,22 @@ sail composer require league/color-extractor
 sail artisan make:event SiteSaved
 
 sail composer require barryvdh/laravel-debugbar
+
+sudo apt-get install mecab
+sudo apt-get install libmecab-dev
+
+Dockerfileから削除
+    # && apt-get install -y ubuntu-desktop \
+    # && apt-get install -y xvfb \
+    # && apt-get install -y cutycapt \
+    # && apt-get install -y tesseract-ocr tesseract-ocr-jpn \
+    # && apt-get install -y tesseract-ocr-jpn-* \
+    # && apt-get install -y gimagereader \
+
+sail artisan make:migration create_site_tag_table
+sail artisan make:model Tag -m
+
+sail composer require lithiumdev/laravel-tagcloud
 -->
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 

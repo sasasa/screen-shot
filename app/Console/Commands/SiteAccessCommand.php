@@ -7,6 +7,7 @@ use App\Lib\LinkPreview\LinkPreviewInterface;
 use App\Lib\LinkPreview\LinkPreviewRuntimeException;
 use App\Models\Site;
 use Exception;
+use App\Usecases\SiteUpdateWithTags;
 
 class SiteAccessCommand extends Command
 {
@@ -29,15 +30,14 @@ class SiteAccessCommand extends Command
      *
      * @return int
      */
-    public function handle(LinkPreviewInterface $linkPreview)
+    public function handle(LinkPreviewInterface $linkPreview, SiteUpdateWithTags $usecase)
     {
         $this->line("start site:access");
-        Site::query()->whereNull('mode_color')->each(function($site) use($linkPreview){
+        Site::query()->whereNull('mode_color')->each(function($site) use($linkPreview, $usecase){
             try {
                 $response = $linkPreview->get($site->url);
-                $site->fill($response->toArray());
-                $site->save();
-                $this->info("save: ". $site->url);
+                $s = $usecase($response);
+                $this->info("save: ". $s->url);
                 sleep(5);
             } catch (LinkPreviewRuntimeException $e) {
                 // dd($e);

@@ -87,3 +87,47 @@
     opacity: 0;
   }
 }
+/** タグクラウド */
+.tagcloud {
+  padding: 16px 20px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  margin: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+.tagcloud__item {
+  display: inline-block;
+}
+.tagcloud__item1 {
+  font-size: 0.5rem;
+}
+.tagcloud__item2 {
+  font-size: 0.75rem;
+}
+.tagcloud__item3 {
+  font-size: 1rem;
+}
+.tagcloud__item4 {
+  font-size: 1.3rem;
+}
+.tagcloud__item5 {
+  font-size: 1.6rem;
+}
+.tagcloud__item6 {
+  font-size: 2.0rem;
+}
+.tagcloud__item7 {
+  font-size: 2.4rem;
+}
+.tagcloud__item8 {
+  font-size: 2.8rem;
+}
+.tagcloud__item9 {
+  font-size: 3.2rem;
+}
+.tagcloud__item10 {
+  font-size: 4.0rem;
+}

@@ -8,12 +8,24 @@
     </div>
   @endif
 </div>
+@if (request()->tag || request()->color)
 <div class="inputbox">
+  <h2>
+    タグ：{{ request()->tag ?? "無し" }}<br>
+    色：{{ request()->color ?? "指定無し" }}
+  </h2>
+</div>
+@endif
+<div class="inputbox">
+  <div>
+    <a href="{{ route('sites.tags') }}">タグクラウド</a>
+  </div>
   <div>
     <a href="{{ route('sites.create') }}">新規追加</a>
   </div>
   <div>
-    <form method="GET">
+    <form action="{{ route('sites.index', ['tag' => request()->tag, 'color'=> request()->color]) }}" method="get">
+      <input type="hidden" name="tag" value="{{ request()->tag }}">
       <select name="color">
         <option value="">色指定無し</option>
         @foreach (['orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'] as $color)
@@ -24,7 +36,7 @@
   </div>
 </div>
 <div class="sites-container">
-@foreach ($sites as $site)
+@forelse ($sites as $site)
 <div class="site">
   <p class="site__item site__img">
     <a href="{{ $site->url }}" target="_brank">
@@ -61,7 +73,9 @@
     </p>
   </div>
 </div>
-@endforeach
+@empty
+  <p>サイトがありません</p>
+@endforelse
 </div>
 @once
 @push('scripts')

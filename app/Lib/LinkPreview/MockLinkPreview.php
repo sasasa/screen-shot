@@ -18,6 +18,7 @@ final class MockLinkPreview implements LinkPreviewInterface
             thirdColor: "0000ff",
             darkestColor: "000000",
             brightestColor: "ffffff",
+            tags: collect(['モック', 'PHP', 'Laravel']),
         );
     }
 }

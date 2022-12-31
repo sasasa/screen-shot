@@ -36,12 +36,8 @@ RUN apt-get update \
     && curl -sS https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | tee /usr/share/keyrings/pgdg.gpg >/dev/null \
     && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] http://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
-    && apt-get install -y ubuntu-desktop \
-    && apt-get install -y xvfb \
-    && apt-get install -y cutycapt \
-    && apt-get install -y tesseract-ocr tesseract-ocr-jpn \
-    && apt-get install -y tesseract-ocr-jpn-* \
-    && apt-get install -y gimagereader \
+    && apt-get install -y mecab \
+    && apt-get install -y libmecab-dev \
     && apt-get install -y yarn \
     && apt-get install -y mysql-client \
     && apt-get install -y postgresql-client-$POSTGRES_VERSION \

@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        // LithiumDev\TagCloud\ServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Lib\LinkPreview\LinkPreviewInterface;
 use App\Lib\LinkPreview\LinkPreviewRuntimeException;
 use Dusterio\LinkPreview\Client;
+use KubAT\PhpSimple\HtmlDomParser;
+use LithiumDev\TagCloud\TagCloud;
+use App\Models\Tag;
+use App\Usecases\CreateTagCloud;
 class ScreenShotController extends Controller
 {
 
@@ -21,16 +25,87 @@ class ScreenShotController extends Controller
         return $sequence;
     }
 
+
     /**
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, string $url, LinkPreviewInterface $linkPreview)
+    public function __invoke(Request $request, string $url, LinkPreviewInterface $linkPreview, CreateTagCloud $usecase)
     {
+        dd($usecase()->first());
+        
+        // $cloud = new TagCloud();
+        // Tag::query()->withCount('sites')->orderBy('sites_count', 'desc')->get()->each(function($tag) use($cloud){
+        //     // dump($tag->name, $tag->sites_count);
+        //     $count = $tag->sites_count;
+        //     if($count > 10) {
+        //         $count = 10;
+        //     }
+        //     $cloud->addTag([
+        //         'tag' => $tag->name,
+        //         'path' => "sites/{$tag->name}",
+        //         'color' => $count,
+        //         'size' => $count,
+        //     ]);
+        // });
+
+        // // $cloud->addTag(['tag' => 'php',  'path' => 'sites/1', 'color' => 1, 'size' => 1]);
+        // // $cloud->addTag(['tag' => 'ajax', 'path' => 'sites/2', 'color' => 2, 'size' => 2]);
+        // // $cloud->addTag(['tag' => 'css',  'path' => 'sites/3', 'color' => 3, 'size' => 3]);
+        // $cloud->setOrder('color','DESC');
+        // $cloud->setHtmlizeTagFunction(function($tag, $size) {
+        //     $link = "<a href='/{$tag['path']}'>". $tag['tag']. '</a>';
+        //     return "<span class='tag size-{$tag['size']} colour-{$tag['color']}'>{$link}</span> ";
+        // });
+        // echo $cloud->render();
+        exit;
         try {
+            $dom = HtmlDomParser::file_get_html('https://blog.capilano-fw.com/?p=3958');
+            $body = trim($dom->find('body', 0)->plaintext);
+            $tags = [];
+            /**
+             * Receive data from mecab command
+             */
+            exec('echo "'. $body .'" | mecab', $output);
+            if(!empty($output) && is_array($output)) {
+                $tags = collect($output)
+                    ->slice(0, -1)
+                    ->map(function($item) {
+                        $lines = explode("\t", $item);
+                        // dump($lines);
+                        $surface = $lines[0];
+                        if(isset($lines[1])) {
+                            $features = explode(',', $lines[1]);
+                        } else {
+                            $features = [];
+                        }
+                        return [
+                            'surface' => $surface,
+                            'features' => $features
+                        ];
+                    })
+                    ->filter(function($item) {
+                        if(mb_strlen($item['surface']) < 2) {
+                            // 一文字の単語は除外
+                            return false;
+                        }
+                        return data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '普通名詞';
+                    })
+                    ->pluck('surface')
+                    ->toArray();
+            }
+            $tag_counts = array_count_values($tags);
+            $tag_counts = array_filter($tag_counts, function($value){
+                return ($value >= 3);
+            });
+            arsort($tag_counts);
+            dd(collect($tag_counts)->slice(0, 10)->keys());
+
             // phpinfo();
+
+
             $options = stream_context_create(['ssl' => [
                 'verify_peer'      => false,
                 'verify_peer_name' => false

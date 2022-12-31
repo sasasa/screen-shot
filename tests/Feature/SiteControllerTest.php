@@ -66,7 +66,16 @@ class SiteControllerTest extends TestCase
                 'description' => 'モックのdescription',
                 'mode_color' => "ffffff",
             ]);
-        } 
+            $this->assertDatabaseHas('tags', [
+                'name' => 'モック',
+            ]);
+            $this->assertDatabaseHas('tags', [
+                'name' => 'PHP',
+            ]);
+            $this->assertDatabaseHas('tags', [
+                'name' => 'Laravel',
+            ]);
+        }
         if($result === 'error') {
             $response->assertRedirect(route('sites.create'));
             $response->assertSessionHasErrors($sessionError);

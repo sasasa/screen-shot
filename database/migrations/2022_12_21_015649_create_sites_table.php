@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
-            $table->string('title')->nullable();
-            $table->string('description')->nullable();
-            $table->string('mode_color')->nullable();
-            $table->string('second_color')->nullable();
-            $table->string('third_color')->nullable();
-            $table->string('darkest_color')->nullable();
-            $table->string('brightest_color')->nullable();
+            $table->string('url')->unique()->comment('URL');
+            $table->string('title')->comment('サイトのタイトル')->nullable();
+            $table->string('description')->comment('サイトの要約')->nullable();
+            $table->string('mode_color')->comment('1番目に使われている色')->nullable();
+            $table->string('second_color')->comment('2番目に使われている色')->nullable();
+            $table->string('third_color')->comment('3番目に使われている色')->nullable();
+            $table->string('darkest_color')->comment('一番暗い色')->nullable();
+            $table->string('brightest_color')->comment('一番明るい色')->nullable();
             $table->timestamps();
         });
     }

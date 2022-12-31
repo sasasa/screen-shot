@@ -42,4 +42,9 @@ class Site extends Model
     public function site_colors() {
         return $this->hasMany('App\Models\SiteColor', 'site_id', 'id');
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Models\Tag', 'site_tag', 'site_id', 'tag_id');
+    }
 }

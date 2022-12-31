@@ -7,13 +7,22 @@ use App\Http\Requests\UpdateSiteRequest;
 use App\Models\Site;
 use App\Lib\LinkPreview\LinkPreviewInterface;
 use App\Lib\LinkPreview\LinkPreviewRuntimeException;
-use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Database\Query\JoinClause;
+use App\Usecases\SiteCreateWithTags;
+use App\Usecases\CreateTagCloud;
+use App\Models\Tag;
 class SiteController extends Controller
 {
+    public function tags(CreateTagCloud $usecase)
+    {
+        return view('site.tags', [
+            'tags' => $usecase(),
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,13 +31,24 @@ class SiteController extends Controller
     public function index(Request $request)
     {
         if($request->color) {
-            $query = Site::query()
+            if($request->tag) {
+                $query = Tag::where('name', $request->tag)->first()->sites()->join('site_colors', function (JoinClause $join) use($request){
+                    $join->on('site_colors.site_id', '=', 'sites.id');
+                    $join->where('site_colors.color', '=', $request->color);
+                })
+                ->select('sites.*')
+                ->orderBy('site_colors.order', 'DESC');
+            } else {
+                $query = Site::query()
                 ->join('site_colors', function (JoinClause $join) use($request){
                     $join->on('site_colors.site_id', '=', 'sites.id');
                     $join->where('site_colors.color', '=', $request->color);
                 })
                 ->select('sites.*')
                 ->orderBy('site_colors.order', 'DESC');
+            }
+        } elseif($request->tag) {
+            $query = Tag::where('name', $request->tag)->first()->sites()->orderBy('sites.id', 'ASC');
         } else {
             $query = Site::query()->orderBy('sites.id', 'ASC');
         }
@@ -54,19 +74,17 @@ class SiteController extends Controller
      * @param  \App\Http\Requests\StoreSiteRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSiteRequest $request, LinkPreviewInterface $linkPreview)
+    public function store(StoreSiteRequest $request, LinkPreviewInterface $linkPreview, SiteCreateWithTags $usecase)
     {
         try {
-            $response = $linkPreview->get($request->url);
+            $res = $linkPreview->get($request->url);
         } catch (LinkPreviewRuntimeException $e) {
             Log::error(__METHOD__ . PHP_EOL . var_export($e->getMessage(), true));
             throw ValidationException::withMessages([
                 'url' => 'URLが存在しない等の理由で読み込めませんでした。変更して再度投稿してください'
             ]);
         }
-
-        $site = Site::create($response->toArray());
-
+        $site = $usecase($res);
         return to_route('sites.index')->with([
             'message' => "【{$site->title}】の登録okです",
             'status' => 'success',

@@ -14,6 +14,7 @@ final class GetLinkPreviewResponse
         readonly public ?string $thirdColor,
         readonly public string $darkestColor,
         readonly public string $brightestColor,
+        readonly public \Illuminate\Support\Collection $tags,
     ){}
 
     public function toArray(): array {

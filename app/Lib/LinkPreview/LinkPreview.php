@@ -6,6 +6,7 @@ use App\Lib\SenseOfColor\SenseOfColor;
 use KubAT\PhpSimple\HtmlDomParser;
 use App\Lib\ScreenShot\ScreenShot;
 use thiagoalessio\TesseractOCR\TesseractOCR;
+use App\Lib\Mecab\GetTags;
 
 final class LinkPreviewRuntimeException extends RuntimeException{}
 final class LinkPreview implements LinkPreviewInterface
@@ -52,6 +53,7 @@ final class LinkPreview implements LinkPreviewInterface
         $dom = HtmlDomParser::file_get_html($url, false, $options);
         $title = trim($dom->find('title', 0)->plaintext);
         $description = trim($dom->find('meta[name=description]', 0)?->content);
+        $tags = (new GetTags(trim($dom->find('body', 0)->plaintext)))->getTags();
 
         $senseOfColor = new SenseOfColor($fileData);
         $modeColors = $senseOfColor->getTreeTypicalColors();
@@ -67,6 +69,7 @@ final class LinkPreview implements LinkPreviewInterface
             thirdColor: $modeColors[2],
             darkestColor: $senseOfColor->getDarkestColor(),
             brightestColor: $senseOfColor->getBrightestColor(),
+            tags: $tags
         );
         $this->store($response);
 

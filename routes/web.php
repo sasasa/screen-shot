@@ -17,6 +17,8 @@ use App\Http\Controllers\SiteController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/sites/tags', [SiteController::class, 'tags'])->name('sites.tags');
 Route::resource('sites', SiteController::class);
 
 Route::get('/screen_shot/{url}', ScreenShotController::class)->where(['url' => '.*']);
