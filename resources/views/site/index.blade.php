@@ -1,43 +1,6 @@
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+<x-layouts.app>
+<x-slot name="title">サイト一覧</x-slot>
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
-<style>
-.sites-container {
-  display: grid;
-  border: 1px solid #bbb;
-  grid-gap: 20px;
-  padding: 16px 20px;
-  overflow: hidden;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  border-radius: 5px;
-}
-.alert-success {
-  background-color: #a1dd11;
-}
-.text-white {
-  color: #fff;
-}
-.site {
-  border: 1px solid #bbb;
-  padding: 4px 16px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-}
-.site__url {
-  word-wrap: break-word;
-}
-.site__img img {
-  /* aspect-ratio: 125 / 87;
-  object-fit: cover; */
-  width: 100%;
-}
-.site__colors {
-  margin-top: auto;
-}
-.site .site__item:not(:last-child) {
-  border-bottom: 1px solid #bbb;
-}
-</style>
 <div>
   @if (session('message'))
     <div class="alert alert-{{ session('status') }}">
@@ -95,3 +58,4 @@
 </div>
 @endforeach
 </div>
+</x-layouts.app>
