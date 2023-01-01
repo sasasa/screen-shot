@@ -46,34 +46,35 @@ final class LinkPreview implements LinkPreviewInterface
                     $data = preg_replace('#^data:image/\w+;base64,#i' , '' , $image);
                     $fileData = base64_decode($data);
                 } else {
-                    throw new LinkPreviewRuntimeException($url);
+                    throw new LinkPreviewRuntimeException('image cant get: '. $url);
                 }
             }
         }
-        $dom = HtmlDomParser::file_get_html($url, false, $options);
-        $title = trim($dom->find('title', 0)->plaintext);
-        $description = trim($dom->find('meta[name=description]', 0)?->content);
-        $tags = (new GetTags(trim($dom->find('body', 0)->plaintext)))->getTags();
-
-        $senseOfColor = new SenseOfColor($fileData);
-        $modeColors = $senseOfColor->getTreeTypicalColors();
-        // dd($modeColors);
-        $response = new GetLinkPreviewResponse(
-            title: $title,
-            description: mb_strimwidth($description, 0, 255, '…'),
-            fileData: $fileData,
-            domain: $domain,
-            url: $url,
-            modeColor: $modeColors[0],
-            secondColor: $modeColors[1],
-            thirdColor: $modeColors[2],
-            darkestColor: $senseOfColor->getDarkestColor(),
-            brightestColor: $senseOfColor->getBrightestColor(),
-            tags: $tags
-        );
-        $this->store($response);
-
-        return $response;
+        if ($dom = @HtmlDomParser::file_get_html($url, false, $options)) {
+            $title = trim($dom->find('title', 0)->plaintext);
+            $description = trim($dom->find('meta[name=description]', 0)?->content);
+            $tags = (new GetTags(trim($dom->find('body', 0)->plaintext)))->getTags();
+            $senseOfColor = new SenseOfColor($fileData);
+            $modeColors = $senseOfColor->getTreeTypicalColors();
+            // dd($modeColors);
+            $response = new GetLinkPreviewResponse(
+                title: $title,
+                description: mb_strimwidth($description, 0, 255, '…'),
+                fileData: $fileData,
+                domain: $domain,
+                url: $url,
+                modeColor: $modeColors[0],
+                secondColor: $modeColors[1],
+                thirdColor: $modeColors[2],
+                darkestColor: $senseOfColor->getDarkestColor(),
+                brightestColor: $senseOfColor->getBrightestColor(),
+                tags: $tags
+            );
+            $this->store($response);
+            return $response;
+        } else {
+            throw new LinkPreviewRuntimeException('dom cant get: '. $url);
+        }
     }
 
     /**
