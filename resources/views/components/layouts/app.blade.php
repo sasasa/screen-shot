@@ -8,11 +8,13 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            <!-- Page Content -->
+        <div class="main-grid">
             <main>
                 {{ $slot }}
             </main>
+            <aside class="sidebar inputbox">
+                <x-sidebar />
+            </aside>
         </div>
         @stack('scripts')
     </body>

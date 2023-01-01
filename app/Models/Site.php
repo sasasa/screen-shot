@@ -47,4 +47,9 @@ class Site extends Model
     {
         return $this->belongsToMany('App\Models\Tag', 'site_tag', 'site_id', 'tag_id');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\Models\User', 'site_user', 'site_id', 'user_id');
+    }
 }

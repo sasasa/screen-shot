@@ -14,6 +14,8 @@ use Illuminate\Database\Query\JoinClause;
 use App\Usecases\SiteCreateWithTags;
 use App\Usecases\CreateTagCloud;
 use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Support\Str;
 class SiteController extends Controller
 {
     public function tags(CreateTagCloud $usecase)
@@ -32,30 +34,38 @@ class SiteController extends Controller
     {
         if($request->color) {
             if($request->tag) {
-                $query = Tag::where('name', $request->tag)->first()->sites()->with('tags')->join('site_colors', function (JoinClause $join) use($request){
+                $query = Tag::where('name', $request->tag)->first()->sites()->with('tags')->withCount('users')->join('site_colors', function (JoinClause $join) use($request){
                     $join->on('site_colors.site_id', '=', 'sites.id');
                     $join->where('site_colors.color', '=', $request->color);
                 })
-                ->select('sites.*')
                 ->orderBy('site_colors.order', 'DESC');
             } else {
-                $query = Site::query()->with('tags')
+                $query = Site::query()->with('tags')->withCount('users')
                 ->join('site_colors', function (JoinClause $join) use($request){
                     $join->on('site_colors.site_id', '=', 'sites.id');
                     $join->where('site_colors.color', '=', $request->color);
                 })
-                ->select('sites.*')
                 ->orderBy('site_colors.order', 'DESC');
             }
         } elseif($request->tag) {
-            $query = Tag::where('name', $request->tag)->first()->sites()->with('tags')->orderBy('sites.id', 'ASC');
+            $query = Tag::where('name', $request->tag)->first()->sites()->with('tags')->withCount('users')->orderBy('sites.id', 'ASC');
         } else {
-            $query = Site::query()->with('tags')->orderBy('sites.id', 'ASC');
+            $query = Site::query()->with('tags')->withCount('users')->orderBy('sites.id', 'ASC');
         }
 
-        return view('site.index', [
+        if($userid = $request->cookie('userid')) {
+            $user = User::where('uuid', $userid,)->first();
+        } else {
+            $userid = Str::uuid();
+            $user = User::create([
+                'uuid' => $userid,
+            ]);
+        }
+
+        return response()->view('site.index', [
             'sites' => $query->get(),
-        ]);
+            'users_sites' => $user->sites->pluck('id')->toArray(),
+        ])->cookie('userid', $userid, 60*24*365*10, null, null, false, false);
     }
 
     /**

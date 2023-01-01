@@ -19,7 +19,7 @@
 @endif
 <div class="inputbox">
   <div>
-    <a href="{{ route('sites.tags') }}">タグクラウド</a>
+    <a href="{{ route('sites.tags', ['color' => request()->color]) }}">タグクラウド</a>
   </div>
   <div>
     <a href="{{ route('sites.create') }}">新規追加</a>
@@ -40,9 +40,11 @@
 @forelse ($sites as $site)
 <div class="site">
   <p class="site__item site__img">
-    <a href="{{ $site->url }}" target="_brank">
-      <img src="{{ asset("storage/images/$site->imgsrc") }}">
-    </a>
+    <svg data-siteid="{{ $site->id }}" class="like-icon like-icon{{ $site->id }}" xmlns="http://www.w3.org/2000/svg" fill="{{ in_array($site->id, $users_sites) ? "#ffff00" : "#aaaaaa" }}" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+    </svg>
+    <span class="like-number like-number{{ $site->id }}">{{ $site->users_count }}</span>
+    <img src="{{ asset("storage/images/$site->imgsrc") }}">
   </p>
   <p class="site__item site__url">
     <a href="{{ $site->url }}" target="_brank">
@@ -87,13 +89,66 @@
 </div>
 @once
 @push('scripts')
-<script>
+<script type="module">
+/** When .alert is displayed, remove the element in 3 seconds. */
+const alert = document.querySelector('.alert')
+if(alert) {
+  setTimeout(() => {
+    alert.remove()
+  }, 3000)
+}
 /**
  * selectboxの値を変更したら、formをsubmitする
  */
 const selectbox = document.querySelector('select[name="color"]');
 selectbox.addEventListener('change', function() {
   this.form.submit();
+});
+const userid = Cookies.get('userid');
+// alert(userid);
+let likeIcons = document.querySelectorAll('.like-icon');
+//likeアイコンをクリックしたらSVGの色を変える
+likeIcons.forEach(function(likeIcon) {
+  likeIcon.addEventListener('click', function() {
+    const siteid = this.getAttribute('data-siteid');
+    if (this.getAttribute('fill') === '#aaaaaa') {
+      // like
+      axios.post('/api/likes', {
+        userid: userid,
+        siteid: siteid
+      }).then((response) => {
+        console.log(response);
+        this.setAttribute('fill', '#ffff00');
+        document.querySelectorAll(".like-icon" + siteid).forEach(function(icon) {
+          icon.setAttribute('fill', '#ffff00');
+        });
+        document.querySelectorAll(`.like-number${siteid}`).forEach(function(likeNumber) {
+          likeNumber.textContent = response.data.likes_count;
+        });
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      // unlike
+      axios.delete('/api/likes', {
+        data: {
+          userid: userid,
+          siteid: siteid
+        }
+      }).then((response) => {
+        console.log(response);
+        this.setAttribute('fill', '#aaaaaa');
+        document.querySelectorAll(".like-icon" + siteid).forEach(function(icon) {
+          icon.setAttribute('fill', '#aaaaaa');
+        });
+        document.querySelectorAll(`.like-number${siteid}`).forEach(function(likeNumber) {
+          likeNumber.textContent = response.data.likes_count;
+        });
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+  });
 });
 </script>
 @endpush

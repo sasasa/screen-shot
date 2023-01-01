@@ -1,3 +1,38 @@
+/** common */
+h1, h2, h3, h4, h5, h6, ul, ol, dl {
+  margin: 0;
+  padding: 0;
+}
+/**
+メインレイアウト
+*/
+.main-grid {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-gap: 20px;
+  padding: 20px;
+}
+/* 幅が 1000px 以下の時は1カラムにする */
+@media screen and (max-width: 1000px){
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* サイドバー */
+.sidebar.inputbox {
+  margin-bottom: 0;
+}
+.tags {
+  border: 1px solid #bbb;
+  padding: 16px 16px;
+  border-radius: 5px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.site.new {
+  margin-bottom: 16px;
+}
 /*
 サイト登録
 */
@@ -9,6 +44,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 .inputbox__inner.flex-container {
   display: flex;
@@ -17,6 +53,33 @@
 /*
 サイト一覧
 */
+.site__img {
+  position: relative;
+}
+.like-icon {
+  color: #000;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 999;
+}
+.like-number {
+  color: #333;
+  font-weight: bold;
+  width: 30px;
+  height: 16px;
+  position: absolute;
+  text-align: right;
+  top: -10px;
+  right: 0;
+  border-radius: 100%;
+  /* border: 1px solid #bbb; */
+  z-index: 1000;
+  user-select: none;
+}
 .sites-container {
   display: grid;
   border: 1px solid #bbb;
@@ -25,9 +88,11 @@
   overflow: hidden;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 .alert-success {
   background-color: #a1dd11;
+  padding: 8px 16px;
 }
 .text-white {
   color: #fff;
@@ -38,6 +103,7 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 .site__url {
   word-wrap: break-word;
@@ -46,6 +112,7 @@
   /* aspect-ratio: 125 / 87;
   object-fit: cover; */
   width: 100%;
+  user-select: none;
 }
 .site__colors {
   margin-top: auto;
@@ -92,7 +159,6 @@
   padding: 16px 20px;
   border-radius: 5px;
   border: 1px solid #bbb;
-  margin: 3rem;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;

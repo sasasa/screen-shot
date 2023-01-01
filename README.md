@@ -73,7 +73,14 @@ Dockerfileから削除
 sail artisan make:migration create_site_tag_table
 sail artisan make:model Tag -m
 
-sail composer require lithiumdev/laravel-tagcloud
+
+sail artisan make:component Sidebar
+
+sail npm install js-cookie
+
+sail artisan make:migration create_site_user_table
+
+sail artisan make:controller Api/SiteUserController
 -->
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 

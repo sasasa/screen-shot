@@ -26,6 +26,9 @@
    */
   document.querySelector('.inputbox__submit').addEventListener('click', function() {
     setTimeout(() => {
+      this.disabled = true;
+    }, 30);
+    setTimeout(() => {
       document.getElementById('loading').style.display = 'block';
     }, 1000);
   });
