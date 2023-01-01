@@ -21,10 +21,20 @@ final class LinkPreview implements LinkPreviewInterface
         $parsed_url = parse_url($url);
         $domain = $parsed_url['host'];
         // $fileData = ScreenShot::getScreenshot($url);
-        $options = stream_context_create(['ssl' => [
-            'verify_peer'      => false,
-            'verify_peer_name' => false
-        ]]);
+        $header = [
+            "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0",
+        ];
+        //オプション設定
+        $options = stream_context_create([
+            'ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false
+            ],
+            'http' => [
+                'method' => "GET",
+                'header' => implode("\r\n", $header),
+            ]
+        ]);
         // ob_start();
         // imagepng(imagecreatefromstring($fileData), null, 0);
         // $size = ob_get_length();
