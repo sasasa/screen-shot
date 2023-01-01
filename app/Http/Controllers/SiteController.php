@@ -32,14 +32,14 @@ class SiteController extends Controller
     {
         if($request->color) {
             if($request->tag) {
-                $query = Tag::where('name', $request->tag)->first()->sites()->join('site_colors', function (JoinClause $join) use($request){
+                $query = Tag::where('name', $request->tag)->first()->sites()->with('tags')->join('site_colors', function (JoinClause $join) use($request){
                     $join->on('site_colors.site_id', '=', 'sites.id');
                     $join->where('site_colors.color', '=', $request->color);
                 })
                 ->select('sites.*')
                 ->orderBy('site_colors.order', 'DESC');
             } else {
-                $query = Site::query()
+                $query = Site::query()->with('tags')
                 ->join('site_colors', function (JoinClause $join) use($request){
                     $join->on('site_colors.site_id', '=', 'sites.id');
                     $join->where('site_colors.color', '=', $request->color);
@@ -48,9 +48,9 @@ class SiteController extends Controller
                 ->orderBy('site_colors.order', 'DESC');
             }
         } elseif($request->tag) {
-            $query = Tag::where('name', $request->tag)->first()->sites()->orderBy('sites.id', 'ASC');
+            $query = Tag::where('name', $request->tag)->first()->sites()->with('tags')->orderBy('sites.id', 'ASC');
         } else {
-            $query = Site::query()->orderBy('sites.id', 'ASC');
+            $query = Site::query()->with('tags')->orderBy('sites.id', 'ASC');
         }
 
         return view('site.index', [

@@ -55,6 +55,13 @@
   <p class="site__item site__description">
     {{ $site->description }}
   </p>
+  <p class="site__item site__tags">
+    @forelse ($site->tags->map(fn($tag) => $tag->name ) as $tag)
+      <a href="{{ route('sites.index', ['tag' => $tag, 'color' => request()->color]) }}" class="tag">{{ $tag }}</a>
+    @empty
+      タグはありません。
+    @endforelse
+  </p>
   <div class="site__item site__colors">
     <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->mode_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->mode_color }};">
       {{ $site->mode_color }}
