@@ -14,6 +14,7 @@
     タグ：{{ request()->tag ?? "無し" }}<br>
     色：{{ request()->color ?? "指定無し" }}
   </h2>
+  <a href="{{ route('sites.index') }}">条件を削除する</a>
 </div>
 @endif
 <div class="inputbox">
