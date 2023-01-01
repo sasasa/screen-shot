@@ -6,6 +6,12 @@ use Illuminate\Support\Facades\Http;
 
 final class GetTags {
     private const API_URL = "https://jlp.yahooapis.jp/JIMService/V2/conversion";
+    private const NG_WORDS = [
+        'こと',
+        'ため',
+        'もの',
+        'よし',
+    ];
 
     public function __construct(readonly public string $text) {
     }
@@ -33,11 +39,19 @@ final class GetTags {
                     ];
                 })
                 ->filter(function($item) {
+                    if(in_array($item['surface'], self::NG_WORDS)) {
+                        // NGワードは除外
+                        return false;
+                    }
                     if(mb_strlen($item['surface']) < 2) {
                         // 一文字の単語は除外
                         return false;
                     }
-                    return data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '普通名詞';
+                    return (data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '普通名詞') ||
+                            (data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '地名') ||
+                            (data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '人名') ||
+                            (data_get($item, 'features.0') === '名詞' && preg_match('/^.*名詞$/u', data_get($item, 'features.1')));
+                    // return data_get($item, 'features.0') === '名詞';
                 })
                 ->pluck('surface')
                 ->toArray();
