@@ -2,8 +2,11 @@
 namespace App\Lib\Mecab;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 final class GetTags {
+    private const API_URL = "https://jlp.yahooapis.jp/JIMService/V2/conversion";
+
     public function __construct(readonly public string $text) {
     }
 
@@ -44,6 +47,38 @@ final class GetTags {
             return ($value >= 3);
         });
         arsort($tag_counts);
-        return collect($tag_counts)->slice(0, 10)->keys();
+        $tag_counts_kanji = collect($tag_counts)->slice(0, 10)->keys()->map(function($item) {
+            if (preg_match('/^[ぁ-ゞ]+$/u', $item)) {
+                sleep(5);
+                // APIへのPOSTリクエストを送る
+                $res = Http::withHeaders([
+                    "Content-Type" => "application/json",
+                    "User-Agent" => "Yahoo AppID: ". env('YAHOO_APP_ID'),
+                ])->post(self::API_URL, [
+                    "id" => "1234-1",
+                    "jsonrpc"=> "2.0",
+                    "method"=> "jlp.jimservice.conversion",
+                    "params"=> [
+                        "q"=> $item,
+                        "format"=> "roman",
+                        "mode"=> "kanakanji",
+                        // "option"=> ["hiragana", "katakana", "alphanumeric", "half_katakana", "half_alphanumeric"],
+                        "dictionary"=> ["base", "name", "place", "zip", "symbol"],
+                        "results"=> 999
+                    ]
+                ]);
+                if($res->successful()) {
+                    // 漢字を取得
+                    Log::info(__METHOD__ . PHP_EOL . var_export($res->body(), true));
+                    return $res['result']['segment'][0]['candidate'][0];
+                } else {
+                    Log::error(__METHOD__ . PHP_EOL . var_export($res->body(), true));
+                    return $item;
+                }
+            } else {
+                return $item;
+            }
+        });
+        return $tag_counts_kanji;
     }
 }
