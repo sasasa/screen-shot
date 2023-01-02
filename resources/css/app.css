@@ -29,6 +29,9 @@ h1, h2, h3, h4, h5, h6, ul, ol, dl {
   border-radius: 5px;
   margin-bottom: 16px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 .site.new {
   margin-bottom: 16px;
@@ -107,6 +110,7 @@ h1, h2, h3, h4, h5, h6, ul, ol, dl {
 }
 .site__url {
   word-wrap: break-word;
+  line-break: anywhere;
 }
 .site__img img {
   /* aspect-ratio: 125 / 87;
@@ -116,6 +120,12 @@ h1, h2, h3, h4, h5, h6, ul, ol, dl {
 }
 .site__colors {
   margin-top: auto;
+}
+.site__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 8px;
 }
 .site .site__item:not(:last-child) {
   border-bottom: 1px solid #bbb;

@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Events\SiteSaved;
+use App\Events\SiteCreated;
 
 class Site extends Model
 {
     use HasFactory;
 
     protected $dispatchesEvents = [
-        'created' => SiteSaved::class
+        'created' => SiteCreated::class
         //saved
     ];
 

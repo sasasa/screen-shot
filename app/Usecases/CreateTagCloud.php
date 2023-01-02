@@ -40,14 +40,14 @@ final class CreateTagCloud
      * divide into ten levels
      */
     private function divideIntoTenLevels(array $sequence): array {
-      $max = max($sequence);
-      $min = min($sequence);
-      $diff = $max - $min;
-      $div = $diff / 10;
-      $levels = [];
-      for ($i = 0; $i < 10; $i++) {
-          $levels[$i] = $min + $div * $i;
-      }
-      return $levels;
-  }
+        $max = max($sequence);
+        $min = min($sequence);
+        $diff = $max - $min;
+        $div = $diff / 10;
+        $levels = [];
+        for ($i = 0; $i < 10; $i++) {
+            $levels[$i] = $min + $div * $i;
+        }
+        return $levels;
+    }
 }

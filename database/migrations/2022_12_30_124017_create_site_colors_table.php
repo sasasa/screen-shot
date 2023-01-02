@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('site_id')->comment('商品ID');
             $table->unsignedInteger('order')->comment('色の比率：並び順にする');
-            $table->string('color')->comment("色:'red', 'blue', 'yellow', 'green', 'purple'");
+            $table->string('color')->comment("色:'orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'");
             $table->timestamps();
 
-            $table->foreign('site_id')->references('id')->on('sites');
+            $table->foreign('site_id')->references('id')->on('sites')->onDelete('cascade');
         });
     }
 

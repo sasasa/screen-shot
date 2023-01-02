@@ -14,7 +14,7 @@ use League\ColorExtractor\Palette;
 use App\Models\Site;
 use App\Models\SiteColor;
 
-class SiteSaved
+class SiteCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
