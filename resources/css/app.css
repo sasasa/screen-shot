@@ -16,6 +16,7 @@ h1, h2, h3, h4, h5, h6, ul, ol, dl {
 @media screen and (max-width: 1000px){
   .main-grid {
     grid-template-columns: 1fr;
+    padding: 10px;
   }
 }
 
