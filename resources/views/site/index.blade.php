@@ -1,5 +1,6 @@
 <x-layouts.app>
 <x-slot name="title">サイト一覧</x-slot>
+<x-slot name="background_color">{{ $background_color }}</x-slot>
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
 <div>
   @if (session('message'))
@@ -17,7 +18,7 @@
   <a href="{{ route('sites.index') }}">条件を削除する</a>
 </div>
 @endif
-<div class="inputbox">
+<div class="inputbox colorbox">
   <div>
     <a href="{{ route('sites.tags', ['color' => request()->color]) }}">タグクラウド</a>
   </div>
@@ -27,12 +28,13 @@
   <div>
     <form action="{{ route('sites.index', ['tag' => request()->tag, 'color'=> request()->color]) }}" method="get">
       <input type="hidden" name="tag" value="{{ request()->tag }}">
-      <select name="color">
+      {{-- <select name="color">
         <option value="">色指定無し</option>
         @foreach (['orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'] as $color)
           <option value="{{ $color }}" @selected($color == request()->color)>{{ $color }}</option>
         @endforeach
-      </select>
+      </select> --}}
+      色選択：<input id="picker">
     </form>
   </div>
 </div>
@@ -90,22 +92,84 @@
 @once
 @push('scripts')
 <script type="module">
+  /* Mapのkeyとvalueを逆にする */
+  const reverseMap = (map) => {
+    const reverseMap = new Map();
+    map.forEach((value, key) => {
+      reverseMap.set(value, key);
+    });
+    return reverseMap;
+  };
+  /* objectをMapに変換する */
+  const objectToMap = (obj) => {
+    const map = new Map();
+    Object.keys(obj).forEach((key) => {
+      map.set(key, obj[key]);
+    });
+    return map;
+  };
+  const reverseColorMap = objectToMap(@js($colors));
+  const colorMap = reverseMap(reverseColorMap);
+  const PINK = "{{ $colors['pink'] }}";
+  const RED = "{{ $colors['red'] }}";
+  const GREEN = "{{ $colors['green'] }}";
+  const DARKGREEN = "{{ $colors['darkgreen'] }}";
+  const BLUE = "{{ $colors['blue'] }}";
+  const BROWN = "{{ $colors['brown'] }}";
+  const SKYBLUE = "{{ $colors['skyblue'] }}";
+  const YELLOW = "{{ $colors['yellow'] }}";
+  const ORANGE = "{{ $colors['orange'] }}";
+  const PURPLE = "{{ $colors['purple'] }}";
+  const BLACK = "{{ $colors['black'] }}";
+  const WHITE = "{{ $colors[''] }}";
+document.body.style.backgroundColor = "{{ $background_color }}"
+$("#picker").spectrum({
+      // 値の変更(確定)時イベント
+      change: function(color){
+        color = color.toHexString()
+        if(color) {
+          document.body.style.backgroundColor = color;
+          // Generate hidden input and add it to the form
+          var input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'color';
+          input.value = colorMap.get(color)
+          this.form.appendChild(input);
+          this.form.submit();
+        }
+      },
+      preferredFormat:'hex', // 16進数で表示
+      color: "{{ $background_color }}", // 初期値
+      // flat:true, // フラットスタイル
+      showPaletteOnly: true, // 外観をパレットのみにする
+      palette: [
+        [
+          PINK, RED, GREEN, DARKGREEN,
+        ],
+        [
+          BLUE, BROWN, SKYBLUE, YELLOW,
+        ],
+        [
+          ORANGE, PURPLE, BLACK, WHITE,
+        ],
+      ]
+  });
+/* 色の配列から16進数を取得する関数 */
+function rgb2hex(rgb) {
+  return "#" + rgb.map(function (value) {
+    return ("0" + value.toString(16)).slice(-2);
+  }).join("");
+}
+
 /** When .alert is displayed, remove the element in 3 seconds. */
-const alert = document.querySelector('.alert')
-if(alert) {
+const alertElement = document.querySelector('.alert')
+if(alertElement) {
   setTimeout(() => {
-    alert.remove()
+    alertElement.remove()
   }, 3000)
 }
-/**
- * selectboxの値を変更したら、formをsubmitする
- */
-const selectbox = document.querySelector('select[name="color"]');
-selectbox.addEventListener('change', function() {
-  this.form.submit();
-});
-const userid = Cookies.get('userid');
-// alert(userid);
+
+// いいね機能
 let likeIcons = document.querySelectorAll('.like-icon');
 //likeアイコンをクリックしたらSVGの色を変える
 likeIcons.forEach(function(likeIcon) {
@@ -114,7 +178,6 @@ likeIcons.forEach(function(likeIcon) {
     if (this.getAttribute('fill') === '#aaaaaa') {
       // like
       axios.post('/api/likes', {
-        userid: userid,
         siteid: siteid
       }).then((response) => {
         console.log(response);
@@ -132,7 +195,6 @@ likeIcons.forEach(function(likeIcon) {
       // unlike
       axios.delete('/api/likes', {
         data: {
-          userid: userid,
           siteid: siteid
         }
       }).then((response) => {

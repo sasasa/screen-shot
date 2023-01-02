@@ -40,6 +40,7 @@ h1, h2, h3, h4, h5, h6, ul, ol, dl {
 サイト登録
 */
 .inputbox {
+  background-color: #fff;
   padding: 16px 20px;
   border-radius: 5px;
   border: 1px solid #bbb;
@@ -84,6 +85,7 @@ h1, h2, h3, h4, h5, h6, ul, ol, dl {
   user-select: none;
 }
 .sites-container {
+  background-color: #fff;
   display: grid;
   border: 1px solid #bbb;
   grid-gap: 20px;

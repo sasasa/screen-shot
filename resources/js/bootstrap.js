@@ -15,6 +15,13 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import Cookies from 'js-cookie';
 window.Cookies = Cookies;
+
+import jQuery from "jquery";
+window.$ = jQuery;
+
+import "spectrum-colorpicker/spectrum.js";
+import "spectrum-colorpicker/spectrum.css";
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

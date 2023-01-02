@@ -16,6 +16,7 @@ use App\Usecases\CreateTagCloud;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Usecases\ChooseColor;
 class SiteController extends Controller
 {
     public function tags(CreateTagCloud $usecase)
@@ -63,6 +64,8 @@ class SiteController extends Controller
         }
 
         return response()->view('site.index', [
+            'background_color' => ChooseColor::choose($request->color) ?? "#fff",
+            'colors' => ChooseColor::getBaseColors(),
             'sites' => $query->get(),
             'users_sites' => $user->sites->pluck('id')->toArray(),
         ])->cookie('userid', $userid, 60*24*365*10, null, null, false, false);
