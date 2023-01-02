@@ -83,6 +83,13 @@
     <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->brightest_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->brightest_color }};">
       {{ $site->brightest_color }}
     </p>
+    <p class="site__tags">
+      @foreach ($site->site_colors->map(fn($c) => $c->color) as $color)
+        <a href="{{ route('sites.index', ['color' => $color, 'tag' => request()->tag]) }}">
+          {{ $color }}
+        </a>
+      @endforeach
+    </p>
   </div>
 </div>
 @empty

@@ -50,9 +50,7 @@ final class GetTags {
                     return (data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '普通名詞') ||
                             (data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '地名') ||
                             (data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '人名') ||
-                            (data_get($item, 'features.0') === '名詞' && data_get($item, 'features.1') === '組織名') ||
                             (data_get($item, 'features.0') === '名詞' && preg_match('/^.*名詞$/u', data_get($item, 'features.1')));
-                    // return data_get($item, 'features.0') === '名詞';
                 })
                 ->pluck('surface')
                 ->toArray();
