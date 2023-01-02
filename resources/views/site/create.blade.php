@@ -1,5 +1,6 @@
 <x-layouts.app>
   <x-slot name="title">サイト新規追加</x-slot>
+  @slot('users_sites', $users_sites)
   <div id="loading">
     <div class="spinner"></div>
   </div>

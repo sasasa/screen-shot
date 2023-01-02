@@ -22,3 +22,47 @@ Get brightness from rgb
 // window.addEventListener('DOMContentLoaded', () => {
 //   setTextColor();
 // });
+
+// いいね機能
+let likeIcons = document.querySelectorAll('.like-icon');
+//likeアイコンをクリックしたらSVGの色を変える
+likeIcons.forEach(function(likeIcon) {
+  likeIcon.addEventListener('click', function() {
+    const siteid = this.getAttribute('data-siteid');
+    if (this.getAttribute('fill') === '#aaaaaa') {
+      // like
+      axios.post('/api/likes', {
+        siteid: siteid
+      }).then((response) => {
+        console.log(response);
+        this.setAttribute('fill', '#ffff00');
+        document.querySelectorAll(".like-icon" + siteid).forEach(function(icon) {
+          icon.setAttribute('fill', '#ffff00');
+        });
+        document.querySelectorAll(`.like-number${siteid}`).forEach(function(likeNumber) {
+          likeNumber.textContent = response.data.likes_count;
+        });
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      // unlike
+      axios.delete('/api/likes', {
+        data: {
+          siteid: siteid
+        }
+      }).then((response) => {
+        console.log(response);
+        this.setAttribute('fill', '#aaaaaa');
+        document.querySelectorAll(".like-icon" + siteid).forEach(function(icon) {
+          icon.setAttribute('fill', '#aaaaaa');
+        });
+        document.querySelectorAll(`.like-number${siteid}`).forEach(function(likeNumber) {
+          likeNumber.textContent = response.data.likes_count;
+        });
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+  });
+});

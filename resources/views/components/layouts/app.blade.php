@@ -13,7 +13,7 @@
                 {{ $slot }}
             </main>
             <aside class="sidebar inputbox">
-                <x-sidebar />
+                <x-sidebar :users_sites="$users_sites" />
             </aside>
         </div>
         @stack('scripts')

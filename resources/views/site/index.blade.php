@@ -1,6 +1,7 @@
 <x-layouts.app>
 <x-slot name="title">サイト一覧</x-slot>
 <x-slot name="background_color">{{ $background_color }}</x-slot>
+@slot('users_sites', $users_sites)
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
 <div>
   @if (session('message'))
@@ -161,12 +162,6 @@ $("#picker").spectrum({
         ],
       ]
   });
-/* 色の配列から16進数を取得する関数 */
-function rgb2hex(rgb) {
-  return "#" + rgb.map(function (value) {
-    return ("0" + value.toString(16)).slice(-2);
-  }).join("");
-}
 
 /** When .alert is displayed, remove the element in 3 seconds. */
 const alertElement = document.querySelector('.alert')
@@ -175,50 +170,6 @@ if(alertElement) {
     alertElement.remove()
   }, 3000)
 }
-
-// いいね機能
-let likeIcons = document.querySelectorAll('.like-icon');
-//likeアイコンをクリックしたらSVGの色を変える
-likeIcons.forEach(function(likeIcon) {
-  likeIcon.addEventListener('click', function() {
-    const siteid = this.getAttribute('data-siteid');
-    if (this.getAttribute('fill') === '#aaaaaa') {
-      // like
-      axios.post('/api/likes', {
-        siteid: siteid
-      }).then((response) => {
-        console.log(response);
-        this.setAttribute('fill', '#ffff00');
-        document.querySelectorAll(".like-icon" + siteid).forEach(function(icon) {
-          icon.setAttribute('fill', '#ffff00');
-        });
-        document.querySelectorAll(`.like-number${siteid}`).forEach(function(likeNumber) {
-          likeNumber.textContent = response.data.likes_count;
-        });
-      }).catch((error) => {
-        console.log(error);
-      });
-    } else {
-      // unlike
-      axios.delete('/api/likes', {
-        data: {
-          siteid: siteid
-        }
-      }).then((response) => {
-        console.log(response);
-        this.setAttribute('fill', '#aaaaaa');
-        document.querySelectorAll(".like-icon" + siteid).forEach(function(icon) {
-          icon.setAttribute('fill', '#aaaaaa');
-        });
-        document.querySelectorAll(`.like-number${siteid}`).forEach(function(likeNumber) {
-          likeNumber.textContent = response.data.likes_count;
-        });
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-  });
-});
 </script>
 @endpush
 @endonce

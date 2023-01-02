@@ -17,13 +17,19 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Str;
 use App\Usecases\ChooseColor;
+use App\Usecases\GetSitesWithTagsAndColors;
+use App\Usecases\FindOrCreateUserByCookie;
 class SiteController extends Controller
 {
-    public function tags(CreateTagCloud $usecase)
+    public function tags(Request $request, CreateTagCloud $usecase, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
-        return view('site.tags', [
+        $user = $findOrCreateUserUseCase($request->cookie('userid'));
+
+        return response()->view('site.tags', [
             'tags' => $usecase(),
-        ]);
+            'background_color' => ChooseColor::choose($request->color),
+            'users_sites' => $user->sites->pluck('id')->toArray(),
+        ])->cookie('userid', $user->uuid, 60*24*365*10, null, null, false, false);
     }
 
     /**
@@ -31,44 +37,16 @@ class SiteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, GetSitesWithTagsAndColors $getSitesUsecase, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
-        if($request->color) {
-            if($request->tag) {
-                $query = Tag::where('name', $request->tag)->first()->sites()->with('tags')->withCount('users')->join('site_colors', function (JoinClause $join) use($request){
-                    $join->on('site_colors.site_id', '=', 'sites.id');
-                    $join->where('site_colors.color', '=', $request->color);
-                })
-                ->orderBy('site_colors.order', 'DESC');
-            } else {
-                $query = Site::query()->with('tags')->withCount('users')
-                ->join('site_colors', function (JoinClause $join) use($request){
-                    $join->on('site_colors.site_id', '=', 'sites.id');
-                    $join->where('site_colors.color', '=', $request->color);
-                })
-                ->orderBy('site_colors.order', 'DESC');
-            }
-        } elseif($request->tag) {
-            $query = Tag::where('name', $request->tag)->first()->sites()->with('tags')->withCount('users')->orderBy('sites.id', 'ASC');
-        } else {
-            $query = Site::query()->with('tags')->withCount('users')->orderBy('sites.id', 'ASC');
-        }
-
-        if($userid = $request->cookie('userid')) {
-            $user = User::where('uuid', $userid,)->first();
-        } else {
-            $userid = Str::uuid();
-            $user = User::create([
-                'uuid' => $userid,
-            ]);
-        }
+        $user = $findOrCreateUserUseCase($request->cookie('userid'));
 
         return response()->view('site.index', [
-            'background_color' => ChooseColor::choose($request->color) ?? "#fff",
+            'background_color' => ChooseColor::choose($request->color),
             'colors' => ChooseColor::getBaseColors(),
-            'sites' => $query->get(),
+            'sites' => $getSitesUsecase($request->color, $request->tag),
             'users_sites' => $user->sites->pluck('id')->toArray(),
-        ])->cookie('userid', $userid, 60*24*365*10, null, null, false, false);
+        ])->cookie('userid', $user->uuid, 60*24*365*10, null, null, false, false);
     }
 
     /**
@@ -76,9 +54,13 @@ class SiteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
-        return view('site.create');
+        $user = $findOrCreateUserUseCase($request->cookie('userid'));
+
+        return response()->view('site.create', [
+            'users_sites' => $user->sites->pluck('id')->toArray(),
+        ])->cookie('userid', $user->uuid, 60*24*365*10, null, null, false, false);
     }
 
     /**

@@ -15,10 +15,7 @@ use App\Http\Controllers\Admin\SiteController as AdminSiteController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/sites', 301);
 
 Route::get('/sites/tags', [SiteController::class, 'tags'])->name('sites.tags');
 Route::resource('sites', SiteController::class);
