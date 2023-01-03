@@ -103,7 +103,7 @@ const emitParticles = async (star) => {
         }
       ],
       {
-        duration: 2000 * Math.random(),
+        duration: 1400 * Math.random(),
         fill: "forwards"
       }
     );

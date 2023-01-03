@@ -71,11 +71,11 @@ h1, h2, h3, h4, h5, h6, ul, ol, dl {
 .dot {
   display: block;
   position: absolute;
-  width: 10;
-  height: 10;
-  left: 0;
+  width: 10px;
+  height: 10px;
+  right: 0;
   top: 0;
-  border-radius: 10;
+  border-radius: 10px;
   transition: all 0.5s;
   opacity: 1;
   background-color: gold;
