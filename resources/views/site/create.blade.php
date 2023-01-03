@@ -14,8 +14,8 @@
         @enderror
       </div>
       <div class="inputbox__inner flex-container">
-        <button class="inputbox__item inputbox__button" type="button" onclick="location.href='/sites'">戻る</button>
-        <button class="inputbox__item inputbox__submit" type="submit">登録</button>
+        <button class="form-input inputbox__item inputbox__button" type="button" onclick="location.href='/sites'">戻る</button>
+        <button class="form-input inputbox__item inputbox__submit" type="submit">登録</button>
       </div>
     </div>
   </form>

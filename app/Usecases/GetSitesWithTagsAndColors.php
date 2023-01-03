@@ -10,9 +10,9 @@ final class GetSitesWithTagsAndColors
     /**
      * @param string|null $color
      * @param string|null $tag
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Illuminate\Pagination\LengthAwarePaginator
      */
-    public function __invoke(?string $color, ?string $tag, ?string $favorites, User $user): \Illuminate\Database\Eloquent\Collection
+    public function __invoke(?string $color, ?string $tag, ?string $favorites, User $user): \Illuminate\Pagination\LengthAwarePaginator
     {
         if($color) {
             if($tag) {
@@ -65,6 +65,6 @@ final class GetSitesWithTagsAndColors
             }
         }
 
-        return $query->get();
+        return $query->paginate(15)->withQueryString();
     }
 }

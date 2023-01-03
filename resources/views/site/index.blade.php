@@ -33,24 +33,31 @@
 </div>
 @if (request()->tag || request()->color || request()->favorites)
 <div class="inputbox">
-  <h2>
-    タグ：{{ request()->tag ?? "無し" }}
-    @if(request()->tag)
-    <button onclick="location.href='{{ route('sites.index', ['favorites' => request()->favorites, 'color'=> request()->color]) }}'">この条件を削除</button>
-    @endif
-    <br>
-    色：{{ request()->color ?? "指定無し" }}
-    @if(request()->color)
-    <button onclick="location.href='{{ route('sites.index', ['favorites' => request()->favorites, 'tag' => request()->tag]) }}'">この条件を削除</button>
-    @endif
-    <br>
-    {{ request()->favorites ? "お気に入りのみ" : "全て" }}
-    @if(request()->favorites)
-    <button onclick="location.href='{{ route('sites.index', ['tag' => request()->tag, 'color'=> request()->color]) }}'">この条件を削除</button>
-    @endif
-  </h2>
+  <div>
+    <p>
+      {{ request()->favorites ? "お気に入りサイトのみ" : "全てのサイト" }}
+      @if(request()->favorites)
+      <button class="form-input" onclick="location.href='{{ route('sites.index', ['tag' => request()->tag, 'color'=> request()->color]) }}'">この条件を削除</button>
+      @endif
+    </p>
+    <p>
+      タグ：{{ request()->tag ?? "無し" }}
+      @if(request()->tag)
+      <button class="form-input" onclick="location.href='{{ route('sites.index', ['favorites' => request()->favorites, 'color'=> request()->color]) }}'">この条件を削除</button>
+      @endif
+    </p>
+    <p>
+      色：{{ request()->color ?? "指定無し" }}
+      @if(request()->color)
+      <button class="form-input" onclick="location.href='{{ route('sites.index', ['favorites' => request()->favorites, 'tag' => request()->tag]) }}'">この条件を削除</button>
+      @endif
+    </p>
+  </div>
 </div>
 @endif
+<div class="nav_links">
+  {{ $sites->onEachSide(1)->links() }}
+</div>
 <div class="sites-container">
 @forelse ($sites as $site)
 <div class="site">
