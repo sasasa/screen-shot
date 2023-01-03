@@ -1,4 +1,8 @@
 /** common */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 h1, h2, h3, h4, h5, h6, ul, ol, dl {
   margin: 0;
   padding: 0;
@@ -60,6 +64,19 @@ h1, h2, h3, h4, h5, h6, ul, ol, dl {
 */
 .site__img {
   position: relative;
+}
+.dot {
+  display: block;
+  position: absolute;
+  width: 10;
+  height: 10;
+  left: 0;
+  top: 0;
+  border-radius: 10;
+  transition: all 0.5s;
+  opacity: 1;
+  background-color: gold;
+  z-index: 1001;
 }
 .like-icon {
   color: #000;
