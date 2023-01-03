@@ -5,7 +5,15 @@ use League\ColorExtractor\Color;
 use League\ColorExtractor\Palette;
 use App\Models\Site;
 use App\Models\SiteColor;
-
+use App\Models\Tag;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+use App\Usecases\SiteUpdateWithTags;
+use App\Lib\LinkPreview\LinkPreviewInterface;
+use App\Lib\LinkPreview\LinkPreviewRuntimeException;
+use Illuminate\Validation\ValidationException;
 final class ChooseColor
 {
     public const PINK = [230, 107, 88];
@@ -44,6 +52,10 @@ final class ChooseColor
         '' => self::WHITE,
     ];
 
+    /**
+     * コントローラーに渡す色の配列を返す
+     * @return array
+     */
     public static function getBaseColors() : array
     {
         return collect(self::BASE_COLORS)->map(fn($val, $key) => [
@@ -51,6 +63,11 @@ final class ChooseColor
         ])->collapse()->toArray();
     }
 
+    /**
+     * コントローラーに色のhexを返す
+     * @param string|null $color
+     * @return string
+     */
     public static function choose(?string $color) : string
     {
         if($color === null) {
@@ -59,16 +76,34 @@ final class ChooseColor
         return self::rgb2hex(self::BASE_COLORS[$color]);
     }
 
+    /**
+     * RGBからhexを返す
+     * @param array $rgb
+     * @return string
+     */
     public static function rgb2hex(array $rgb) : string
     {
         return sprintf("#%02x%02x%02x", $rgb[0], $rgb[1], $rgb[2]);
     }
 
+    /**
+     * 近い色を選択して保存する
+     * @param Site $site
+     * @return void
+     */
     public function __invoke(Site $site)
     {
         $path = storage_path('app/public/images'). "/". $site->imgsrc;
         if(!file_exists($path)) {
-            return;
+            try {
+                $linkPreview = app()->make(LinkPreviewInterface::class);
+                $res = $linkPreview->get($site->url);
+            } catch (LinkPreviewRuntimeException $e) {
+                Log::error(__METHOD__ . PHP_EOL . var_export($e->getMessage(), true));
+                return;
+            }
+            // $usecase = app()->make(SiteUpdateWithTags::class);
+            // $site = $usecase($res);
         }
         $palette = Palette::fromFilename($path);
         $all_color_count = 0;

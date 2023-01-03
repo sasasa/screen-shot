@@ -29,7 +29,7 @@ a {
 */
 .main-grid {
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 3.2fr 1fr;
   grid-gap: 20px;
   padding: 20px;
 }
@@ -349,6 +349,7 @@ h3 {
 
 /** タグクラウド */
 .tagcloud {
+  line-height: 0.9;
   background-color: #fff;
   padding: 16px 20px;
   border-radius: 5px;

@@ -63,7 +63,7 @@ final class LinkPreview implements LinkPreviewInterface
         if ($dom = @HtmlDomParser::file_get_html($url, false, $options)) {
             $title = trim($dom->find('title', 0)->plaintext);
             $description = trim($dom->find('meta[name=description]', 0)?->content);
-            $tags = (new GetTags(trim($dom->find('body', 0)->plaintext)))->getTags();
+            $tags = (new GetTags($title. $description. trim($dom->find('body', 0)->plaintext)))->getTags();
             $senseOfColor = new SenseOfColor($fileData);
             $modeColors = $senseOfColor->getTreeTypicalColors();
             // dd($modeColors);

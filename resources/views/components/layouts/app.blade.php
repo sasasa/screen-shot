@@ -8,7 +8,7 @@
         <meta name="description" content="{{ $description ?? '色やタグクラウドでサイトを検索できるサービスです。お気に入り機能でサイトを保存できます。' }}">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased" style="background-color: {{ $background_color ?? '#fff' }};">
+    <body class="antialiased" style="background-color: {{ $background_color ?? '#fff' }};">
         <div class="main-grid">
             <main>
                 {{ $slot }}

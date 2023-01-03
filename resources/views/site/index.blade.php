@@ -163,7 +163,8 @@
   const PURPLE = "{{ $colors['purple'] }}";
   const BLACK = "{{ $colors['black'] }}";
   const WHITE = "{{ $colors[''] }}";
-document.body.style.backgroundColor = "{{ $background_color }}"
+
+//カラーピッカー
 $("#picker").spectrum({
       // 値の変更(確定)時イベント
       change: function(color){

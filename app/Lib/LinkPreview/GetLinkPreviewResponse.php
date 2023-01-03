@@ -20,10 +20,8 @@ final class GetLinkPreviewResponse
     public function toArray(): array {
         return [
             'url' => $this->url,
-            'domain' => $this->domain,
             'title' => $this->title,
             'description' => $this->description,
-            'fileData' => $this->fileData,
             'mode_color' => $this->modeColor,
             'second_color' => $this->secondColor,
             'third_color' => $this->thirdColor,
