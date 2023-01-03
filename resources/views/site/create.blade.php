@@ -26,9 +26,12 @@
     @csrf
     <div class="inputbox">
       <div class="inputbox__inner">
+        登録するサイトのURLをhttpから入力してください。
+      </div>
+      <div class="inputbox__inner">
         <input class="inputbox__item inputbox__url" type="text" name="url" value="{{ old('url') }}">
         @error('url')
-          <p>{{$message}}</p>
+          <p class="errorMessage">{{$message}}</p>
         @enderror
       </div>
       <div class="inputbox__inner flex-container">

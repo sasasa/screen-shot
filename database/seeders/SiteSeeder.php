@@ -192,6 +192,24 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'http://www.horyuji.or.jp/',
             ],
+            [
+                'url' => 'https://cheesenessburger.com/',
+            ],
+            [
+                'url' => 'https://payme.tokyo/',
+            ],
+            [
+                'url' => 'http://www.koitoba.com/hotel/',
+            ],
+            [
+                'url' => 'https://www.hyponex.co.jp/',
+            ],
+            [
+                'url' => 'https://townwork.net/',
+            ],
+            [
+                'url' => 'https://www.otsuka.co.jp/cmt/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);

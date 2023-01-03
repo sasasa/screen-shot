@@ -82,6 +82,9 @@ h3 {
   display: flex;
   gap: 16px;
 }
+.errorMessage {
+  color: red;
+}
 /*
 サイト一覧
 */
@@ -156,8 +159,8 @@ h3 {
   line-break: anywhere;
 }
 .site__img img {
-  /* aspect-ratio: 125 / 87;
-  object-fit: cover; */
+  aspect-ratio: 125 / 87;
+  object-fit: cover;
   width: 100%;
   user-select: none;
 }
