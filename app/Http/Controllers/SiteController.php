@@ -44,7 +44,7 @@ class SiteController extends Controller
         return response()->view('site.index', [
             'background_color' => ChooseColor::choose($request->color),
             'colors' => ChooseColor::getBaseColors(),
-            'sites' => $getSitesUsecase($request->color, $request->tag),
+            'sites' => $getSitesUsecase($request->color, $request->tag, $request->favorites, $user),
             'users_sites' => $user->sites->pluck('id')->toArray(),
         ])->cookie('userid', $user->uuid, 60*24*365*10, null, null, false, false);
     }

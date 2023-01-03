@@ -10,35 +10,47 @@
     </div>
   @endif
 </div>
-@if (request()->tag || request()->color)
-<div class="inputbox">
-  <h2>
-    タグ：{{ request()->tag ?? "無し" }}<br>
-    色：{{ request()->color ?? "指定無し" }}
-  </h2>
-  <a href="{{ route('sites.index') }}">条件を削除する</a>
-</div>
-@endif
 <div class="inputbox colorbox">
   <div>
-    <a href="{{ route('sites.tags', ['color' => request()->color]) }}">タグクラウド</a>
+    <a href="{{ route('sites.index') }}">ホーム</a>
   </div>
   <div>
     <a href="{{ route('sites.create') }}">新規追加</a>
   </div>
   <div>
-    <form action="{{ route('sites.index', ['tag' => request()->tag, 'color'=> request()->color]) }}" method="get">
+    <a href="{{ route('sites.index', ['favorites' => 1, 'tag' => request()->tag, 'color'=> request()->color]) }}">お気に入り</a>
+  </div>
+  <div>
+    <a href="{{ route('sites.tags', ['favorites' => request()->favorites, 'color' => request()->color]) }}">タグクラウド</a>
+  </div>
+  <div>
+    <form action="{{ route('sites.index', ['favorites' => request()->favorites, 'tag' => request()->tag, 'color'=> request()->color]) }}" method="get">
       <input type="hidden" name="tag" value="{{ request()->tag }}">
-      {{-- <select name="color">
-        <option value="">色指定無し</option>
-        @foreach (['orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'] as $color)
-          <option value="{{ $color }}" @selected($color == request()->color)>{{ $color }}</option>
-        @endforeach
-      </select> --}}
+      <input type="hidden" name="favorites" value="{{ request()->favorites }}">
       色選択：<input id="picker">
     </form>
   </div>
 </div>
+@if (request()->tag || request()->color || request()->favorites)
+<div class="inputbox">
+  <h2>
+    タグ：{{ request()->tag ?? "無し" }}
+    @if(request()->tag)
+    <button onclick="location.href='{{ route('sites.index', ['favorites' => request()->favorites, 'color'=> request()->color]) }}'">この条件を削除</button>
+    @endif
+    <br>
+    色：{{ request()->color ?? "指定無し" }}
+    @if(request()->color)
+    <button onclick="location.href='{{ route('sites.index', ['favorites' => request()->favorites, 'tag' => request()->tag]) }}'">この条件を削除</button>
+    @endif
+    <br>
+    {{ request()->favorites ? "お気に入りのみ" : "全て" }}
+    @if(request()->favorites)
+    <button onclick="location.href='{{ route('sites.index', ['tag' => request()->tag, 'color'=> request()->color]) }}'">この条件を削除</button>
+    @endif
+  </h2>
+</div>
+@endif
 <div class="sites-container">
 @forelse ($sites as $site)
 <div class="site">
@@ -63,7 +75,7 @@
   </p>
   <p class="site__item site__tags">
     @forelse ($site->tags->map(fn($tag) => $tag->name ) as $tag)
-      <a href="{{ route('sites.index', ['tag' => $tag, 'color' => request()->color]) }}" class="tag">{{ $tag }}</a>
+      <a href="{{ route('sites.index', ['tag' => $tag, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tag">{{ $tag }}</a>
     @empty
       タグはありません。
     @endforelse
@@ -86,7 +98,7 @@
     </p>
     <p class="site__tags">
       @foreach ($site->site_colors->map(fn($c) => $c->color) as $color)
-        <a href="{{ route('sites.index', ['color' => $color, 'tag' => request()->tag]) }}">
+        <a href="{{ route('sites.index', ['color' => $color, 'tag' => request()->tag,  'favorites' => request()->favorites]) }}">
           {{ $color }}
         </a>
       @endforeach
@@ -94,7 +106,11 @@
   </div>
 </div>
 @empty
-  <p>サイトがありません</p>
+  @if(request()->favorites)
+    <p>お気に入りのサイトはありません。星マークをクリックして登録してください！</p>
+  @else
+    <p>サイトはありません</p>
+  @endif
 @endforelse
 </div>
 @once
