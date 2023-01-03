@@ -150,6 +150,48 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://www.bt.com/about/annual-reports/2020summary/',
             ],
+            [
+                'url' => 'https://www.mochikichi.co.jp/',
+            ],
+            [
+                'url' => 'https://www.kinotrope.co.jp/',
+            ],
+            [
+                'url' => 'https://www.find-job.net/',
+            ],
+            [
+                'url' => 'https://www.jp.square-enix.com/',
+            ],
+            [
+                'url' => 'https://www.meiji.co.jp/foods/curry/ginza/',
+            ],
+            [
+                'url' => 'https://otokomae.jp/',
+            ],
+            [
+                'url' => 'https://www.amazon.co.jp/ref=nav_logo',
+            ],
+            [
+                'url' => 'https://www.anime-chiikawa.jp/',
+            ],
+            [
+                'url' => 'https://chibimaru.tv/',
+            ],
+            [
+                'url' => 'https://www.lotte.co.jp/products/brand/bikkuri_man/',
+            ],
+            [
+                'url' => 'https://www.cao.go.jp/',
+            ],
+            [
+                'url' => 'https://www.nhk.or.jp/',
+            ],
+            [
+                'url' => 'https://www.osakacastle.net/',
+            ],
+            [
+                'url' => 'http://www.horyuji.or.jp/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);

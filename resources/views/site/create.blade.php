@@ -2,7 +2,25 @@
   <x-slot name="title">サイト新規追加</x-slot>
   @slot('users_sites', $users_sites)
   <div id="loading">
-    <div class="spinner"></div>
+    {{-- <div class="spinner"></div> --}}
+    <div class="wrapper">
+      <div class="circlesWrapper">
+        <div class="spinner"></div>
+        <div class="circle circleHorizontal circle1"></div>
+        <div class="circle circleHorizontal circle2"></div>
+        <div class="circle circleHorizontal circle3"></div>
+        <div class="circle circleHorizontal circle4"></div>
+        <div class="circle circleHorizontal circle5"></div>
+        <div class="circle circleHorizontal circle6"></div>
+        <div class="circle circleVertical circle7"></div>
+        <div class="circle circleVertical circle8"></div>
+        <div class="circle circleVertical circle9"></div>
+        <div class="circle circleVertical circle10"></div>
+        <div class="circle circleVertical circle11"></div>
+        <div class="circle circleVertical circle12"></div>
+      </div>
+      <div class="cover"></div>
+    </div>
   </div>
   <form method="POST" action="{{ route('sites.store') }}">
     @csrf
