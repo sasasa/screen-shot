@@ -16,7 +16,7 @@
             </svg>
             <span class="like-number like-number{{ $site->id }}">{{ $site->users_count }}</span>
             <a href="{{ $site->url }}" target="_brank">
-                <img src="{{ asset("storage/images/$site->imgsrc") }}" width="500" height="348">
+                <img src="{{ asset("storage/images/$site->imgsrc") }}" width="500" height="348" alt="{{ $site->title }}">
             </a>
         </p>
         <p class="site__item site__url">
@@ -50,7 +50,7 @@
             </svg>
             <span class="like-number like-number{{ $site->id }}">{{ $site->users_count }}</span>
             <a href="{{ $site->url }}" target="_brank">
-                <img src="{{ asset("storage/images/$site->imgsrc") }}" width="500" height="348">
+                <img src="{{ asset("storage/images/$site->imgsrc") }}" width="500" height="348" alt="{{ $site->title }}">
             </a>
         </p>
         <p class="site__item site__url">
