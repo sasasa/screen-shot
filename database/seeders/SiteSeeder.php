@@ -213,6 +213,15 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://www.nipponpapergroup.com/sustainableproducts/',
             ],
+            [
+                'url' => 'https://www.meiji.co.jp/sweets/biscuit/rich-biscuit/',
+            ],
+            [
+                'url' => 'https://www.meiji.co.jp/sweets/chocolate/kinotake/',
+            ],
+            [
+                'url' => 'https://www.meiji.co.jp/sweets/chocolate/chocokoka/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
