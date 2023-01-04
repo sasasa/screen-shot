@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class SiteColor extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'color',
+        'order',
+    ];
 }

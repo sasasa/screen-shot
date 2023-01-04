@@ -156,6 +156,7 @@ return [
     'attributes' => [
         'url' => 'URL',
         'img' => '画像',
+        'color' => '色',
     ],
 
 ];

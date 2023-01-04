@@ -27,13 +27,38 @@ class SiteController extends Controller
     public function destroy(Request $request, Site $site)
     {
         $site->delete();
-        return redirect()->route('system_admin.sites.index');
+        return redirect()->route('system_admin.sites.index')->with([
+            'status' => "success",
+            'message' => "{$site->title} を削除しました",
+        ]);
     }
 
     public function edit(Site $site)
     {
         return view('admin.sites.edit', [
             'site' => $site,
+        ]);
+    }
+
+    public function update_colors(Request $request, Site $site)
+    {
+        $request->validate([
+            'color' => ['required', 'array'],
+            'color.*' => ['required', 'string', ] ,
+            'order' => ['required', 'array'],
+            'order.*' => ['integer', 'min:0', 'max:100'],
+        ]);
+        //紐づいたsite_colorsを全部削除する
+        $site->site_colors()->delete();
+        foreach ($request->color as $color) {
+            $site->site_colors()->create([
+                'color' => $color,
+                'order' => $request->order[$color],
+            ]);
+        }
+        return redirect()->back()->with([
+            'status' => "success",
+            'message' => "{$site->title} のカラーを更新しました",
         ]);
     }
 
@@ -48,7 +73,10 @@ class SiteController extends Controller
             $site->site_colors()->delete();
             (new ChooseColor)($site);
             DB::commit();
-            return redirect()->back()->with('success', "{$site->title} を更新しました");
+            return redirect()->back()->with([
+                'status' => "success",
+                'message' => "{$site->title} を更新しました",
+            ]);
         } catch (Exception $e) {
             Log::error(__METHOD__ . PHP_EOL . var_export($e->getMessage(), true));
             DB::rollBack();

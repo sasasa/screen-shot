@@ -1,8 +1,15 @@
 <x-layouts.admin>
-  <x-slot name="title">サイト管理</x-slot>
+<x-slot name="title">サイト管理</x-slot>
+<div>
+@if (session('message'))
+    <div class="alert alert-{{ session('status') }}">
+        {{ session('message') }}
+    </div>
+@endif
+</div>
 <div class="inputbox">
-  <a class="logout" href="{{ route('system_admin.logout') }}">ログアウト</a>
-  <a href="{{ route('sites.index') }}">サイトトップページ</a>
+    <a class="logout" href="{{ route('system_admin.logout') }}">ログアウト</a>
+    <a href="{{ route('sites.index') }}">サイトトップページ</a>
 </div>
 <div class="nav_links">
     {{ $sites->links() }}
@@ -67,6 +74,13 @@ document.querySelector('.logout').addEventListener('click', function(e) {
     document.body.appendChild(form);
     form.submit();
 });
+/** When .alert is displayed, remove the element in 3 seconds. */
+const alertElement = document.querySelector('.alert')
+if(alertElement) {
+  setTimeout(() => {
+    alertElement.remove()
+  }, 3000)
+}
 </script>
 @endpush
 @endonce

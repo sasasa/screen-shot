@@ -1,11 +1,17 @@
 <x-layouts.admin>
-  <x-slot name="title">{{ $site->title }}管理</x-slot>
-  @inject('colorPresenter', '\App\Services\Presenters\ColorService')
+<x-slot name="title">{{ $site->title }}管理</x-slot>
+@inject('colorPresenter', '\App\Services\Presenters\ColorService')
+<div>
+    @if (session('message'))
+        <div class="alert alert-{{ session('status') }}">
+            {{ session('message') }}
+        </div>
+    @endif
+</div>
 <div class="inputbox">
-  <a class="logout" href="{{ route('system_admin.logout') }}">ログアウト</a>
-  <a href="{{ route('system_admin.sites.index') }}">管理ページトップ</a>
-  <a href="{{ route('sites.index') }}">サイトトップページ</a>
-
+    <a class="logout" href="{{ route('system_admin.logout') }}">ログアウト</a>
+    <a href="{{ route('system_admin.sites.index') }}">管理ページトップ</a>
+    <a href="{{ route('sites.index') }}">サイトトップページ</a>
 </div>
 <div class="sites">
     <div class="site">
@@ -40,11 +46,35 @@
             {{ $site->brightest_color }}
         </p>
         <p class="site__tags">
-            @foreach ($site->site_colors->map(fn($c) => $c->color) as $color)
+            @php
+                $mycolors = $site->site_colors->map(fn($c) => $c->color);
+                $mycolorsOrders = $site->site_colors->map(fn($c) => [$c->color => $c->order])->collapse();
+            @endphp
+            <form action="{{ route('system_admin.sites.update_colors', ['site' => $site]) }}" method="POST">
+                @csrf
+                @method('PUT')
+                @foreach (['brown', 'black', 'orange', 'pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'] as $color)
+                <label class="flex items-center gap-4">
+                    <input class="form-checkbox" name="color[]" type="checkbox" value="{{ $color }}" @checked($mycolors->contains($color))>{{ $color }}
+                    <input type="number" value="{{ $mycolorsOrders[$color] ?? 0 }}" name="order[{{ $color }}]" max="100" min="0">
+                </label>
+                @endforeach
+                @once
+                @endonce
+                <input class="form-input" type="submit" value="色更新">
+            </form>
+            @error("color")
+                <p class="errorMessage">{{$message}}</p>
+            @enderror
+            @error("order.*")
+                <p class="errorMessage">{{$message}}</p>
+            @enderror
+
+            {{-- @foreach ($site->site_colors->map(fn($c) => $c->color) as $color)
             <a href="{{ route('sites.index', ['color' => $color, 'tag' => request()->tag,  'favorites' => request()->favorites]) }}">
                 {{ $color }}
             </a>
-            @endforeach
+            @endforeach --}}
         </p>
         </div>
         <div class="site__fileupload">
@@ -109,6 +139,13 @@ document.querySelector('.logout').addEventListener('click', function(e) {
     document.body.appendChild(form);
     form.submit();
 });
+/** When .alert is displayed, remove the element in 3 seconds. */
+const alertElement = document.querySelector('.alert')
+if(alertElement) {
+  setTimeout(() => {
+    alertElement.remove()
+  }, 3000)
+}
 </script>
 @endpush
 @endonce
