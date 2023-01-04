@@ -11,7 +11,7 @@ class TagRule implements Rule
      *
      * @return void
      */
-    public function __construct(private int $min = 1, private int $max = 10)
+    public function __construct(private int $min = 1, private int $max = 16)
     {
     }
 

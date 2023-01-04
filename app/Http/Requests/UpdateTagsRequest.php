@@ -25,7 +25,7 @@ class UpdateTagsRequest extends FormRequest
     public function rules()
     {
         return [
-            'tags' => ['required', 'string', 'max:255', new TagRule(1, 10)],
+            'tags' => ['required', 'string', 'max:255', new TagRule(1, 16)],
         ];
     }
 }

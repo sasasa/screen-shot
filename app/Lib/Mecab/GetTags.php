@@ -11,6 +11,8 @@ final class GetTags {
         'ため',
         'もの',
         'よし',
+        'コチラ',
+        'こちら',
     ];
 
     public function __construct(readonly public string $text) {
