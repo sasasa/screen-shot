@@ -16,6 +16,17 @@
 <div class="sites">
     <div class="site">
         <div class="site__img"><img src="{{ asset("storage/images/$site->imgsrc") }}"></div>
+        <div class="site__fileupload">
+            <form action="{{ route('system_admin.sites.update', ['site' => $site]) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <input class="form-input" type="file" name="img">
+                <input class="form-input" type="submit" value="アップロード">
+                @error("img")
+                    <p class="errorMessage">{{$message}}</p>
+                @enderror
+            </form>
+        </div>
         <div class="site__name">{{ $site->title }}</div>
         <div class="site__url">{{ $site->url }}</div>
         <div class="site__created_at">{{ $site->created_at }}</div>
@@ -23,11 +34,15 @@
             {{ $site->description }}
         </p>
         <p class="site__item site__tags">
-        @forelse ($site->tags->map(fn($tag) => $tag->name ) as $tag)
-            <a href="{{ route('sites.index', ['tag' => $tag, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tag">{{ $tag }}</a>
-        @empty
-            タグはありません。
-        @endforelse
+            <form action="{{ route('system_admin.sites.update_tags', ['site' => $site]) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <input class="w-4/5" type="text" name="tags" value="{{ old('tags', $site->tags->map(fn($tag) => "[".$tag->name."]" )->implode(" "))  }}">
+                <input class="form-input" type="submit" value="タグ更新">
+            </form>
+            @error("tags")
+                <p class="errorMessage">{{$message}}</p>
+            @enderror
         </p>
         <div class="site__item site__colors">
         <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->mode_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->mode_color }};">
@@ -46,21 +61,15 @@
             {{ $site->brightest_color }}
         </p>
         <p class="site__tags">
-            @php
-                $mycolors = $site->site_colors->map(fn($c) => $c->color);
-                $mycolorsOrders = $site->site_colors->map(fn($c) => [$c->color => $c->order])->collapse();
-            @endphp
             <form action="{{ route('system_admin.sites.update_colors', ['site' => $site]) }}" method="POST">
                 @csrf
                 @method('PUT')
                 @foreach (['brown', 'black', 'orange', 'pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'] as $color)
                 <label class="flex items-center gap-4">
-                    <input class="form-checkbox" name="color[]" type="checkbox" value="{{ $color }}" @checked($mycolors->contains($color))>{{ $color }}
-                    <input type="number" value="{{ $mycolorsOrders[$color] ?? 0 }}" name="order[{{ $color }}]" max="100" min="0">
+                    <input class="form-checkbox" name="colors[]" type="checkbox" value="{{ $color }}" @checked($mycolors->contains($color))>{{ $color }}
+                    <input type="number" value="{{ $mycolorsOrders[$color] ?? 0 }}" name="orders[{{ $color }}]" max="100" min="0">
                 </label>
                 @endforeach
-                @once
-                @endonce
                 <input class="form-input" type="submit" value="色更新">
             </form>
             @error("color")
@@ -69,26 +78,7 @@
             @error("order.*")
                 <p class="errorMessage">{{$message}}</p>
             @enderror
-
-            {{-- @foreach ($site->site_colors->map(fn($c) => $c->color) as $color)
-            <a href="{{ route('sites.index', ['color' => $color, 'tag' => request()->tag,  'favorites' => request()->favorites]) }}">
-                {{ $color }}
-            </a>
-            @endforeach --}}
         </p>
-        </div>
-        <div class="site__fileupload">
-            <form action="{{ route('system_admin.sites.update', ['site' => $site]) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <input class="form-input" type="file" name="img">
-                <input class="form-input" type="submit" value="アップロード">
-                @once
-                @error("img")
-                    <p class="errorMessage">{{$message}}</p>
-                @enderror
-                @endonce
-            </form>
         </div>
         <div class="site__actions">
             <a class="destroy" href="{{ route('system_admin.sites.destroy', ['site' => $site]) }}">削除</a>
