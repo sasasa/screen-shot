@@ -1,5 +1,5 @@
 <x-layouts.admin>
-<x-slot name="title">サイト管理</x-slot>
+<x-slot name="title">サイト管理画面</x-slot>
 <div>
 @if (session('message'))
     <div class="alert alert-{{ session('status') }}">

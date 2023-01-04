@@ -1,5 +1,5 @@
 <x-layouts.admin>
-<x-slot name="title">{{ $site->title }}管理</x-slot>
+<x-slot name="title">「{{ $site->title }} 」の管理画面</x-slot>
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
 <div>
     @if (session('message'))
