@@ -125,7 +125,7 @@ class ScreenShotController extends Controller
             $modeColor = $linkPreview->getModeColor();
     
             return response($response->fileData)->withHeaders([
-                'Content-Type' => 'image/jpeg',
+                'Content-Type' => 'image/webp',
             ]);
         } catch (LinkPreviewRuntimeException $e) {
             // dd($e);

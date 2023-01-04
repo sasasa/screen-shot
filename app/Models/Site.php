@@ -36,7 +36,7 @@ class Site extends Model
     protected function imgsrc(): Attribute
     {
         return Attribute::make(
-            get: fn($value, $attributes) => str_replace('=', '', str_replace('?', '', str_replace(':', '', str_replace('/', '_', $attributes['url'])))). ".jpeg",
+            get: fn($value, $attributes) => str_replace('=', '', str_replace('?', '', str_replace(':', '', str_replace('/', '_', $attributes['url'])))). ".webp",
         );
     }
     public function site_colors() {

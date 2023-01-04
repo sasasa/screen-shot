@@ -102,8 +102,8 @@ final class ChooseColor
                 Log::error(__METHOD__ . PHP_EOL . var_export($e->getMessage(), true));
                 return;
             }
-            // $usecase = app()->make(SiteUpdateWithTags::class);
-            // $site = $usecase($res);
+            $usecase = app()->make(SiteUpdateWithTags::class);
+            $site = $usecase($res);
         }
         $palette = Palette::fromFilename($path);
         $all_color_count = 0;
@@ -170,9 +170,9 @@ final class ChooseColor
      * @return float
      */
     private function getColorDistance($color_1, $color_2) {
-      return sqrt(
-          pow($color_1[0] - $color_2[0], 2) +
-          pow($color_1[1] - $color_2[1], 2) +
-          pow($color_1[2] - $color_2[2], 2));
+        return sqrt(
+            pow($color_1[0] - $color_2[0], 2) +
+            pow($color_1[1] - $color_2[1], 2) +
+            pow($color_1[2] - $color_2[2], 2));
     }
 }

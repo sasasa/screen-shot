@@ -7,6 +7,7 @@ use KubAT\PhpSimple\HtmlDomParser;
 use App\Lib\ScreenShot\ScreenShot;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use App\Lib\Mecab\GetTags;
+use Intervention\Image\Facades\Image as InterventionImage;
 
 final class LinkPreviewRuntimeException extends RuntimeException{}
 final class LinkPreview implements LinkPreviewInterface
@@ -96,12 +97,24 @@ final class LinkPreview implements LinkPreviewInterface
         if (!file_exists($tmp_file_dir = storage_path('app/public/images'))) {
             mkdir($tmp_file_dir, 0777, true);
         }
-        file_put_contents($path, $response?->fileData);
+        $image = InterventionImage::make($response?->fileData);
+        $image->orientate();//回転補正
+        $image->resize(
+            500,
+            null,
+            function ($constraint) {
+                // 縦横比を保持したままにする
+                $constraint->aspectRatio();
+                // 小さい画像は大きくしない
+                $constraint->upsize();
+            }
+        );
+        $image->save($path);
     }
 
     private function getPath(string $url): string
     {
-        return storage_path('app/public/images'). "/". str_replace('=', '', str_replace('?', '', str_replace(':', '', str_replace('/', '_', $url)))). ".jpeg";
+        return storage_path('app/public/images'). "/". str_replace('=', '', str_replace('?', '', str_replace(':', '', str_replace('/', '_', $url)))). ".webp";
     }
 
 }
