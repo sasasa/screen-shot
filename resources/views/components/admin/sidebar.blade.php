@@ -1,4 +1,11 @@
 <div>
+    <h3>新着タグ</h3>
+    <div class="tags">
+    @foreach ($tags as $tag)
+        <a href="{{ route('sites.index', ['tag'=>$tag->name, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tagcloud__item tagcloud__item{{ $tag->level }}">{{ $tag->name }}</a>
+    @endforeach
+    </div>
+
     <h3>新着サイト</h3>
     @foreach ($sites as $site)
     <div class="site new">
