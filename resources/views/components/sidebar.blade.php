@@ -1,13 +1,13 @@
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
 <div>
-    <h3>新着タグ</h3>
+    <h3>よく使われているタグTOP10</h3>
     <div class="tags">
-    @foreach ($tags as $tag)
+    @foreach ($popular_tags as $tag)
         <a href="{{ route('sites.index', ['tag'=>$tag->name, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tagcloud__item tagcloud__item{{ $tag->level }}">{{ $tag->name }}</a>
     @endforeach
     </div>
 
-    <h3>人気TOP3</h3>
+    <h3>人気サイトTOP3</h3>
     @foreach ($top3 as $site)
     <div class="site new">
         <p class="site__item site__img">
@@ -74,4 +74,11 @@
         </p>
     </div>
     @endforeach
+
+    <h3>新着タグ</h3>
+    <div class="tags">
+    @foreach ($tags as $tag)
+        <a href="{{ route('sites.index', ['tag'=>$tag->name, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tagcloud__item tagcloud__item{{ $tag->level }}">{{ $tag->name }}</a>
+    @endforeach
+    </div>
 </div>

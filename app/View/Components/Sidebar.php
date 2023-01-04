@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use App\Models\Site;
 use App\Models\User;
+use App\Models\Tag;
 
 class Sidebar extends Component
 {
@@ -35,6 +36,7 @@ class Sidebar extends Component
         $top3 = Site::query()->with('tags')->withCount('users')->orderBy('users_count', 'desc')->latest()->limit(3)->get();
         return view('components.sidebar', [
             'sites' => $sites,
+            'popular_tags' => Tag::query()->withCount('sites')->orderBy('sites_count', 'desc')->limit(10)->get(),
             'tags' => $sites->map(function($site) {
                 return ($site->tags);
             })->collapse(),
