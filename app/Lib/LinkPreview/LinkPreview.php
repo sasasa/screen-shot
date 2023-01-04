@@ -7,7 +7,7 @@ use KubAT\PhpSimple\HtmlDomParser;
 use App\Lib\ScreenShot\ScreenShot;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use App\Lib\Mecab\GetTags;
-use Intervention\Image\Facades\Image as InterventionImage;
+use App\Lib\InterventionImage\StoreImage;
 
 final class LinkPreviewRuntimeException extends RuntimeException{}
 final class LinkPreview implements LinkPreviewInterface
@@ -46,7 +46,7 @@ final class LinkPreview implements LinkPreviewInterface
         if(false) {
             // ScreenShot::getScreenshotはバグが多いので一旦保留
         } else {
-            $path = $this->getPath($url);
+            $path = self::getPath($url);
             if (file_exists($path)) {
                 $fileData = file_get_contents($path);
             } else {
@@ -93,26 +93,14 @@ final class LinkPreview implements LinkPreviewInterface
      */
     private function store(GetLinkPreviewResponse $response): void
     {
-        $path = $this->getPath($response?->url);
+        $path = self::getPath($response?->url);
         if (!file_exists($tmp_file_dir = storage_path('app/public/images'))) {
             mkdir($tmp_file_dir, 0777, true);
         }
-        $image = InterventionImage::make($response?->fileData);
-        $image->orientate();//回転補正
-        $image->resize(
-            500,
-            null,
-            function ($constraint) {
-                // 縦横比を保持したままにする
-                $constraint->aspectRatio();
-                // 小さい画像は大きくしない
-                $constraint->upsize();
-            }
-        );
-        $image->save($path);
+        StoreImage::store($response?->fileData, $path);
     }
 
-    private function getPath(string $url): string
+    public static function getPath(string $url): string
     {
         return storage_path('app/public/images'). "/". str_replace('=', '', str_replace('?', '', str_replace(':', '', str_replace('/', '_', $url)))). ".webp";
     }

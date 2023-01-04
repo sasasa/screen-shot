@@ -170,6 +170,7 @@ h3 {
 .site__img img {
   aspect-ratio: 125 / 87;
   object-fit: cover;
+  object-position: 0 0;
   width: 100%;
   user-select: none;
 }
@@ -400,4 +401,12 @@ h3 {
 }
 .tagcloud__item10 {
   font-size: 4.0rem;
+}
+
+/* 管理画面 */
+.admin-layout .site:not(:last-child) {
+  margin-bottom: 16px;
+}
+input[type="file"].form-input {
+  padding: 5px;
 }

@@ -1,4 +1,3 @@
-@inject('colorPresenter', '\App\Services\Presenters\ColorService')
 <div>
     <h3>よく使われているタグTOP10</h3>
     <div class="tags">

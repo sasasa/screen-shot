@@ -29,6 +29,8 @@ Route::group(['prefix' => 'system_admin', 'middleware' => ['auth:admin', 'login_
     // 管理ページトップ
     Route::get('/sites', [AdminSiteController::class, 'index'])->name('system_admin.sites.index');
     Route::delete('/sites/{site}', [AdminSiteController::class, 'destroy'])->name('system_admin.sites.destroy');
+    Route::put('/sites/{site}', [AdminSiteController::class, 'update'])->name('system_admin.sites.update');
+    Route::get('/sites/{site}/edit', [AdminSiteController::class, 'edit'])->name('system_admin.sites.edit');
     // ログアウト
     Route::post('/logout', [LoginController::class, 'logout'])->name('system_admin.logout');
 });

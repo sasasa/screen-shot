@@ -13,7 +13,7 @@ class UpdateSiteRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateSiteRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'img' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:4096'],
         ];
     }
 }

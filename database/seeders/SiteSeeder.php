@@ -210,6 +210,9 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://www.otsuka.co.jp/cmt/',
             ],
+            [
+                'url' => 'https://www.nipponpapergroup.com/sustainableproducts/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
