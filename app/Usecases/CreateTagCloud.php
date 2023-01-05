@@ -14,14 +14,18 @@ final class CreateTagCloud
 
     public function __invoke(): Collection
     {
-        $tagswithCount = Tag::query()->withCount('sites')//->orderBy('sites_count', 'desc')
-        ->inRandomOrder()->get();
+        $tagswithCount = Tag::query()->withCount('sites')->whereHas('site_tag', function($q) {
+            // サイトの数が1以上のタグのみを取得
+            $q->where('site_tag.site_id', '>=', '1');
+        })->inRandomOrder()->get();
         $tagCount = $tagswithCount->map(function($tag) {
             return $tag->sites_count;
         });
+        // 10段階に分ける
         $levels = $this->divideIntoTenLevels($tagCount->toArray());
 
         return $tagswithCount->map(function($tag) use($levels){
+            // 10段階のうちからレベルを設定
             $tag->level = $this->getLevel($tag->sites_count, $levels);
             return $tag;
         });

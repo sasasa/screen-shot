@@ -26,7 +26,10 @@ class AdminSidebar extends Component
     public function render()
     {
         $sites = Site::query()->with('tags')->withCount('users')->latest()->limit(10)->get();
-        $tags = Tag::query()->latest()->limit(30)->get();
+        $tags = Tag::query()->whereHas('site_tag', function($q) {
+            // サイトの数が1以上のタグのみを取得
+            $q->where('site_tag.site_id', '>=', '1');
+        })->latest()->limit(30)->get();
         return view('components.admin.sidebar', [
             'sites' => $sites,
             'tags' => $tags,

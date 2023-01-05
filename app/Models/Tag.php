@@ -17,4 +17,9 @@ class Tag extends Model
     {
         return $this->belongsToMany('App\Models\Site', 'site_tag', 'tag_id', 'site_id');
     }
+
+    public function site_tag()
+    {
+        return $this->hasMany('App\Models\SiteTag');
+    }
 }
