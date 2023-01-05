@@ -12,6 +12,8 @@ sail artisan make:controller ScreenShotController --invokable
 
 sail artisan make:model Site -a
 
+sail artisan make:model SiteTag
+
 sail artisan migrate:fresh --seed
 sail artisan site:access
 sail php artisan migrate:fresh --env=testing
