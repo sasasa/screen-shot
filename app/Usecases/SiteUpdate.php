@@ -9,11 +9,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use App\Lib\LinkPreview\GetLinkPreviewResponse;
-use App\Usecases\SiteUpdate;
 
-final class SiteUpdateWithTags
+final class SiteUpdate
 {
-    public function __construct(private SiteUpdate $siteUpdateUsecase)
+    public function __construct()
     {
     }
 
@@ -22,11 +21,9 @@ final class SiteUpdateWithTags
         try {
             // トランザクション開始
             DB::beginTransaction();
-            $site = $this->siteUpdateUsecase->__invoke($response);
-            $tagIds = $response->tags->map(function ($tag) {
-                return Tag::firstOrCreate(['name' => $tag])->id;
-            });
-            $site->tags()->sync($tagIds);
+            $site = Site::where('url', $response->url)->first();
+            $site->fill($response->toArray());
+            $site->save();
             DB::commit();
             return $site;
         } catch (Exception $e) {

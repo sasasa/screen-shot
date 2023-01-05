@@ -3,6 +3,7 @@ namespace App\Usecases;
 use App\Lib\LinkPreview\LinkPreviewInterface;
 use App\Lib\InterventionImage\StoreImage;
 use App\Usecases\SiteUpdateWithTags;
+use App\Usecases\SiteUpdate;
 use Illuminate\Support\Facades\DB;
 use App\Usecases\ChooseColor;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +13,7 @@ use App\Lib\LinkPreview\LinkPreview;
 
 final class UpdateSiteEverythingWithImageUpdate
 {
-    public function __construct(private LinkPreviewInterface $linkPreview, private SiteUpdateWithTags $siteUpdateWithTagsUsecase, private ChooseColor $chooseColorUsecase)
+    public function __construct(private LinkPreviewInterface $linkPreview, private SiteUpdate $siteUpdateUsecase, private ChooseColor $chooseColorUsecase)
     {
     }
 
@@ -28,7 +29,7 @@ final class UpdateSiteEverythingWithImageUpdate
             // 画像を保存する
             StoreImage::store($img, LinkPreview::getPath($site->url));
             // 新しい画像からデータを取得してサイトを更新する※タグも更新される
-            $site = $this->siteUpdateWithTagsUsecase->__invoke($this->linkPreview->get($site->url));
+            $site = $this->siteUpdateUsecase->__invoke($this->linkPreview->get($site->url));
             $site->site_colors()->delete();//紐づいたsite_colorsを全部削除する
             // 新しい画像からサイトの色を取得して保存する
             $this->chooseColorUsecase->__invoke($site);
