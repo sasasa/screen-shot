@@ -1,18 +1,7 @@
 <x-layouts.admin>
 <x-slot name="title">サイト管理画面</x-slot>
-<div>
-@if (session('message'))
-    <div class="alert alert-{{ session('status') }}">
-        {{ session('message') }}
-    </div>
-@endif
-</div>
-<div class="inputbox">
-    <a class="logout" href="{{ route('system_admin.logout') }}">ログアウト</a>
-    <a href="{{ route('system_admin.sites.index') }}">管理ページトップ</a>
-    <a href="{{ route('sites.index') }}">サイトトップページ</a>
-    <a href="{{ route('sites.create') }}">新規追加</a>
-</div>
+<x-admin.message />
+<x-admin.menu />
 <div class="nav_links">
     {{ $sites->links() }}
   </div>
@@ -39,54 +28,6 @@
 @once
 @push('scripts')
 <script type="module">
-/* destroyリンクをクリックしたらフォームを作ってCRSFトークンを追加してDELETEする */
-document.querySelectorAll('.destroy').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        if(!confirm('削除しますか？')) {
-            return false;
-        }
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = this.href;
-        const csrf = document.createElement('input');
-        csrf.type = 'hidden';
-        csrf.name = '_token';
-        csrf.value = '{{ csrf_token() }}';
-        form.appendChild(csrf);
-        const method = document.createElement('input');
-        method.type = 'hidden';
-        method.name = '_method';
-        method.value = 'DELETE';
-        form.appendChild(method);
-        document.body.appendChild(form);
-        form.submit();
-    });
-});
-/* logoutリンクをクリックしたらフォームを作ってCRSFトークンを追加してPOSTする */
-document.querySelector('.logout').addEventListener('click', function(e) {
-    e.preventDefault();
-    if(!confirm('ログアウトしますか？')) {
-        return false;
-    }
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = this.href;
-    const csrf = document.createElement('input');
-    csrf.type = 'hidden';
-    csrf.name = '_token';
-    csrf.value = '{{ csrf_token() }}';
-    form.appendChild(csrf);
-    document.body.appendChild(form);
-    form.submit();
-});
-/** When .alert is displayed, remove the element in 3 seconds. */
-const alertElement = document.querySelector('.alert')
-if(alertElement) {
-  setTimeout(() => {
-    alertElement.remove()
-  }, 3000)
-}
 </script>
 @endpush
 @endonce

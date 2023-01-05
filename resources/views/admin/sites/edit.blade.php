@@ -1,21 +1,17 @@
 <x-layouts.admin>
 <x-slot name="title">「{{ $site->title }} 」の管理画面</x-slot>
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
-<div>
-    @if (session('message'))
-        <div class="alert alert-{{ session('status') }}">
-            {{ session('message') }}
-        </div>
-    @endif
-</div>
-<div class="inputbox">
-    <a class="logout" href="{{ route('system_admin.logout') }}">ログアウト</a>
-    <a href="{{ route('system_admin.sites.index') }}">管理ページトップ</a>
-    <a href="{{ route('sites.index') }}">サイトトップページ</a>
-    <a href="{{ route('sites.create') }}">新規追加</a>
-</div>
+<x-admin.message />
+<x-admin.menu />
 <div class="sites">
-    <div class="site">
+    <div class="site gap-y-4">
+        <div class="site__crawl">
+            <form action="{{ route('system_admin.sites.crawl', ['site' => $site]) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <input class="mt-2 form-input crawl" type="submit" value="再構築">
+            </form>
+        </div>
         <div class="site__img"><img src="{{ asset("storage/images/$site->imgsrc") }}"></div>
         <div class="site__fileupload">
             <form action="{{ route('system_admin.sites.update', ['site' => $site]) }}" method="POST" enctype="multipart/form-data">
@@ -86,61 +82,22 @@
         </p>
         </div>
         <div class="site__actions">
-            <a class="destroy" href="{{ route('system_admin.sites.destroy', ['site' => $site]) }}">削除</a>
+            <a class="form-input inline-block mb-2 destroy" href="{{ route('system_admin.sites.destroy', ['site' => $site]) }}">削除</a>
         </div>
     </div>
 </div>
 @once
 @push('scripts')
 <script type="module">
-/* destroyリンクをクリックしたらフォームを作ってCRSFトークンを追加してDELETEする */
-document.querySelectorAll('.destroy').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        if(!confirm('削除しますか？')) {
+/* .crawlがクリックされたら確認confirmを出してからformをsubmitする */
+document.querySelectorAll('.crawl').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+        if(!confirm('本当に再構築しますか？一旦全てのデータが消えます。')) {
+            e.preventDefault();
             return false;
         }
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = this.href;
-        const csrf = document.createElement('input');
-        csrf.type = 'hidden';
-        csrf.name = '_token';
-        csrf.value = '{{ csrf_token() }}';
-        form.appendChild(csrf);
-        const method = document.createElement('input');
-        method.type = 'hidden';
-        method.name = '_method';
-        method.value = 'DELETE';
-        form.appendChild(method);
-        document.body.appendChild(form);
-        form.submit();
     });
 });
-/* logoutリンクをクリックしたらフォームを作ってCRSFトークンを追加してPOSTする */
-document.querySelector('.logout').addEventListener('click', function(e) {
-    e.preventDefault();
-    if(!confirm('ログアウトしますか？')) {
-        return false;
-    }
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = this.href;
-    const csrf = document.createElement('input');
-    csrf.type = 'hidden';
-    csrf.name = '_token';
-    csrf.value = '{{ csrf_token() }}';
-    form.appendChild(csrf);
-    document.body.appendChild(form);
-    form.submit();
-});
-/** When .alert is displayed, remove the element in 3 seconds. */
-const alertElement = document.querySelector('.alert')
-if(alertElement) {
-  setTimeout(() => {
-    alertElement.remove()
-  }, 3000)
-}
 </script>
 @endpush
 @endonce

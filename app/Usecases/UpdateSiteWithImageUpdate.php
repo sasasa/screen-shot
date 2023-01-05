@@ -11,7 +11,7 @@ use Exception;
 use App\Models\Site;
 use App\Lib\LinkPreview\LinkPreview;
 
-final class UpdateSiteEverythingWithImageUpdate
+final class UpdateSiteWithImageUpdate
 {
     public function __construct(private LinkPreviewInterface $linkPreview, private SiteUpdate $siteUpdateUsecase, private ChooseColor $chooseColorUsecase)
     {
@@ -28,7 +28,7 @@ final class UpdateSiteEverythingWithImageUpdate
             DB::beginTransaction();
             // 画像を保存する
             StoreImage::store($img, LinkPreview::getPath($site->url));
-            // 新しい画像からデータを取得してサイトを更新する※タグも更新される
+            // 新しい画像からデータを取得してサイトを更新する※タグは更新されない
             $site = $this->siteUpdateUsecase->__invoke($this->linkPreview->get($site->url));
             $site->site_colors()->delete();//紐づいたsite_colorsを全部削除する
             // 新しい画像からサイトの色を取得して保存する

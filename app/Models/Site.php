@@ -52,4 +52,9 @@ class Site extends Model
     {
         return $this->belongsToMany('App\Models\User', 'site_user', 'site_id', 'user_id');
     }
+
+    public function contacts()
+    {
+        return $this->hasMany('App\Models\Contact', 'site_id', 'id');
+    }
 }

@@ -158,6 +158,8 @@ return [
         'img' => '画像',
         'color' => '色',
         'tags' => 'タグ',
+        'subject' => '件名',
+        'message' => '本文',
     ],
 
 ];

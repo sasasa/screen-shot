@@ -1,4 +1,13 @@
 <div>
+    <h3>新着問い合わせ</h3>
+    <div class="contacts">
+    @forelse ($contacts as $contact)
+        <a href="{{ route('system_admin.contacts.show', ['contact' => $contact]) }}" class="">{{ $contact->subject }}{{ $contact->site ? "({$contact->site->title})" : "(なし)" }}</a>
+    @empty
+        問い合わせはありません。
+    @endforelse
+    </div>
+
     <h3>新着タグ</h3>
     <div class="tags">
     @foreach ($tags as $tag)

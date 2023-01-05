@@ -18,5 +18,55 @@
             </aside>
         </div>
         @stack('scripts')
+        <script type="module">
+            /* destroyリンクをクリックしたらフォームを作ってCRSFトークンを追加してDELETEする */
+            document.querySelectorAll('.destroy').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if(!confirm('削除しますか？')) {
+                        return false;
+                    }
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = this.href;
+                    const csrf = document.createElement('input');
+                    csrf.type = 'hidden';
+                    csrf.name = '_token';
+                    csrf.value = '{{ csrf_token() }}';
+                    form.appendChild(csrf);
+                    const method = document.createElement('input');
+                    method.type = 'hidden';
+                    method.name = '_method';
+                    method.value = 'DELETE';
+                    form.appendChild(method);
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            });
+            /* logoutリンクをクリックしたらフォームを作ってCRSFトークンを追加してPOSTする */
+            document.querySelector('.logout').addEventListener('click', function(e) {
+                e.preventDefault();
+                if(!confirm('ログアウトしますか？')) {
+                    return false;
+                }
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = this.href;
+                const csrf = document.createElement('input');
+                csrf.type = 'hidden';
+                csrf.name = '_token';
+                csrf.value = '{{ csrf_token() }}';
+                form.appendChild(csrf);
+                document.body.appendChild(form);
+                form.submit();
+            });
+            /** When .alert is displayed, remove the element in 3 seconds. */
+            const alertElement = document.querySelector('.alert')
+            if(alertElement) {
+                setTimeout(() => {
+                    alertElement.remove()
+                }, 3000)
+            }
+        </script>
     </body>
 </html>

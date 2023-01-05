@@ -6,6 +6,7 @@ use Illuminate\View\Component;
 use App\Models\Site;
 use App\Models\User;
 use App\Models\Tag;
+use App\Models\Contact;
 
 class AdminSidebar extends Component
 {
@@ -25,6 +26,7 @@ class AdminSidebar extends Component
      */
     public function render()
     {
+        $contacts = Contact::query()->with('site')->where('is_done', false)->latest()->limit(10)->get();
         $sites = Site::query()->with('tags')->withCount('users')->latest()->limit(10)->get();
         $tags = Tag::query()->whereHas('site_tag', function($q) {
             // サイトの数が1以上のタグのみを取得
@@ -33,6 +35,7 @@ class AdminSidebar extends Component
         return view('components.admin.sidebar', [
             'sites' => $sites,
             'tags' => $tags,
+            'contacts' => $contacts,
         ]);
     }
 }

@@ -121,6 +121,9 @@
       @endforeach
     </p>
   </div>
+  <div class="site__item site__contact">
+    <a href="{{ route('contact_us', ['site_id' => $site->id]) }}">問題を知らせる</a>
+  </div>
 </div>
 @empty
   @if(request()->favorites)
