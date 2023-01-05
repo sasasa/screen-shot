@@ -12,6 +12,7 @@
     <a class="logout" href="{{ route('system_admin.logout') }}">ログアウト</a>
     <a href="{{ route('system_admin.sites.index') }}">管理ページトップ</a>
     <a href="{{ route('sites.index') }}">サイトトップページ</a>
+    <a href="{{ route('sites.create') }}">新規追加</a>
 </div>
 <div class="sites">
     <div class="site">
@@ -28,7 +29,11 @@
             </form>
         </div>
         <div class="site__name">{{ $site->title }}</div>
-        <div class="site__url">{{ $site->url }}</div>
+        <div class="site__url">
+            <a href="{{ $site->url }}" target="_blank">
+                {{ $site->url }}
+            </a>
+        </div>
         <div class="site__created_at">{{ $site->created_at }}</div>
         <p class="site__item site__description">
             {{ $site->description }}
