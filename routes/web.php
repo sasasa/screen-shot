@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\SiteController as AdminSiteController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TermsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +48,11 @@ Route::group(['prefix' => 'system_admin', 'middleware' => ['auth:admin', 'login_
     Route::post('/logout', [LoginController::class, 'logout'])->name('system_admin.logout');
 });
 
+// お問い合わせ
 Route::resource('contacts', ContactController::class);
 Route::get('/contact_us', [ContactController::class, 'create'])->name('contact_us');
-Route::get('/terms', ScreenShotController::class)->name('terms');
+// 利用規約
+Route::get('/terms', [TermsController::class, 'index'])->name('terms');
+// プライバシーポリシー
 Route::get('/privacy', ScreenShotController::class)->name('privacy');
 Route::get('/screen_shot/{url}', ScreenShotController::class)->where(['url' => '.*']);
