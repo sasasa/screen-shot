@@ -2,7 +2,6 @@
   <x-slot name="title">サイト新規追加</x-slot>
   @slot('users_sites', $users_sites)
   <div id="loading">
-    {{-- <div class="spinner"></div> --}}
     <div class="wrapper">
       <div class="circlesWrapper">
         <div class="spinner"></div>
@@ -18,6 +17,7 @@
         <div class="circle circleVertical circle10"></div>
         <div class="circle circleVertical circle11"></div>
         <div class="circle circleVertical circle12"></div>
+        <div class="mozi">Loading</div>
       </div>
       <div class="cover"></div>
     </div>
