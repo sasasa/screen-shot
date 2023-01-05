@@ -3,13 +3,7 @@
 <x-slot name="background_color">{{ $background_color }}</x-slot>
 @slot('users_sites', $users_sites)
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
-<div>
-  @if (session('message'))
-    <div class="alert alert-{{ session('status') }}">
-        {{ session('message') }}
-    </div>
-  @endif
-</div>
+<x-message />
 <div class="inputbox colorbox">
   <div class="flex items-center">
     <a class="flex" href="{{ route('sites.index') }}">

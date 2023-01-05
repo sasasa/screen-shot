@@ -1,6 +1,6 @@
 <x-layouts.admin>
   <x-slot name="title">「{{ $contact->subject }} 」問い合わせ</x-slot>
-  <x-admin.message />
+  <x-message />
   <x-admin.menu />
   <div class="contacts">
     <div>{{ $contact->subject }}</div>

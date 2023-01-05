@@ -1,6 +1,6 @@
 <x-layouts.admin>
 <x-slot name="title">サイト管理画面</x-slot>
-<x-admin.message />
+<x-message />
 <x-admin.menu />
 <div class="nav_links">
     {{ $sites->links() }}

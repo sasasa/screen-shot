@@ -1,7 +1,7 @@
 <x-layouts.admin>
 <x-slot name="title">「{{ $site->title }} 」の管理画面</x-slot>
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
-<x-admin.message />
+<x-message />
 <x-admin.menu />
 <div class="sites">
     <div class="site gap-y-4">
