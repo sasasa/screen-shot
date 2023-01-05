@@ -21,12 +21,13 @@ use App\Http\Requests\UpdateColorsRequest;
 use App\Http\Requests\UpdateTagsRequest;
 use App\Usecases\RelateColors;
 use App\Usecases\UpdateSiteEverythingWithImageUpdate;
+use App\UseCases\SiteUpdate;
 class SiteController extends Controller
 {
     public function index()
     {
         return view('admin.sites.index', [
-            'sites' => Site::paginate(20),
+            'sites' => Site::orderBy('id', 'DESC')->paginate(20),
         ]);
     }
 
