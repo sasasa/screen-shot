@@ -20,8 +20,10 @@ use App\Usecases\RelateTags;
 use App\Http\Requests\UpdateColorsRequest;
 use App\Http\Requests\UpdateTagsRequest;
 use App\Usecases\RelateColors;
-use App\Usecases\UpdateSiteEverythingWithImageUpdate;
+use App\Usecases\UpdateSiteWithImageUpdate;
 use App\UseCases\SiteUpdate;
+use App\Usecases\UpdateSiteEverytingWithImageUpdate;
+
 class SiteController extends Controller
 {
     public function index()
@@ -36,7 +38,7 @@ class SiteController extends Controller
         $site->delete();
         return redirect()->route('system_admin.sites.index')->with([
             'status' => "success",
-            'message' => "{$site->title} を削除しました",
+            'message' => "{$site->title} を削除しました。",
         ]);
     }
 
@@ -56,7 +58,7 @@ class SiteController extends Controller
         $usecase($site, $request->tags);
         return redirect()->back()->with([
             'status' => "success",
-            'message' => "{$site->title} のタグを更新しました",
+            'message' => "{$site->title} のタグを更新しました。",
         ]);
     }
 
@@ -65,16 +67,25 @@ class SiteController extends Controller
         $usecase($site, $request->colors, $request->orders);
         return redirect()->back()->with([
             'status' => "success",
-            'message' => "{$site->title} のカラーを更新しました",
+            'message' => "{$site->title} のカラーを更新しました。",
         ]);
     }
 
-    public function update(UpdateSiteRequest $request, Site $site, UpdateSiteEverythingWithImageUpdate $usecase)
+    public function update(UpdateSiteRequest $request, Site $site, UpdateSiteWithImageUpdate $usecase)
     {
         $usecase($site, $request->file('img'));
         return redirect()->back()->with([
             'status' => "success",
-            'message' => "{$site->title} を更新しました",
+            'message' => "{$site->title} を更新しました。",
+        ]);
+    }
+
+    public function crawl(Site $site, UpdateSiteEverytingWithImageUpdate $usecase)
+    {
+        $usecase($site);
+        return redirect()->back()->with([
+            'status' => "success",
+            'message' => "{$site->title} を再構築しました。",
         ]);
     }
 }

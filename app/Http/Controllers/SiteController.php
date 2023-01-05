@@ -73,18 +73,17 @@ class SiteController extends Controller
     public function store(StoreSiteRequest $request, LinkPreviewInterface $linkPreview, SiteCreateWithTags $usecase)
     {
         try {
-            $res = $linkPreview->get($request->url);
+            $site = $usecase($linkPreview->get($request->url));
         } catch (LinkPreviewRuntimeException $e) {
             Log::error(__METHOD__ . PHP_EOL . var_export($e->getMessage(), true));
             throw ValidationException::withMessages([
-                'url' => 'URLが存在しない等の理由で読み込めませんでした。変更して再度投稿してください'
+                'url' => 'URLが存在しない等の理由で読み込めませんでした。変更して再度投稿してください。もしくはじかんをおいてください。'
             ]);
         }
-        $site = $usecase($res);
         return to_route('sites.index')->with([
-            'message' => "【{$site->title}】の登録okです",
+            'message' => "【{$site->title}】の登録okです。",
             'status' => 'success',
-        ]);;
+        ]);
     }
 
     /**
