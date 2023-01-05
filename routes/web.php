@@ -37,6 +37,7 @@ Route::group(['prefix' => 'system_admin', 'middleware' => ['auth:admin', 'login_
     Route::post('/logout', [LoginController::class, 'logout'])->name('system_admin.logout');
 });
 
-
-
+Route::get('/contact_us', ScreenShotController::class)->name('contact_us');
+Route::get('/terms', ScreenShotController::class)->name('terms');
+Route::get('/privacy', ScreenShotController::class)->name('privacy');
 Route::get('/screen_shot/{url}', ScreenShotController::class)->where(['url' => '.*']);

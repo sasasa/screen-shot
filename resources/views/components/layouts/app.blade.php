@@ -17,6 +17,16 @@
                 <x-sidebar :users_sites="$users_sites" />
             </aside>
         </div>
+        <footer class="footer">
+            <div class="flex justify-center flex-wrap gap-x-3 m-2">
+                <a href="{{ route('contact_us') }}">お問い合わせ</a>
+                <a href="{{ route('terms') }}">利用規約</a>
+                <a href="{{ route('privacy') }}">プライバシーポリシー</a>
+            </div>
+            <div>
+                © 2022-{{ now()->format('Y') }} SASASA inc.
+            </div>
+        </footer>
         @stack('scripts')
     </body>
 </html>

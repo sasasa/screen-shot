@@ -441,3 +441,15 @@ h3 {
 input[type="file"].form-input {
   padding: 5px;
 }
+/* footer */
+.footer {
+  text-align: center;
+  /* background-color: #fff; */
+  /* padding: 16px 20px; */
+  /* border-radius: 5px; */
+  /* border: 1px solid #bbb; */
+  /* display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center; */
+}
