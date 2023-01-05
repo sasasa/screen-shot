@@ -26,8 +26,7 @@
         </p>
         <p class="site__item site__url">
             <a href="{{ $site->url }}" target="_brank">
-            {{ $site->url }}<br>
-            ({{ $site->domain }})
+            {{ $site->url }}
             </a>
         </p>
         <p class="site__item site__title">
