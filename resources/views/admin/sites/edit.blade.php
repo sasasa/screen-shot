@@ -65,12 +65,14 @@
             <form action="{{ route('system_admin.sites.update_colors', ['site' => $site]) }}" method="POST">
                 @csrf
                 @method('PUT')
-                @foreach (['brown', 'black', 'orange', 'pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'] as $color)
-                <label class="flex items-center gap-4">
-                    <input class="form-checkbox" name="colors[]" type="checkbox" value="{{ $color }}" @checked($mycolors->contains($color))>{{ $color }}
-                    <input type="number" value="{{ $mycolorsOrders[$color] ?? 0 }}" name="orders[{{ $color }}]" max="100" min="0">
-                </label>
-                @endforeach
+                <div class="flex flex-col gap-y-2">
+                    @foreach (['brown', 'black', 'orange', 'pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'] as $color)
+                    <label class="flex items-center gap-4">
+                        <input class="form-checkbox" name="colors[]" type="checkbox" value="{{ $color }}" @checked($mycolors->contains($color))>{{ $color }}
+                        <input type="number" value="{{ $mycolorsOrders[$color] ?? 0 }}" name="orders[{{ $color }}]" max="100" min="0">
+                    </label>
+                    @endforeach
+                </div>
                 <input class="form-input" type="submit" value="色更新">
             </form>
             @error("color")
