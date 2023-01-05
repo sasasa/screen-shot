@@ -222,6 +222,15 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://www.meiji.co.jp/sweets/chocolate/chocokoka/',
             ],
+            [
+                'url' => 'https://housefoods.jp/products/special/hokkaido_stew/index.html',
+            ],
+            [
+                'url' => 'https://www.kubara.jp/',
+            ],
+            [
+                'url' => 'https://www.mcdonalds.co.jp/menu/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);

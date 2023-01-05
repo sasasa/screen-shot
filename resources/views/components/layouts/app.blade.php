@@ -9,6 +9,11 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="antialiased" style="background-color: {{ $background_color ?? '#fff' }};">
+        <header class="header">
+            <h1 class="font-bold">
+                <a class="no-underline" href="{{ route('sites.index') }}">Beautiful Site List</a>
+            </h1>
+        </header>
         <div class="main-grid">
             <main>
                 {{ $slot }}
