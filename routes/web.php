@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\SiteController as AdminSiteController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TermsController;
-
+use App\Http\Controllers\PrivacyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,5 +54,5 @@ Route::get('/contact_us', [ContactController::class, 'create'])->name('contact_u
 // 利用規約
 Route::get('/terms', [TermsController::class, 'index'])->name('terms');
 // プライバシーポリシー
-Route::get('/privacy', ScreenShotController::class)->name('privacy');
+Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy');
 Route::get('/screen_shot/{url}', ScreenShotController::class)->where(['url' => '.*']);
