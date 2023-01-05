@@ -1,5 +1,6 @@
 <x-layouts.app>
   <x-slot name="title">サイト新規追加</x-slot>
+  <x-slot name="background_color">{{ $background_color }}</x-slot>
   @slot('users_sites', $users_sites)
   <div id="loading">
     <div class="wrapper">
@@ -19,7 +20,7 @@
         <div class="circle circleVertical circle12"></div>
         <div class="mozi">Loading</div>
       </div>
-      <div class="cover"></div>
+      <div class="cover" style="background-color: {{ $background_color }};"></div>
     </div>
   </div>
   <form method="POST" action="{{ route('sites.store') }}">

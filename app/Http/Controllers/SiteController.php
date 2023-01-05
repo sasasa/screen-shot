@@ -59,6 +59,7 @@ class SiteController extends Controller
         $user = $findOrCreateUserUseCase($request->cookie('userid'));
 
         return response()->view('site.create', [
+            'background_color' => ChooseColor::choose($request->color),
             'users_sites' => $user->sites->pluck('id')->toArray(),
         ])->cookie('userid', $user->uuid, 60*24*365*10, null, null, false, false);
     }
