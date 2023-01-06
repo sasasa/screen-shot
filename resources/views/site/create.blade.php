@@ -20,7 +20,7 @@
         <div class="circle circleVertical circle12"></div>
         <div class="mozi">Loading</div>
       </div>
-      <div class="cover" style="background-color: {{ $background_color }};"></div>
+      <div class="cover" style="background-color: {{ $background_color !== '#ffffff' ? $background_color : '#bbb' }};"></div>
     </div>
   </div>
   <form method="POST" action="{{ route('sites.store') }}">
