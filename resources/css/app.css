@@ -450,7 +450,24 @@ input[type="file"].form-input {
   gap: 16px;
   align-items: center;
 }
-
+/* 利用規約 */
+.terms {
+  padding: 16px 20px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.terms h2,
+.terms h3 {
+  margin: 16px 0 0 0;
+}
+.terms ol {
+  margin-left: 32px;
+  list-style: decimal;
+}
+.terms div {
+  margin: 8px 0;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
