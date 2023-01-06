@@ -10,6 +10,7 @@ use KubAT\PhpSimple\HtmlDomParser;
 use LithiumDev\TagCloud\TagCloud;
 use App\Models\Tag;
 use App\Usecases\CreateTagCloud;
+use Carbon\Carbon;
 class ScreenShotController extends Controller
 {
 
@@ -34,6 +35,10 @@ class ScreenShotController extends Controller
      */
     public function __invoke(Request $request, string $url, LinkPreviewInterface $linkPreview, CreateTagCloud $usecase)
     {
+        
+        $time = Carbon::createFromTimeString('2023-01-06 22:00:00');
+        dd(now()->diffInMinutes($time));
+        
         dd($usecase()->first());
         
         // $cloud = new TagCloud();

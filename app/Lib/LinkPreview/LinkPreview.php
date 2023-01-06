@@ -8,6 +8,7 @@ use App\Lib\ScreenShot\ScreenShot;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use App\Lib\Mecab\GetTags;
 use App\Lib\InterventionImage\StoreImage;
+use Carbon\Carbon;
 
 final class LinkPreviewRuntimeException extends RuntimeException{}
 final class LinkPreview implements LinkPreviewInterface
@@ -19,6 +20,27 @@ final class LinkPreview implements LinkPreviewInterface
      */
     public function get(string $url): GetLinkPreviewResponse
     {
+        // execファイルがあるときはループを回してファイルが無くなるまで待つ
+        $execFile = '/tmp/ScreenShot';
+        $i = 0;
+        while(file_exists($execFile)) {
+            sleep(5);
+            $i++;
+            if($i > 10) {
+                // ファイルを読み取り時間を取得
+                $time = Carbon::createFromTimeString(file_get_contents($execFile));
+                if(now()->diffInMinutes($time) > 3) {
+                    // 2分以上経過していたら削除
+                    unlink($execFile);
+                    break;
+                }
+                // 10回以上ループ55秒経過したらエラー
+                throw new LinkPreviewRuntimeException('ScreenShot exec file is exists');
+            }
+        }
+        // スクリーンショットを取得するまえにexecファイルを書き出す
+        file_put_contents($execFile, now()->format('Y-m-d H:i:s'));
+
         // httpsにそろえてクエリストリングを削除
         $parsed_url = parse_url($url);
         $domain = $parsed_url['host'];
@@ -60,14 +82,16 @@ final class LinkPreview implements LinkPreviewInterface
                     $data = preg_replace('#^data:image/\w+;base64,#i' , '' , $image);
                     $fileData = base64_decode($data);
                 } else {
+                    // execファイルを削除する
+                    unlink($execFile);
                     throw new LinkPreviewRuntimeException('image cant get: '. $url);
                 }
             }
         }
         if ($dom = @HtmlDomParser::file_get_html($url, false, $options)) {
-            $title =  str_replace(')', '', trim($dom->find('title', 0)->plaintext));
-            $description = str_replace(')', '', trim($dom->find('meta[name=description]', 0)?->content));
-            $body = str_replace(')', '', trim($dom->find('body', 0)->plaintext));
+            $title =  mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('title', 0)->plaintext));
+            $description = mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('meta[name=description]', 0)?->content));
+            $body = mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('body', 0)->plaintext));
             $tags = (new GetTags($title. $description. $body))->getTags();
             $senseOfColor = new SenseOfColor($fileData);
             $modeColors = $senseOfColor->getTreeTypicalColors();
@@ -89,8 +113,13 @@ final class LinkPreview implements LinkPreviewInterface
                 tags: $tags
             );
             $this->store($response);
+            // execファイルを削除する
+            unlink($execFile);
+
             return $response;
         } else {
+            // execファイルを削除する
+            unlink($execFile);
             throw new LinkPreviewRuntimeException('dom cant get: '. $url);
         }
     }

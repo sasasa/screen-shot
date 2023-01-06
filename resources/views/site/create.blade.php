@@ -27,7 +27,7 @@
     @csrf
     <div class="inputbox">
       <div class="inputbox__inner">
-        登録するサイトのURLをhttpから入力してください。
+        登録するサイトのURLをhttps://から入力してください。
       </div>
       <div class="inputbox__inner">
         <input class="inputbox__item inputbox__url" type="text" name="url" value="{{ old('url') }}">

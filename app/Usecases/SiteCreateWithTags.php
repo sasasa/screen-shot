@@ -33,7 +33,7 @@ final class SiteCreateWithTags
             DB::rollBack();
             Log::error(__METHOD__ . PHP_EOL . var_export($e->getMessage(), true));
             throw ValidationException::withMessages([
-                'url' => '登録に失敗しました。再度投稿してください'
+                'url' => '新規登録に失敗しました。再度投稿してください。'
             ]);
         }
     }

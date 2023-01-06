@@ -34,7 +34,7 @@ final class SiteUpdateWithTags
             DB::rollBack();
             Log::error(__METHOD__ . PHP_EOL . var_export($e->getMessage(), true));
             throw ValidationException::withMessages([
-                'url' => '登録に失敗しました。再度投稿してください'
+                'url' => '更新に失敗しました。再度投稿してください。'
             ]);
         }
     }
