@@ -19,8 +19,11 @@ final class LinkPreview implements LinkPreviewInterface
      */
     public function get(string $url): GetLinkPreviewResponse
     {
+        // httpsにそろえてクエリストリングを削除
         $parsed_url = parse_url($url);
         $domain = $parsed_url['host'];
+        $path = $parsed_url['path'];
+        $url = 'https://'. $domain. $path;
         // $fileData = ScreenShot::getScreenshot($url);
         $header = [
             "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0",
