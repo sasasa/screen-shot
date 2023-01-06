@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('url')->unique()->comment('URL');
             $table->string('title')->comment('サイトのタイトル')->nullable();
             $table->string('description')->comment('サイトの要約')->nullable();
+            $table->longText('body')->comment('サイトの内容')->nullable();
             $table->string('mode_color')->comment('1番目に使われている色')->nullable();
             $table->string('second_color')->comment('2番目に使われている色')->nullable();
             $table->string('third_color')->comment('3番目に使われている色')->nullable();

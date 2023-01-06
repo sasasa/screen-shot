@@ -20,6 +20,7 @@ class Site extends Model
         'url',
         'title',
         'description',
+        'body',
         'mode_color',
         'second_color',
         'third_color',

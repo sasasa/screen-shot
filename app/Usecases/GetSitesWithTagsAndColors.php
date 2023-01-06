@@ -12,7 +12,7 @@ final class GetSitesWithTagsAndColors
      * @param string|null $tag
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
-    public function __invoke(?string $color, ?string $tag, ?string $favorites, User $user): \Illuminate\Pagination\LengthAwarePaginator
+    public function __invoke(?string $search, ?string $color, ?string $tag, ?string $favorites, User $user): \Illuminate\Pagination\LengthAwarePaginator
     {
         if($color) {
             if($tag) {
@@ -62,6 +62,16 @@ final class GetSitesWithTagsAndColors
                 $query = $user->sites()->with(['tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
             } else {
                 $query = Site::query()->with(['tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
+            }
+        }
+
+        if($search) {
+            $spaceConvert = mb_convert_kana($search, 's'); //全角スペースを半角に
+            $keywords = preg_split('/[\s]+/', $spaceConvert, -1, PREG_SPLIT_NO_EMPTY); //空白で区切る
+            foreach($keywords as $word) {
+                $query->orWhere('sites.title','like', '%'.$word.'%');
+                $query->orWhere('sites.description','like', '%'.$word.'%');
+                $query->orWhere('sites.body','like', '%'.$word.'%');
             }
         }
 

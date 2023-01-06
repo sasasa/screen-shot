@@ -10,6 +10,48 @@ final class SenseOfColor
     public function __construct(private string $file){}
 
     /**
+     * Get the brightest and darkest color in the image
+     *  @return string
+     */
+    public function getBestColor(): array {
+        $image = imagecreatefromstring($this->file);
+        $width = imagesx($image);
+        $height = imagesy($image);
+        $brightestColor = 0;
+        $brightestColors = [
+            'red' => 0,
+            'green' => 0,
+            'blue' => 0
+        ];
+        $darkestColor = 255 + 255 + 255;
+        $darkestColors = [
+            'red' => 255,
+            'green' => 255,
+            'blue' => 255
+        ];
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                $rgb = imagecolorat($image, $x, $y);
+                $colors = imagecolorsforindex($image, $rgb);
+                if($brightestColor < $colors['red'] + $colors['green'] + $colors['blue']) {
+                    $brightestColor = $colors['red'] + $colors['green'] + $colors['blue'];
+                    $brightestColors = $colors;
+                    // dump($brightestColors);
+                }
+                if($darkestColor > $colors['red'] + $colors['green'] + $colors['blue']) {
+                    $darkestColor = $colors['red'] + $colors['green'] + $colors['blue'];
+                    $darkestColors = $colors;
+                    // dump($darkestColors);
+                }
+            }
+        }
+        return [
+            str_pad(dechex($brightestColors['red']), 2, '0', STR_PAD_LEFT).str_pad(dechex($brightestColors['green']), 2, '0', STR_PAD_LEFT).str_pad(dechex($brightestColors['blue']), 2, '0', STR_PAD_LEFT),
+            str_pad(dechex($darkestColors['red']), 2, '0', STR_PAD_LEFT).str_pad(dechex($darkestColors['green']), 2, '0', STR_PAD_LEFT).str_pad(dechex($darkestColors['blue']), 2, '0', STR_PAD_LEFT),
+        ];
+    }
+
+    /**
      * Get the brightest color in the image
      *  @return string
      */
@@ -22,7 +64,7 @@ final class SenseOfColor
             'red' => 0,
             'green' => 0,
             'blue' => 0
-        ];;
+        ];
         for ($x = 0; $x < $width; $x++) {
             for ($y = 0; $y < $height; $y++) {
                 $rgb = imagecolorat($image, $x, $y);

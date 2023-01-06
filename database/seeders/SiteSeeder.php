@@ -19,7 +19,7 @@ class SiteSeeder extends Seeder
     {
         $urls = [
             [
-                'url' => 'https://www.akagi.com/products/index.html?tab01=garigari',
+                'url' => 'https://www.akagi.com/products/index.html',
             ],
             [
                 'url' => 'https://www.gohawaii.jp/ja',
@@ -169,7 +169,7 @@ class SiteSeeder extends Seeder
                 'url' => 'https://otokomae.jp/',
             ],
             [
-                'url' => 'https://www.amazon.co.jp/ref=nav_logo',
+                'url' => 'https://www.amazon.co.jp/',
             ],
             [
                 'url' => 'https://www.anime-chiikawa.jp/',
@@ -190,16 +190,13 @@ class SiteSeeder extends Seeder
                 'url' => 'https://www.osakacastle.net/',
             ],
             [
-                'url' => 'http://www.horyuji.or.jp/',
-            ],
-            [
                 'url' => 'https://cheesenessburger.com/',
             ],
             [
                 'url' => 'https://payme.tokyo/',
             ],
             [
-                'url' => 'http://www.koitoba.com/hotel/',
+                'url' => 'https://www.koitoba.com/hotel/',
             ],
             [
                 'url' => 'https://www.hyponex.co.jp/',

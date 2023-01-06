@@ -144,9 +144,15 @@ h3 {
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
+.alert {
+  padding: 8px 16px;
+}
 .alert-success {
   background-color: #a1dd11;
-  padding: 8px 16px;
+}
+.alert-error {
+  background-color: red;
+  color: #fff;
 }
 .text-white {
   color: #fff;
@@ -371,7 +377,7 @@ h3 {
   height: 100%;
   mix-blend-mode: lighten;
 }
-/* スマホの場合、幅が 1000px 以下の時 */
+/* スマホの場合、幅が 1024px 以下の時 */
 @media screen and (max-width: 1024px){
   .mozi {
     font-size: 180px;
@@ -446,10 +452,19 @@ input[type="file"].form-input {
   text-align: center;
   padding: 16px 20px 0;
   display: flex;
-  flex-wrap: wrap;
   gap: 16px;
+  justify-content: space-between;
   align-items: center;
 }
+/* スマホの場合、幅が 1024px 以下の時 */
+@media screen and (max-width: 1024px){
+  .header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+  }
+}
+
 /* 利用規約 プライバシーポリシー */
 .terms,
 .privacy {

@@ -12,6 +12,7 @@ final class MockLinkPreview implements LinkPreviewInterface
             domain: $domain,
             title: 'モックのタイトル',
             description: 'モックのdescription',
+            body: 'モックのbody',
             fileData: "xxx",
             modeColor: "ffffff",
             secondColor: "ff0000",

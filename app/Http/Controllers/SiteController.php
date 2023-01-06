@@ -44,7 +44,7 @@ class SiteController extends Controller
         return response()->view('site.index', [
             'background_color' => ChooseColor::choose($request->color),
             'colors' => ChooseColor::getBaseColors(),
-            'sites' => $getSitesUsecase($request->color, $request->tag, $request->favorites, $user),
+            'sites' => $getSitesUsecase($request->search, $request->color, $request->tag, $request->favorites, $user),
             'users_sites' => $user->sites->pluck('id')->toArray(),
         ])->cookie('userid', $user->uuid, 60*24*365*10, null, null, false, false);
     }
@@ -77,7 +77,7 @@ class SiteController extends Controller
         } catch (LinkPreviewRuntimeException $e) {
             Log::error(__METHOD__ . PHP_EOL . var_export($e->getMessage(), true));
             throw ValidationException::withMessages([
-                'url' => 'URLが存在しない等の理由で読み込めませんでした。変更して再度投稿してください。もしくはじかんをおいてください。'
+                'url' => '何らかの理由で読み込めませんでした。時間をおいて再度投稿してください。'
             ]);
         }
         return to_route('sites.index')->with([

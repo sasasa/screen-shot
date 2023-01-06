@@ -13,6 +13,9 @@
             <h1 class="font-bold">
                 <a class="no-underline" href="{{ route('sites.index') }}">Beautiful Site List</a>
             </h1>
+            <div>
+                <x-search-form />
+            </div>
         </header>
         <div class="main-grid">
             <main>

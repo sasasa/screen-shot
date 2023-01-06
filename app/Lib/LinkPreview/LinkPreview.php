@@ -65,23 +65,27 @@ final class LinkPreview implements LinkPreviewInterface
             }
         }
         if ($dom = @HtmlDomParser::file_get_html($url, false, $options)) {
-            $title = trim($dom->find('title', 0)->plaintext);
-            $description = trim($dom->find('meta[name=description]', 0)?->content);
-            $tags = (new GetTags($title. $description. trim($dom->find('body', 0)->plaintext)))->getTags();
+            $title =  str_replace(')', '', trim($dom->find('title', 0)->plaintext));
+            $description = str_replace(')', '', trim($dom->find('meta[name=description]', 0)?->content));
+            $body = str_replace(')', '', trim($dom->find('body', 0)->plaintext));
+            $tags = (new GetTags($title. $description. $body))->getTags();
             $senseOfColor = new SenseOfColor($fileData);
             $modeColors = $senseOfColor->getTreeTypicalColors();
+            [$brightestColor, $darkestColor] = $senseOfColor->getBestColor();
+
             // dd($modeColors);
             $response = new GetLinkPreviewResponse(
                 title: $title,
                 description: mb_strimwidth($description, 0, 255, '…'),
+                body: $body,
                 fileData: $fileData,
                 domain: $domain,
                 url: $url,
                 modeColor: $modeColors[0],
                 secondColor: $modeColors[1],
                 thirdColor: $modeColors[2],
-                darkestColor: $senseOfColor->getDarkestColor(),
-                brightestColor: $senseOfColor->getBrightestColor(),
+                brightestColor: $brightestColor,
+                darkestColor: $darkestColor,
                 tags: $tags
             );
             $this->store($response);
