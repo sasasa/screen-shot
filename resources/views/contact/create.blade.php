@@ -15,7 +15,7 @@
       </div>
       <div class="inputbox__inner flex flex-col">
         <label class="inputbox__item inputbox__label" for="subject">件名</label>
-        <input class="w-full lg:w-3/5 inputbox__item inputbox__url" type="text" id="subject" name="subject" value="{{ old('subject') }}">
+        <input class="w-full lg:w-3/5 inputbox__item inputbox__url" type="text" id="subject" name="subject" value="{{ old('subject', (request()->site_id ? $site->title. "について" : "")) }}">
         @error('subject')
           <p class="errorMessage">{{$message}}</p>
         @enderror
