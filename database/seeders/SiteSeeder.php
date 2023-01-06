@@ -231,6 +231,12 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://www.mcdonalds.co.jp/menu/',
             ],
+            [
+                'url' => 'https://uo-sei.info/',
+            ],
+            [
+                'url' => 'https://nikuya-oishi.co.jp/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
