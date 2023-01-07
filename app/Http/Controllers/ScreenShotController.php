@@ -11,6 +11,8 @@ use LithiumDev\TagCloud\TagCloud;
 use App\Models\Tag;
 use App\Usecases\CreateTagCloud;
 use Carbon\Carbon;
+use App\Lib\LinkPreview\LinkPreview;
+
 class ScreenShotController extends Controller
 {
 
@@ -35,7 +37,10 @@ class ScreenShotController extends Controller
      */
     public function __invoke(Request $request, string $url, LinkPreviewInterface $linkPreview, CreateTagCloud $usecase)
     {
-        
+        // [{"name":"Vibrant","value":"#a31ff5"},{"name":"DarkVibrant","value":"#50057e"},{"name":"LightVibrant","value":"#eedb82"},{"name":"Muted","value":"#ac84bc"},{"name":"DarkMuted","value":"#5c0692"},{"name":"LightMuted","value":"#d4a4b2"}]
+        exec('npm run palette '. LinkPreview::getPathJpg('https://awrd.com/sozo-yasashii/'));
+        // dd($output);
+
         $time = Carbon::createFromTimeString('2023-01-06 22:00:00');
         dd(now()->diffInMinutes($time));
         

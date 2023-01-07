@@ -93,9 +93,30 @@ final class LinkPreview implements LinkPreviewInterface
             $description = mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('meta[name=description]', 0)?->content));
             $body = mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('body', 0)->plaintext));
             $tags = (new GetTags($title. $description. $body))->getTags();
-            $senseOfColor = new SenseOfColor($fileData);
-            $modeColors = $senseOfColor->getTreeTypicalColors();
-            [$brightestColor, $darkestColor] = $senseOfColor->getBestColor();
+
+            // $senseOfColor = new SenseOfColor($fileData);
+            // $modeColors = $senseOfColor->getTreeTypicalColors();
+            // [$brightestColor, $darkestColor] = $senseOfColor->getBestColor();
+            $response = new GetLinkPreviewResponse(
+                title: $title,
+                description: mb_strimwidth($description, 0, 255, '…'),
+                body: $body,
+                fileData: $fileData,
+                domain: $domain,
+                url: $url,
+                vibrant: '',
+                darkVibrant: '',
+                lightVibrant: '',
+                muted: '',
+                darkMuted: '',
+                lightMuted: '',
+                tags: $tags
+            );
+            $this->store($response);
+
+            exec('node node/colors.mjs '. self::getPathJpg($url));
+            $palette = collect(json_decode(file_get_contents(self::getPathJpg($url). '.json'), true));
+            $paletteKeyByName = $palette->keyBy('name');
 
             // dd($modeColors);
             $response = new GetLinkPreviewResponse(
@@ -105,14 +126,19 @@ final class LinkPreview implements LinkPreviewInterface
                 fileData: $fileData,
                 domain: $domain,
                 url: $url,
-                modeColor: $modeColors[0],
-                secondColor: $modeColors[1],
-                thirdColor: $modeColors[2],
-                brightestColor: $brightestColor,
-                darkestColor: $darkestColor,
+                vibrant: $paletteKeyByName['Vibrant']['value'],
+                darkVibrant: $paletteKeyByName['DarkVibrant']['value'],
+                lightVibrant: $paletteKeyByName['LightVibrant']['value'],
+                muted: $paletteKeyByName['Muted']['value'],
+                darkMuted: $paletteKeyByName['DarkMuted']['value'],
+                lightMuted: $paletteKeyByName['LightMuted']['value'],
+                // modeColor: $modeColors[0],
+                // secondColor: $modeColors[1],
+                // thirdColor: $modeColors[2],
+                // brightestColor: $brightestColor,
+                // darkestColor: $darkestColor,
                 tags: $tags
             );
-            $this->store($response);
             // execファイルを削除する
             unlink($execFile);
 
@@ -130,15 +156,21 @@ final class LinkPreview implements LinkPreviewInterface
     private function store(GetLinkPreviewResponse $response): void
     {
         $path = self::getPath($response?->url);
+        $jpg_path = self::getPathJpg($response?->url);
         if (!file_exists($tmp_file_dir = storage_path('app/public/images'))) {
             mkdir($tmp_file_dir, 0777, true);
         }
         StoreImage::store($response?->fileData, $path);
+        StoreImage::store($response?->fileData, $jpg_path);
     }
 
     public static function getPath(string $url): string
     {
         return storage_path('app/public/images'). "/". str_replace('=', '', str_replace('?', '', str_replace(':', '', str_replace('/', '_', $url)))). ".webp";
+    }
+    public static function getPathJpg(string $url): string
+    {
+        return storage_path('app/public/images'). "/". str_replace('=', '', str_replace('?', '', str_replace(':', '', str_replace('/', '_', $url)))). ".jpg";
     }
 
 }

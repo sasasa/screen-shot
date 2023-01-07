@@ -21,11 +21,17 @@ class Site extends Model
         'title',
         'description',
         'body',
-        'mode_color',
-        'second_color',
-        'third_color',
-        'darkest_color',
-        'brightest_color',
+        'vibrant',
+        'dark_vibrant',
+        'light_vibrant',
+        'muted',
+        'dark_muted',
+        'light_muted',
+        // 'mode_color',
+        // 'second_color',
+        // 'third_color',
+        // 'darkest_color',
+        // 'brightest_color',
     ];
 
     protected function domain(): Attribute

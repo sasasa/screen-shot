@@ -46,43 +46,48 @@
             @enderror
         </p>
         <div class="site__item site__colors">
-        <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->mode_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->mode_color }};">
-            {{ $site->mode_color }}
-        </p>
-        <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->second_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->second_color }};">
-            {{ $site->second_color }}
-        </p>
-        <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->third_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->third_color }};">
-            {{ $site->third_color }}
-        </p>
-        <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->darkest_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->darkest_color }};">
-            {{ $site->darkest_color }}
-        </p>
-        <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->brightest_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->brightest_color }};">
-            {{ $site->brightest_color }}
-        </p>
-        <p class="site__tags">
-            <form action="{{ route('system_admin.sites.update_colors', ['site' => $site]) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="flex flex-col gap-y-2">
-                    @foreach (['brown', 'black', 'orange', 'pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'] as $color)
-                    <label class="flex items-center gap-4">
-                        <input class="form-checkbox" name="colors[]" type="checkbox" value="{{ $color }}" @checked($mycolors->contains($color))>{{ $color }}
-                        <input type="number" value="{{ $mycolorsOrders[$color] ?? 0 }}" name="orders[{{ $color }}]" max="100" min="0">
-                    </label>
-                    @endforeach
-                </div>
-                <input class="form-input" type="submit" value="色更新">
-            </form>
-            @error("color")
-                <p class="errorMessage">{{$message}}</p>
-            @enderror
-            @error("order.*")
-                <p class="errorMessage">{{$message}}</p>
-            @enderror
-        </p>
+            <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->light_vibrant)]) style="background-color: #{{ $site->light_vibrant }};">
+            {{ $site->light_vibrant }}
+            </p>
+            <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->vibrant)]) style="background-color: #{{ $site->vibrant }};">
+            {{ $site->vibrant }}
+            </p>
+            <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->dark_vibrant)]) style="background-color: #{{ $site->dark_vibrant }};">
+            {{ $site->dark_vibrant }}
+            </p>
+            <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->light_muted)]) style="background-color: #{{ $site->light_muted }};">
+            {{ $site->light_muted }}
+            </p>
+            <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->muted)]) style="background-color: #{{ $site->muted }};">
+            {{ $site->muted }}
+            </p>
+            <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->dark_muted)]) style="background-color: #{{ $site->dark_muted }};">
+            {{ $site->dark_muted }}
+            </p>
+
+            <p class="site__tags">
+                <form action="{{ route('system_admin.sites.update_colors', ['site' => $site]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="flex flex-col gap-y-2">
+                        @foreach (['brown', 'black', 'orange', 'pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'] as $color)
+                        <label class="flex items-center gap-4">
+                            <input class="form-checkbox" name="colors[]" type="checkbox" value="{{ $color }}" @checked($mycolors->contains($color))>{{ $color }}
+                            <input type="number" value="{{ $mycolorsOrders[$color] ?? 0 }}" name="orders[{{ $color }}]" max="100" min="0">
+                        </label>
+                        @endforeach
+                    </div>
+                    <input class="form-input" type="submit" value="色更新">
+                </form>
+                @error("color")
+                    <p class="errorMessage">{{$message}}</p>
+                @enderror
+                @error("order.*")
+                    <p class="errorMessage">{{$message}}</p>
+                @enderror
+            </p>
         </div>
+
         <div class="site__actions">
             <a class="form-input inline-block mb-2 destroy" href="{{ route('system_admin.sites.destroy', ['site' => $site]) }}">削除</a>
         </div>

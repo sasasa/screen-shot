@@ -91,20 +91,23 @@
     @endforelse
   </p>
   <div class="site__item site__colors">
-    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->mode_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->mode_color }};">
-      {{ $site->mode_color }}
+    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->light_vibrant)]) style="background-color: #{{ $site->light_vibrant }};">
+      {{ $site->light_vibrant }}
     </p>
-    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->second_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->second_color }};">
-      {{ $site->second_color }}
+    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->vibrant)]) style="background-color: #{{ $site->vibrant }};">
+      {{ $site->vibrant }}
     </p>
-    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->third_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->third_color }};">
-      {{ $site->third_color }}
+    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->dark_vibrant)]) style="background-color: #{{ $site->dark_vibrant }};">
+      {{ $site->dark_vibrant }}
     </p>
-    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->darkest_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->darkest_color }};">
-      {{ $site->darkest_color }}
+    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->light_muted)]) style="background-color: #{{ $site->light_muted }};">
+      {{ $site->light_muted }}
     </p>
-    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->brightest_color)]) style="border: 1px solid #333; width: 100px; height: 100px; background-color: #{{ $site->brightest_color }};">
-      {{ $site->brightest_color }}
+    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->muted)]) style="background-color: #{{ $site->muted }};">
+      {{ $site->muted }}
+    </p>
+    <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->dark_muted)]) style="background-color: #{{ $site->dark_muted }};">
+      {{ $site->dark_muted }}
     </p>
     <p class="site__tags">
       @foreach ($site->site_colors->map(fn($c) => $c->color) as $color)

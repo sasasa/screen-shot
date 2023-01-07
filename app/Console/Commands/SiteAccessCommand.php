@@ -33,7 +33,7 @@ class SiteAccessCommand extends Command
     public function handle(LinkPreviewInterface $linkPreview, SiteUpdateWithTags $usecase)
     {
         $this->line("start site:access");
-        Site::query()->whereNull('mode_color')->each(function($site) use($linkPreview, $usecase){
+        Site::query()->whereNull('vibrant')->each(function($site) use($linkPreview, $usecase){
             try {
                 $response = $linkPreview->get($site->url);
                 $s = $usecase($response);
