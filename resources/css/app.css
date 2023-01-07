@@ -181,6 +181,10 @@ h3 {
   word-wrap: break-word;
   line-break: anywhere;
 }
+.site__item {
+  word-wrap: break-word;
+  line-break: anywhere;
+}
 .site__img img {
   aspect-ratio: 125 / 87;
   object-fit: cover;
