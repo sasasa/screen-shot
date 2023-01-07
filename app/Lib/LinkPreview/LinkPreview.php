@@ -100,7 +100,7 @@ final class LinkPreview implements LinkPreviewInterface
  
             $this->store($url, $fileData);
 
-            exec('node node/colors.mjs '. self::getPathJpg($url));
+            exec('node '. base_path(). '/node/colors.mjs '. self::getPathJpg($url), $output, $return_var);
             $palette = collect(json_decode(file_get_contents(self::getPathJpg($url). '.json'), true));
             $paletteKeyByName = $palette->keyBy('name');
 
