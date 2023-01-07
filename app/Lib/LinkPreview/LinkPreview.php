@@ -29,12 +29,12 @@ final class LinkPreview implements LinkPreviewInterface
             if($i > 10) {
                 // ファイルを読み取り時間を取得
                 $time = Carbon::createFromTimeString(file_get_contents($execFile));
-                if(now()->diffInMinutes($time) > 3) {
-                    // 2分以上経過していたら削除
+                if(now()->diffInMinutes($time) >= 3) {
+                    // 3分以上経過していたら削除
                     unlink($execFile);
                     break;
                 }
-                // 10回以上ループ55秒経過したらエラー
+                // 10回以上ループ55秒経過したらエラーで一旦返す
                 throw new LinkPreviewRuntimeException('ScreenShot exec file is exists');
             }
         }
