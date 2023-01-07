@@ -234,6 +234,21 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://nikuya-oishi.co.jp/',
             ],
+            [
+                'url' => 'https://www.dosuika.com/',
+            ],
+            [
+                'url' => 'https://www.clorets.jp/index.html',
+            ],
+            [
+                'url' => 'https://ca-base-next.cyberagent.co.jp/2022/',
+            ],
+            [
+                'url' => 'https://uekishun.com/',
+            ],
+            [
+                'url' => 'https://nagoya.parco.jp/page/gyoza/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
