@@ -33,8 +33,11 @@ class AdminSidebar extends Component
             $q->where('site_tag.site_id', '>=', '1');
         })->latest()->limit(30)->get();
         return view('components.admin.sidebar', [
+            // 新着サイト
             'sites' => $sites,
+            // 新着タグ
             'tags' => $tags,
+            // お問合せ未完了のもの
             'contacts' => $contacts,
         ]);
     }
