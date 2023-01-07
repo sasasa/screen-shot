@@ -97,22 +97,8 @@ final class LinkPreview implements LinkPreviewInterface
             // $senseOfColor = new SenseOfColor($fileData);
             // $modeColors = $senseOfColor->getTreeTypicalColors();
             // [$brightestColor, $darkestColor] = $senseOfColor->getBestColor();
-            $response = new GetLinkPreviewResponse(
-                title: $title,
-                description: mb_strimwidth($description, 0, 255, '…'),
-                body: $body,
-                fileData: $fileData,
-                domain: $domain,
-                url: $url,
-                vibrant: '',
-                darkVibrant: '',
-                lightVibrant: '',
-                muted: '',
-                darkMuted: '',
-                lightMuted: '',
-                tags: $tags
-            );
-            $this->store($response);
+ 
+            $this->store($url, $fileData);
 
             exec('node node/colors.mjs '. self::getPathJpg($url));
             $palette = collect(json_decode(file_get_contents(self::getPathJpg($url). '.json'), true));
@@ -151,17 +137,20 @@ final class LinkPreview implements LinkPreviewInterface
     }
 
     /**
-     * @param GetLinkPreviewResponse $response
+     * 画像を保存する
+     * @param string $url
+     * @param string $fileData
+     * @return void
      */
-    private function store(GetLinkPreviewResponse $response): void
+    private function store(string $url, string $fileData): void
     {
-        $path = self::getPath($response?->url);
-        $jpg_path = self::getPathJpg($response?->url);
+        $path = self::getPath($url);
+        $jpg_path = self::getPathJpg($url);
         if (!file_exists($tmp_file_dir = storage_path('app/public/images'))) {
             mkdir($tmp_file_dir, 0777, true);
         }
-        StoreImage::store($response?->fileData, $path);
-        StoreImage::store($response?->fileData, $jpg_path);
+        StoreImage::store($fileData, $path);
+        StoreImage::store($fileData, $jpg_path);
     }
 
     public static function getPath(string $url): string
