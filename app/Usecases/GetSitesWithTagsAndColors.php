@@ -22,7 +22,7 @@ final class GetSitesWithTagsAndColors
                         $join->where('site_colors.color', '=', $color);
                     })->join('site_tag', function (JoinClause $join) use($tag){
                         $join->on('site_tag.site_id', '=', 'sites.id');
-                        $join->where('site_tag.tag_id', '=', Tag::where('name', $tag)->select('id')->first()->id);
+                        $join->whereRaw('site_tag.tag_id = (SELECT tags.id FROM tags WHERE tags.name = ?)', [$tag]);
                     })
                     ->orderBy('site_colors.order', 'DESC');
                 } else {
@@ -51,7 +51,7 @@ final class GetSitesWithTagsAndColors
             if($favorites) {
                 $query = $user->sites()->with(['tags', 'site_colors'])->withCount('users')->join('site_tag', function (JoinClause $join) use($tag){
                     $join->on('site_tag.site_id', '=', 'sites.id');
-                    $join->where('site_tag.tag_id', '=', Tag::where('name', $tag)->select('id')->first()->id);
+                    $join->whereRaw('site_tag.tag_id = (SELECT tags.id FROM tags WHERE tags.name = ?)', [$tag]);
                 })
                 ->orderBy('sites.id', 'DESC');
             } else {
