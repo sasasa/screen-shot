@@ -249,6 +249,12 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://nagoya.parco.jp/page/gyoza/',
             ],
+            [
+                'url' => 'https://www.kyotobank.co.jp/',
+            ],
+            [
+                'url' => 'http://www.jyukai.com/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
