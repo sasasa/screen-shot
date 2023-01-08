@@ -72,24 +72,6 @@
       <img src="{{ asset("storage/images/$site->imgsrc") }}" width="500" height="348" alt="{{ $site->title }}">
     </a>
   </p>
-  <p class="site__item site__url">
-    <a href="{{ $site->url }}" target="_brank">
-      {{ $site->url }}
-    </a>
-  </p>
-  <p class="site__item site__title">
-    {{ $site->title }}
-  </p>
-  <p class="site__item site__description">
-    {{ $site->description }}
-  </p>
-  <p class="site__item site__tags">
-    @forelse ($site->tags->map(fn($tag) => $tag->name ) as $tag)
-      <a href="{{ route('sites.index', ['tag' => $tag, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tag">{{ $tag }}</a>
-    @empty
-      タグはありません。
-    @endforelse
-  </p>
   <div class="site__item site__colors">
     <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->light_vibrant)]) style="background-color: #{{ $site->light_vibrant }};">
       {{ $site->light_vibrant }}
@@ -109,6 +91,8 @@
     <p @class(['color', 'text-white' => $colorPresenter->isTextColorWhite($site->dark_muted)]) style="background-color: #{{ $site->dark_muted }};">
       {{ $site->dark_muted }}
     </p>
+  </div>
+  <div class="site__item site__color_tags">
     <p class="site__tags">
       @foreach ($site->site_colors->map(fn($c) => $c->color) as $color)
         <a href="{{ route('sites.index', ['color' => $color, 'tag' => request()->tag,  'favorites' => request()->favorites]) }}">
@@ -117,6 +101,25 @@
       @endforeach
     </p>
   </div>
+  <p class="site__item site__url">
+    <a href="{{ $site->url }}" target="_brank">
+      {{ $site->url }}
+    </a>
+  </p>
+  <p class="site__item site__title">
+    {{ $site->title }}
+  </p>
+  <p class="site__item site__description">
+    {{ $site->description }}
+  </p>
+  <p class="site__item site__tags">
+    @forelse ($site->tags->map(fn($tag) => $tag->name ) as $tag)
+      <a href="{{ route('sites.index', ['tag' => $tag, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tag">{{ $tag }}</a>
+    @empty
+      タグはありません。
+    @endforelse
+  </p>
+
   <div class="site__item site__contact">
     <a href="{{ route('contact_us', ['site_id' => $site->id]) }}">問題を知らせる</a>
   </div>

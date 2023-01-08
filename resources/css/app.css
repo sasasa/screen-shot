@@ -84,12 +84,7 @@ h3 {
 /*
 サイト一覧
 */
-.site__colors {
-  /* グリッドで3列になる */
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
+
 .color {
   border: 1px solid #333;
   /* width: 80px; */
@@ -193,6 +188,12 @@ h3 {
   user-select: none;
 }
 .site__colors {
+  /* margin-top: auto; */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.site__contact {
   margin-top: auto;
 }
 .site__tags {
