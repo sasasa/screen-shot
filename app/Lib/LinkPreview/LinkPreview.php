@@ -82,9 +82,22 @@ final class LinkPreview implements LinkPreviewInterface
                     $data = preg_replace('#^data:image/\w+;base64,#i' , '' , $image);
                     $fileData = base64_decode($data);
                 } else {
-                    // execファイルを削除する
-                    unlink($execFile);
-                    throw new LinkPreviewRuntimeException('image cant get: '. $url);
+                    // httpsでは失敗するのでhttpで試す
+                    $parsed_url = parse_url($url);
+                    $domain = $parsed_url['host'];
+                    $path = $parsed_url['path'];
+                    $url = 'http://'. $domain. $path;
+                    if($image = @file_get_contents("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$url&screenshot=true", false, $options)){
+                        //ここにコンテンツの取得が成功した場合の処理
+                        $image = json_decode($image, true);
+                        $image = $image["lighthouseResult"]["audits"]["final-screenshot"]["details"]["data"];
+                        $data = preg_replace('#^data:image/\w+;base64,#i' , '' , $image);
+                        $fileData = base64_decode($data);
+                    } else {
+                        // execファイルを削除する
+                        unlink($execFile);
+                        throw new LinkPreviewRuntimeException('image cant get: '. $url);
+                    }
                 }
             }
         }
