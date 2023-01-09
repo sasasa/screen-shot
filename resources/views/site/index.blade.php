@@ -57,7 +57,7 @@
     </form>
   </div>
 </div>
-<div class="nav_links">
+<div @class(['nav_links', 'text-white' => $colorPresenter->isTextColorWhite($background_color)])>
   {{ $sites->onEachSide(1)->links() }}
 </div>
 <div class="sites-container">
