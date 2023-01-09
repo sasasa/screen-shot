@@ -255,6 +255,45 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'http://www.jyukai.com/',
             ],
+            [
+                'url' => 'https://e-vidal.jp/',
+            ],
+            [
+                'url' => 'https://www.pocky.jp/',
+            ],
+            [
+                'url' => 'https://www.japanpost.jp/',
+            ],
+            [
+                'url' => 'https://www.natori.co.jp/',
+            ],
+            [
+                'url' => 'https://parm-ice.jp/',
+            ],
+            [
+                'url' => 'https://www.chiba-u.ac.jp/',
+            ],
+            [
+                'url' => 'https://slim.co.jp/',
+            ],
+            [
+                'url' => 'https://www.mlit.go.jp/kankocho/',
+            ],
+            [
+                'url' => 'https://www.consuldent.jp/recruitment/',
+            ],
+            [
+                'url' => 'https://ouc.daishodai.ac.jp/daisho12/',
+            ],
+            [
+                'url' => 'https://www.kinasse-yatsushiro.jp/myoken/',
+            ],
+            [
+                'url' => 'https://www.anniversal.jp/',
+            ],
+            [
+                'url' => 'https://www.prints21.co.jp/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
