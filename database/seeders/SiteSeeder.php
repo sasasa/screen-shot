@@ -294,6 +294,21 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://www.prints21.co.jp/',
             ],
+            [
+                'url' => 'https://www.first-kitchen.co.jp/',
+            ],
+            [
+                'url' => 'https://hp.brs.nihon-u.ac.jp/~fbs/',
+            ],
+            [
+                'url' => 'https://shop.fruoats.jp/',
+            ],
+            [
+                'url' => 'http://urecyworks.com/',
+            ],
+            [
+                'url' => 'https://www.city.iyo.lg.jp/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
