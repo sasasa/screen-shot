@@ -28,6 +28,17 @@
         <footer class="footer">
             <div class="flex justify-center flex-wrap gap-x-3 m-2">
                 <a href="{{ route('contact_us') }}">お問い合わせ</a>
+                {{-- ログインしていないときはログインリンク --}}
+                @guest('production')
+                    <a href="{{ route('production.login') }}">Web制作会社ログイン</a>
+                @endguest
+                {{-- ログインしているときはログアウトリンク --}}
+                @auth('production')
+                    <form method="POST" action="{{ route('production.logout') }}">
+                        @csrf
+                        <a href="{{ route('production.logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">ログアウト</a>
+                    </form>
+                @endauth
                 <a href="{{ route('terms') }}">利用規約</a>
                 <a href="{{ route('privacy') }}">プライバシーポリシー</a>
             </div>

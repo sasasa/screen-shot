@@ -64,4 +64,9 @@ class Site extends Model
     {
         return $this->hasMany('App\Models\Contact', 'site_id', 'id');
     }
+
+    public function production()
+    {
+        return $this->belongsTo('App\Models\Production', 'production_id', 'id');
+    }
 }

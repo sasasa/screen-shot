@@ -18,6 +18,8 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/system_admin/sites';
+    public const PRODUCTION_HOME = '/production/create';
+    public const ADMIN_HOME = '/system_admin/sites';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

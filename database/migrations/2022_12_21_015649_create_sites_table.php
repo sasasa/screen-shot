@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('muted')->nullable();
             $table->string('dark_muted')->nullable();
             $table->string('light_muted')->nullable();
+            $table->foreignId('production_id')->nullable();
             // $table->string('mode_color')->comment('1番目に使われている色')->nullable();
             // $table->string('second_color')->comment('2番目に使われている色')->nullable();
             // $table->string('third_color')->comment('3番目に使われている色')->nullable();

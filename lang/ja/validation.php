@@ -162,6 +162,21 @@ return [
         'subject' => '件名',
         'message' => '本文',
         'word' => 'NGワード',
+        'email' => 'Email',
+        'password' => 'パスワード',
+
+        'company_type' => '会社形態',
+        'name' => '会社名',
+        'kana' => '会社名カナ',
+        'representative' => '代表者',
+        'postal' => '郵便番号',
+        'address' => '住所',
+        'phone' => '電話番号',
+        'inquiry_email' => 'お問い合わせ先Email',
+        'url' => 'ホームページURL',
+        'staff' => 'スタッフ数',
+        'achievement' => '主な実績',
+        'introduction' => '会社概要',
     ],
 
 ];

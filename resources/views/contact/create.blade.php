@@ -8,10 +8,10 @@
     <div class="inputbox">
       <div class="inputbox__inner">
         @if($site)
-          {{ $site->title }}について問題を知らせる。
-        @else
-        ご意見・ご感想をお聞かせください。
+          {{ $site->title }}について<br>
         @endif
+        ご意見・ご要望、サムネイル画像差し替え依頼、色の変更依頼、サイトの削除依頼、タグの変更依頼、
+        などがありましたら以下のフォームから送信してください。
       </div>
       <div class="inputbox__inner flex flex-col">
         <label class="inputbox__item inputbox__label" for="subject">件名</label>
