@@ -161,6 +161,7 @@ return [
         'tags' => 'タグ',
         'subject' => '件名',
         'message' => '本文',
+        'word' => 'NGワード',
     ],
 
 ];

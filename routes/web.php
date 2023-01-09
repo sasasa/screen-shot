@@ -6,6 +6,7 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\SiteController as AdminSiteController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\NgWordController as AdminNgWordController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\PrivacyController;
@@ -29,23 +30,26 @@ Route::group(['prefix' => 'system_admin', 'middleware' => ['guest:admin']], func
     Route::get('/login', [LoginController::class, 'login'])->name('system_admin.login');
     Route::post('/login', [LoginController::class, 'authenticate'])->name('system_admin.authenticate');
 });
-Route::group(['prefix' => 'system_admin', 'middleware' => ['auth:admin', 'login_require', ]], function () {
+Route::group(['as' => 'system_admin.', 'prefix' => 'system_admin', 'middleware' => ['auth:admin', 'login_require', ]], function () {
     // サイト管理
-    Route::get('/sites', [AdminSiteController::class, 'index'])->name('system_admin.sites.index');
-    Route::delete('/sites/{site}', [AdminSiteController::class, 'destroy'])->name('system_admin.sites.destroy');
-    Route::put('/sites/{site}', [AdminSiteController::class, 'update'])->name('system_admin.sites.update');
-    Route::put('/sites/{site}/colors', [AdminSiteController::class, 'update_colors'])->name('system_admin.sites.update_colors');
-    Route::put('/sites/{site}/tags', [AdminSiteController::class, 'update_tags'])->name('system_admin.sites.update_tags');
-    Route::put('/sites/{site}/crawl', [AdminSiteController::class, 'crawl'])->name('system_admin.sites.crawl');
-    Route::get('/sites/{site}/edit', [AdminSiteController::class, 'edit'])->name('system_admin.sites.edit');
+    Route::get('/sites', [AdminSiteController::class, 'index'])->name('sites.index');
+    Route::delete('/sites/{site}', [AdminSiteController::class, 'destroy'])->name('sites.destroy');
+    Route::put('/sites/{site}', [AdminSiteController::class, 'update'])->name('sites.update');
+    Route::put('/sites/{site}/colors', [AdminSiteController::class, 'update_colors'])->name('sites.update_colors');
+    Route::put('/sites/{site}/tags', [AdminSiteController::class, 'update_tags'])->name('sites.update_tags');
+    Route::put('/sites/{site}/crawl', [AdminSiteController::class, 'crawl'])->name('sites.crawl');
+    Route::get('/sites/{site}/edit', [AdminSiteController::class, 'edit'])->name('sites.edit');
 
     // お問い合わせ
-    Route::get('/contacts', [AdminContactController::class, 'index'])->name('system_admin.contacts.index');
-    Route::get('/contacts/{contact}', [AdminContactController::class, 'show'])->name('system_admin.contacts.show');
-    Route::put('/contacts/{contact}', [AdminContactController::class, 'update'])->name('system_admin.contacts.update');
+    Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{contact}', [AdminContactController::class, 'show'])->name('contacts.show');
+    Route::put('/contacts/{contact}', [AdminContactController::class, 'update'])->name('contacts.update');
+
+    // NGワード
+    Route::resource('ng_words', AdminNgWordController::class);
 
     // ログアウト
-    Route::post('/logout', [LoginController::class, 'logout'])->name('system_admin.logout');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 // お問い合わせ

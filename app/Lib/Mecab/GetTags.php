@@ -3,19 +3,13 @@ namespace App\Lib\Mecab;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-
+use App\Models\NgWord;
 final class GetTags {
     private const API_URL = "https://jlp.yahooapis.jp/JIMService/V2/conversion";
-    private const NG_WORDS = [
-        'こと',
-        'ため',
-        'もの',
-        'よし',
-        'コチラ',
-        'こちら',
-    ];
+    private array $ng_words = [];
 
     public function __construct(readonly public string $text) {
+        $this->ng_words = NgWord::all()->pluck('word')->toArray();
     }
 
     public function getTags(): \Illuminate\Support\Collection {
@@ -41,7 +35,7 @@ final class GetTags {
                     ];
                 })
                 ->filter(function($item) {
-                    if(in_array($item['surface'], self::NG_WORDS)) {
+                    if(in_array($item['surface'], $this->ng_words)) {
                         // NGワードは除外
                         return false;
                     }
