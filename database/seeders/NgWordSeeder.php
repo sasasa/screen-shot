@@ -35,13 +35,22 @@ class NgWordSeeder extends Seeder
                 'word' => 'ちんこ',
             ],
             [
+                'word' => 'おちんこ',
+            ],
+            [
                 'word' => 'ちんぽ',
+            ],
+            [
+                'word' => 'おちんぽ',
             ],
             [
                 'word' => 'アナル',
             ],
             [
                 'word' => 'まんこ',
+            ],
+            [
+                'word' => 'おまんこ',
             ],
             [
                 'word' => 'おめこ',
