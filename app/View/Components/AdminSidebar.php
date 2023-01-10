@@ -26,7 +26,7 @@ class AdminSidebar extends Component
      */
     public function render()
     {
-        $contacts = Contact::query()->with('site')->where('is_done', false)->latest()->limit(10)->get();
+        $contacts = Contact::query()->with('site')->where('is_done', false)->latest()->limit(100)->get();
         $sites = Site::query()->with('tags')->withCount('users')->latest()->limit(10)->get();
         $tags = Tag::query()->whereHas('site_tag', function($q) {
             // サイトの数が1以上のタグのみを取得

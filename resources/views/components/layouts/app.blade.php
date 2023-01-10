@@ -34,6 +34,7 @@
                 @endguest
                 {{-- ログインしているときはログアウトリンク --}}
                 @auth('production')
+                <a href="{{ route('production.create') }}">Web制作会社管理ページ</a>
                     <form method="POST" action="{{ route('production.logout') }}">
                         @csrf
                         <a href="{{ route('production.logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">ログアウト</a>

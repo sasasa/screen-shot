@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\SiteUserController;
+use App\Http\Controllers\Api\InquiryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,3 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/likes', [SiteUserController::class, 'likes']);
 Route::delete('/likes', [SiteUserController::class, 'unlikes']);
+
+// phone
+Route::post('/inquiries/phone', [InquiryController::class, 'phone']);
+// mail
+Route::post('/inquiries/mail', [InquiryController::class, 'mail']);

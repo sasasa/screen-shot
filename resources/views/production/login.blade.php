@@ -2,7 +2,6 @@
   <x-slot name="title">Web制作会社ログイン</x-slot>
   @slot('users_sites', $users_sites)
   <x-message />
-  <h2>Web制作会社ログイン</h2>
   @if ($errors->any())
     <div class="alert alert-error">
   @foreach ($errors->all() as $error)
@@ -13,6 +12,7 @@
   <form method="POST">
     @csrf
     <div class="inputbox">
+      <h2>Web制作会社ログイン</h2>
       <div class="inputbox__inner">
         まずは<a href="{{ route('production.register') }}">こちら</a>から登録していただくと、Web制作会社としてログインが出来るようになります。
       </div>

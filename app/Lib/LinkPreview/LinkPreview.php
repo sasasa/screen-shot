@@ -9,6 +9,7 @@ use thiagoalessio\TesseractOCR\TesseractOCR;
 use App\Lib\Mecab\GetTags;
 use App\Lib\InterventionImage\StoreImage;
 use Carbon\Carbon;
+use App\Models\Production;
 
 final class LinkPreviewRuntimeException extends RuntimeException{}
 final class LinkPreview implements LinkPreviewInterface
@@ -46,6 +47,7 @@ final class LinkPreview implements LinkPreviewInterface
         $domain = $parsed_url['host'];
         $path = $parsed_url['path'];
         $url = 'https://'. $domain. $path;
+        $url_domain = 'https://'. $domain;
         // $fileData = ScreenShot::getScreenshot($url);
         $header = [
             "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0",
@@ -87,6 +89,7 @@ final class LinkPreview implements LinkPreviewInterface
                     $domain = $parsed_url['host'];
                     $path = $parsed_url['path'];
                     $url = 'http://'. $domain. $path;
+                    $url_domain = 'http://'. $domain;
                     if($image = @file_get_contents("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$url&screenshot=true", false, $options)){
                         //ここにコンテンツの取得が成功した場合の処理
                         $image = json_decode($image, true);
@@ -107,6 +110,16 @@ final class LinkPreview implements LinkPreviewInterface
             $body = mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('body', 0)->plaintext));
             $tags = (new GetTags($title. $description. $body))->getTags();
 
+            $production_code = $dom->find('meta[name=production]', 0)?->content;
+            if(empty($production_code)) {
+                // ドメイン直下からproduction.jsonを取得する
+                $production_code = @file_get_contents($url_domain. "/production.json", false, $options);
+                if($production_code) {
+                    $production_code = json_decode($production_code, true)['production'];
+                }
+            }
+            $production = Production::where('register_url', $production_code)->first();
+
             // $senseOfColor = new SenseOfColor($fileData);
             // $modeColors = $senseOfColor->getTreeTypicalColors();
             // [$brightestColor, $darkestColor] = $senseOfColor->getBestColor();
@@ -119,6 +132,7 @@ final class LinkPreview implements LinkPreviewInterface
 
             // dd($modeColors);
             $response = new GetLinkPreviewResponse(
+                production_id: $production?->id,
                 title: $title,
                 description: mb_strimwidth($description, 0, 255, '…'),
                 body: $body,

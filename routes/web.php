@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ProductionLoginController;
 use App\Http\Controllers\Admin\SiteController as AdminSiteController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\NgWordController as AdminNgWordController;
+use App\Http\Controllers\Production\SiteController as ProductionSiteController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\PrivacyController;
@@ -44,6 +45,8 @@ Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => [
 Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => ['auth:production']], function () {
     // ログアウト
     Route::post('/logout', [ProductionLoginController::class, 'logout'])->name('logout');
+    // サイト削除
+    Route::delete('/sites/{site}', [ProductionSiteController::class, 'destroy'])->name('sites.destroy');
 });
 Route::group(['middleware' => ['auth:production']], function () {
     Route::resource('production', ProductionController::class);

@@ -8,6 +8,7 @@ final class MockLinkPreview implements LinkPreviewInterface
         $parsed_url = parse_url($url);
         $domain = $parsed_url['host'];
         return new GetLinkPreviewResponse(
+            production_id: null,
             url: $url,
             domain: $domain,
             title: 'モックのタイトル',

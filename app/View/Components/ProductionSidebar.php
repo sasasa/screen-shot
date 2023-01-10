@@ -7,7 +7,8 @@ use App\Models\Site;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Contact;
-
+use App\Models\Inquiry;
+use Illuminate\Support\Facades\Auth;
 class ProductionSidebar extends Component
 {
     /**
@@ -26,11 +27,13 @@ class ProductionSidebar extends Component
      */
     public function render()
     {
-        $contacts = Contact::query()->with('site')->where('is_done', false)->latest()->limit(10)->get();
-
+        // 今月のお問合せ
+        $inquiries = Inquiry::where('production_id', Auth::guard('production')->user()->id)->whereMonth('created_at', date('m'))->get();
+        // 先月のお問合せ
+        $inquiries_last_month = Inquiry::where('production_id', Auth::guard('production')->user()->id)->whereMonth('created_at', date('m', strtotime('-1 month')))->get();
         return view('components.production.sidebar', [
-            // お問合せ未完了のもの
-            'contacts' => $contacts,
+            'inquiries' => $inquiries,
+            'inquiries_last_month' => $inquiries_last_month,
         ]);
     }
 }

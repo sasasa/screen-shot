@@ -1,11 +1,10 @@
 <x-layouts.app>
   <x-slot name="title">Web制作会社登録</x-slot>
   @slot('users_sites', $users_sites)
-  <h2>Web制作会社登録</h2>
   <form method="POST">
     @csrf
-
     <div class="inputbox">
+      <h2>Web制作会社登録</h2>
       <div class="inputbox__inner">
         メールアドレスにURLを送信しますので受信可能なアドレスをご入力ください。
       </div>

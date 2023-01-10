@@ -120,6 +120,14 @@
     @endforelse
   </p>
 
+  @if($site->production)
+  <div class="site__item site__production">
+    {{ $site->production->name }}が作成したサイトです。<br>
+    この会社に<a data-siteid="{{ $site->id }}" class="phoneBtn" href="tel:{{ $site->production->phone }}">電話する</a><br>
+    この会社に<a data-siteid="{{ $site->id }}" class="mailBtn" href="mailto:{{ $site->production->inquiry_email }}?subject={{ rawurlencode('Beautiful Site Listを見てメールしました。') }}">メールする</a>
+  </div>
+  @endif
+
   <div class="site__item site__contact">
     <a href="{{ route('contact_us', ['site_id' => $site->id]) }}">問題を知らせる</a>
   </div>
@@ -135,6 +143,43 @@
 @once
 @push('scripts')
 <script type="module">
+  /* mailBtnが押されたらaxiosでサーバーにデータを送る */
+  const mailBtns = document.querySelectorAll('.mailBtn');
+  mailBtns.forEach((mailBtn) => {
+    mailBtn.addEventListener('click', (e) => {
+      const siteId = e.target.dataset.siteid;
+      axios.post('/api/inquiries/mail', {
+        site_id: siteId
+      })
+      .then((response) => {
+        // console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    });
+  });
+
+
+
+
+  /* phoneBtnが押されたらaxiosでサーバーにデータを送る */
+  const phoneBtns = document.querySelectorAll('.phoneBtn');
+  phoneBtns.forEach((phoneBtn) => {
+    phoneBtn.addEventListener('click', (e) => {
+      const siteId = e.target.dataset.siteid;
+      axios.post('/api/inquiries/phone', {
+        site_id: siteId
+      })
+      .then((response) => {
+        // console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    });
+  });
+
   /* Mapのkeyとvalueを逆にする */
   const reverseMap = (map) => {
     const reverseMap = new Map();

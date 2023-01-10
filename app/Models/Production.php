@@ -26,6 +26,11 @@ class Production extends Authenticatable
         return $this->hasMany(Site::class);
     }
 
+    public function inquiries()
+    {
+        return $this->hasMany(Inquiry::class);
+    }
+
     public static function createWithUrl($data)
     {
         $result = array_merge($data, [

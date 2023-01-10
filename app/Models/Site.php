@@ -17,6 +17,7 @@ class Site extends Model
     ];
 
     protected $fillable = [
+        'production_id',
         'url',
         'title',
         'description',
@@ -68,5 +69,10 @@ class Site extends Model
     public function production()
     {
         return $this->belongsTo('App\Models\Production', 'production_id', 'id');
+    }
+
+    public function inquiries()
+    {
+        return $this->hasMany('App\Models\Inquiry', 'site_id', 'id');
     }
 }

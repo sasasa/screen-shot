@@ -28,11 +28,11 @@
               </a>
           </div>
           <div class="site__created_at">{{ $site->created_at }}</div>
-          <div class="site__edit">
-              <a class="edit" href="{{ route('system_admin.sites.edit', ['site' => $site]) }}">編集</a>
+          <div class="site__item site__contact">
+            <a href="{{ route('contact_us', ['site_id' => $site->id]) }}">問題を知らせる</a>
           </div>
           <div class="site__actions">
-              <a class="destroy" href="{{ route('system_admin.sites.destroy', ['site' => $site]) }}">削除</a>
+              <a class="destroy" href="{{ route('production.sites.destroy', ['site' => $site]) }}">削除</a>
           </div>
       </div>
     @empty
@@ -52,9 +52,13 @@
   @once
   @push('scripts')
   <script type="module">
+    // 会社情報を変更するボタンを押したらフォームを表示する
     const showForm = document.querySelector('.showForm');
     showForm.addEventListener('click', () => {
         showForm.style.display = 'none';
+        // showForm親のinputboxも消す
+        const inputBox = showForm.parentNode;
+        inputBox.style.display = 'none';
         const formBox = document.getElementById('form_box');
         formBox.style.display = 'block';
     });

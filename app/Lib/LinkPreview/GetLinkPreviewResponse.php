@@ -4,6 +4,7 @@ namespace App\Lib\LinkPreview;
 final class GetLinkPreviewResponse
 {
     public function __construct(
+        readonly public ?string $production_id,
         readonly public string $url,
         readonly public string $domain,
         readonly public string $title,
@@ -26,6 +27,7 @@ final class GetLinkPreviewResponse
 
     public function toArray(): array {
         return [
+            'production_id' => $this->production_id,
             'url' => $this->url,
             'title' => $this->title,
             'description' => $this->description,
