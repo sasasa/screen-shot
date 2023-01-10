@@ -15,6 +15,7 @@ use App\Usecases\SiteCreateWithTags;
 use App\Usecases\CreateTagCloud;
 use App\Models\Tag;
 use App\Models\User;
+use App\Services\IpService;
 use Illuminate\Support\Str;
 use App\Usecases\ChooseColor;
 use App\Usecases\GetSitesWithTagsAndColors;
@@ -23,7 +24,7 @@ class SiteController extends Controller
 {
     public function tags(Request $request, CreateTagCloud $usecase, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
-        $user = $findOrCreateUserUseCase($request->cookie('userid'));
+        $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
 
         return response()->view('site.tags', [
             'tags' => $usecase(),
@@ -39,7 +40,7 @@ class SiteController extends Controller
      */
     public function index(Request $request, GetSitesWithTagsAndColors $getSitesUsecase, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
-        $user = $findOrCreateUserUseCase($request->cookie('userid'));
+        $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
 
         return response()->view('site.index', [
             'background_color' => ChooseColor::choose($request->color),
@@ -56,7 +57,8 @@ class SiteController extends Controller
      */
     public function create(Request $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
-        $user = $findOrCreateUserUseCase($request->cookie('userid'));
+        $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
+        // dd($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
 
         return response()->view('site.create', [
             'background_color' => ChooseColor::choose($request->color),

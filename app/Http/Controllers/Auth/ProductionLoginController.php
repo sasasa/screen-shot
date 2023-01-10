@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Production;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendProductionMail;
+use App\Services\IpService;
 use App\Usecases\FindOrCreateUserByCookie;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -33,7 +34,7 @@ class ProductionLoginController extends Controller
     public function login(Request $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
         if($request->isMethod('get')) {
-            $user = $findOrCreateUserUseCase($request->cookie('userid'));
+            $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
             return view('production.login', [
                 'users_sites' => $user->sites->pluck('id')->toArray(),
             ]);
@@ -52,7 +53,7 @@ class ProductionLoginController extends Controller
     public function register(Request $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
         if($request->isMethod('get')) {
-            $user = $findOrCreateUserUseCase($request->cookie('userid'));
+            $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
             return view('production.register', [
                 'users_sites' => $user->sites->pluck('id')->toArray(),
             ]);

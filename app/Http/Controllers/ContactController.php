@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
 use App\Models\Site;
 use App\Models\User;
+use App\Services\IpService;
 use App\Usecases\FindOrCreateUserByCookie;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,7 @@ class ContactController extends Controller
      */
     public function create(Request $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
-        $user = $findOrCreateUserUseCase($request->cookie('userid'));
+        $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
         if($request->site_id) {
             $site = Site::find($request->site_id);
         }
@@ -48,7 +49,7 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
-        $user = $findOrCreateUserUseCase($request->cookie('userid'));
+        $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
         Contact::create([
             'uuid' => $user->uuid,
             'site_id' => $request->site_id,
