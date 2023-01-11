@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ProductionLoginController;
 use App\Http\Controllers\Admin\SiteController as AdminSiteController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\NgWordController as AdminNgWordController;
+use App\Http\Controllers\Admin\ProductionController as AdminProductionController;
 use App\Http\Controllers\Production\SiteController as ProductionSiteController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TermsController;
@@ -27,20 +28,31 @@ Route::redirect('/', '/sites', 301);
 
 Route::get('/sites/tags', [SiteController::class, 'tags'])->name('sites.tags');
 Route::resource('sites', SiteController::class);
+// お問い合わせ
+Route::resource('contacts', ContactController::class);
+Route::get('/contact_us', [ContactController::class, 'create'])->name('contact_us');
+// 利用規約
+Route::get('/terms', [TermsController::class, 'index'])->name('terms');
+// プライバシーポリシー
+Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy');
+Route::get('/screen_shot/{url}', ScreenShotController::class)->where(['url' => '.*']);
 
-Route::group(['as' => 'system_admin.', 'prefix' => 'system_admin', 'middleware' => ['guest:admin']], function () {
-    // ログイン
-    Route::get('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
-});
-Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => ['guest:production']], function () {
+
+
+/**
+ * Production
+ */
+// ProductionLoginControllerでグループ化する
+
+
+Route::controller(ProductionLoginController::class)->prefix('production')->name("production.")->middleware(['guest:production'])->group(function () {
     // 登録
-    Route::get('/register', [ProductionLoginController::class, 'register'])->name('register');
-    Route::post('/register', [ProductionLoginController::class, 'register']);
-    Route::get('/confirm/{url}', [ProductionLoginController::class, 'confirm'])->name('confirm');
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register', 'register')->name('register_post');
+    Route::get('/confirm/{url}', 'confirm')->name('confirm');
     // ログイン
-    Route::get('/login', [ProductionLoginController::class, 'login'])->name('login');
-    Route::post('/login', [ProductionLoginController::class, 'authenticate'])->name('authenticate');
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'authenticate')->name('authenticate');
 });
 Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => ['auth:production']], function () {
     // ログアウト
@@ -53,34 +65,42 @@ Route::group(['middleware' => ['auth:production']], function () {
 });
 
 
-
+/**
+ * Admin
+ */
+Route::group(['as' => 'system_admin.', 'prefix' => 'system_admin', 'middleware' => ['guest:admin']], function () {
+    // ログイン
+    Route::get('/login', [LoginController::class, 'login'])->name('login');
+    Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
+});
 Route::group(['as' => 'system_admin.', 'prefix' => 'system_admin', 'middleware' => ['auth:admin', 'login_require', ]], function () {
     // サイト管理
-    Route::get('/sites', [AdminSiteController::class, 'index'])->name('sites.index');
-    Route::delete('/sites/{site}', [AdminSiteController::class, 'destroy'])->name('sites.destroy');
-    Route::put('/sites/{site}', [AdminSiteController::class, 'update'])->name('sites.update');
-    Route::put('/sites/{site}/colors', [AdminSiteController::class, 'update_colors'])->name('sites.update_colors');
-    Route::put('/sites/{site}/tags', [AdminSiteController::class, 'update_tags'])->name('sites.update_tags');
-    Route::put('/sites/{site}/crawl', [AdminSiteController::class, 'crawl'])->name('sites.crawl');
-    Route::get('/sites/{site}/edit', [AdminSiteController::class, 'edit'])->name('sites.edit');
-
+    Route::controller(AdminSiteController::class)->prefix('sites')->name("sites.")->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{site}/edit', 'edit')->name('edit');
+        Route::delete('/{site}', 'destroy')->name('destroy');
+        Route::put('/{site}', 'update')->name('update');
+        Route::put('/{site}/colors', 'update_colors')->name('update_colors');
+        Route::put('/{site}/tags', 'update_tags')->name('update_tags');
+        Route::put('/{site}/crawl', 'crawl')->name('crawl');
+    });
     // お問い合わせ
-    Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
-    Route::get('/contacts/{contact}', [AdminContactController::class, 'show'])->name('contacts.show');
-    Route::put('/contacts/{contact}', [AdminContactController::class, 'update'])->name('contacts.update');
+    Route::controller(AdminContactController::class)->prefix('contacts')->name("contacts.")->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{contact}', 'show')->name('show');
+        Route::put('/{contact}', 'update')->name('update');
+    });
+    // 企業管理
+    Route::controller(AdminProductionController::class)->prefix('productions')->name("productions.")->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{production}/edit', 'edit')->name('edit');
+        Route::post('/{production}', 'update')->name('update');
+        Route::delete('/{production}', 'destroy')->name('destroy');
+        Route::patch('/{production}', 'restore')->name('restore');
+    });
 
     // NGワード
     Route::resource('ng_words', AdminNgWordController::class);
-
     // ログアウト
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
-
-// お問い合わせ
-Route::resource('contacts', ContactController::class);
-Route::get('/contact_us', [ContactController::class, 'create'])->name('contact_us');
-// 利用規約
-Route::get('/terms', [TermsController::class, 'index'])->name('terms');
-// プライバシーポリシー
-Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy');
-Route::get('/screen_shot/{url}', ScreenShotController::class)->where(['url' => '.*']);

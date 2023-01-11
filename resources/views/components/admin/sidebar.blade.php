@@ -1,4 +1,13 @@
 <div>
+    <h3>Web制作会社TOP10</h3>
+    <div class="contacts">
+    @forelse ($productions as $production)
+        <a href="{{ route('system_admin.productions.edit', ['production' => $production]) }}" class="">{{ $production->name }}({{ $production->inquiries_count }})</a>
+    @empty
+        Web制作会社はありません。
+    @endforelse
+    </div>
+
     <h3>新着問い合わせ</h3>
     <div class="contacts">
     @forelse ($contacts as $contact)

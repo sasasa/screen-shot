@@ -13,7 +13,7 @@ class UpdateProductionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,18 @@ class UpdateProductionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'company_type' => 'required|integer|min:1|max:3',
+            'name' => 'required|string|max:255',
+            'kana' => 'required|string|max:255',
+            'representative' => 'required|string|max:255',
+            'inquiry_email' => 'required|string|email:strict,dns,spoof|max:255|unique:productions,inquiry_email,'. $this->production->id . ',id',
+            'postal' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'url' => 'required|string|max:255',
+            'staff' => 'required|integer|min:1|max:7',
+            'achievement' => 'required|string|max:5000',
+            'introduction' => 'required|string|max:5000',
         ];
     }
 }

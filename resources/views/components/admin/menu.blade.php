@@ -10,6 +10,9 @@
       <a href="{{ route('sites.create') }}" target="_blank">サイト新規追加</a>
     </li>
     <li>
+      <a href="{{ route('system_admin.productions.index') }}">Web制作会社管理</a>
+    </li>
+    <li>
       <a href="{{ route('system_admin.ng_words.index') }}">NGワード管理</a>
     </li>
   </ul>

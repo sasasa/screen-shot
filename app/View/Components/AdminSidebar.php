@@ -7,6 +7,7 @@ use App\Models\Site;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Contact;
+use App\Models\Production;
 
 class AdminSidebar extends Component
 {
@@ -32,6 +33,8 @@ class AdminSidebar extends Component
             // サイトの数が1以上のタグのみを取得
             $q->where('site_tag.site_id', '>=', '1');
         })->latest()->limit(30)->get();
+        // inquiries問い合わせ数が多い順に並んだProduction
+        $productions = Production::query()->withCount('inquiries')->orderBy('inquiries_count', 'desc')->limit(10)->get();
         return view('components.admin.sidebar', [
             // 新着サイト
             'sites' => $sites,
@@ -39,6 +42,8 @@ class AdminSidebar extends Component
             'tags' => $tags,
             // お問合せ未完了のもの
             'contacts' => $contacts,
+            // 制作会社
+            'productions' => $productions,
         ]);
     }
 }

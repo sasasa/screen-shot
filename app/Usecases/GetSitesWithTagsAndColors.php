@@ -17,7 +17,7 @@ final class GetSitesWithTagsAndColors
         if($color) {
             if($tag) {
                 if($favorites) {
-                    $query = $user->sites()->with(['tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
+                    $query = $user->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
                         $join->on('site_colors.site_id', '=', 'sites.id');
                         $join->where('site_colors.color', '=', $color);
                     })->join('site_tag', function (JoinClause $join) use($tag){
@@ -26,7 +26,7 @@ final class GetSitesWithTagsAndColors
                     })
                     ->orderBy('site_colors.order', 'DESC');
                 } else {
-                    $query = Tag::where('name', $tag)->first()->sites()->with(['tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
+                    $query = Tag::where('name', $tag)->first()->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
                         $join->on('site_colors.site_id', '=', 'sites.id');
                         $join->where('site_colors.color', '=', $color);
                     })
@@ -34,13 +34,13 @@ final class GetSitesWithTagsAndColors
                 }
             } else {
                 if($favorites) {
-                    $query = $user->sites()->with(['tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
+                    $query = $user->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
                         $join->on('site_colors.site_id', '=', 'sites.id');
                         $join->where('site_colors.color', '=', $color);
                     })
                     ->orderBy('site_colors.order', 'DESC');
                 } else {
-                    $query = Site::query()->with(['tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
+                    $query = Site::query()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
                         $join->on('site_colors.site_id', '=', 'sites.id');
                         $join->where('site_colors.color', '=', $color);
                     })
@@ -49,19 +49,19 @@ final class GetSitesWithTagsAndColors
             }
         } elseif($tag) {
             if($favorites) {
-                $query = $user->sites()->with(['tags', 'site_colors'])->withCount('users')->join('site_tag', function (JoinClause $join) use($tag){
+                $query = $user->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_tag', function (JoinClause $join) use($tag){
                     $join->on('site_tag.site_id', '=', 'sites.id');
                     $join->whereRaw('site_tag.tag_id = (SELECT tags.id FROM tags WHERE tags.name = ?)', [$tag]);
                 })
                 ->orderBy('sites.id', 'DESC');
             } else {
-                $query = Tag::where('name', $tag)->first()->sites()->with(['tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
+                $query = Tag::where('name', $tag)->first()->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
             }
         } else {
             if($favorites) {
-                $query = $user->sites()->with(['tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
+                $query = $user->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
             } else {
-                $query = Site::query()->with(['tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
+                $query = Site::query()->with(['production', 'tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
             }
         }
 

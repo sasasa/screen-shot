@@ -58,7 +58,6 @@ class SiteController extends Controller
     public function create(Request $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
         $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
-        // dd($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
 
         return response()->view('site.create', [
             'background_color' => ChooseColor::choose($request->color),

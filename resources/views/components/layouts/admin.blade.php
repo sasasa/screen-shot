@@ -19,6 +19,30 @@
         </div>
         @stack('scripts')
         <script type="module">
+            /* restoreリンクをクリックしたらフォームを作ってCRSFトークンを追加してPATCHする */
+            document.querySelectorAll('.restore').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if(!confirm('復活しますか？')) {
+                        return false;
+                    }
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = this.href;
+                    const csrf = document.createElement('input');
+                    csrf.type = 'hidden';
+                    csrf.name = '_token';
+                    csrf.value = '{{ csrf_token() }}';
+                    form.appendChild(csrf);
+                    const method = document.createElement('input');
+                    method.type = 'hidden';
+                    method.name = '_method';
+                    method.value = 'PATCH';
+                    form.appendChild(method);
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            });
             /* destroyリンクをクリックしたらフォームを作ってCRSFトークンを追加してDELETEする */
             document.querySelectorAll('.destroy').forEach(function(link) {
                 link.addEventListener('click', function(e) {

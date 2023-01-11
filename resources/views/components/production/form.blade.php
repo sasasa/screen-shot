@@ -1,4 +1,8 @@
-<form method="POST" action="{{ route('production.store') }}">
+@props([
+  'route' => route('production.store'),
+  'production'
+])
+<form method="POST" action="{{ $route }}">
   @csrf
   <div class="inputbox">
     <div class="inputbox__inner">
