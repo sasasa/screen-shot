@@ -140,6 +140,9 @@
   @endif
 @endforelse
 </div>
+<div @class(['nav_links', 'text-white' => $colorPresenter->isTextColorWhite($background_color)])>
+  {{ $sites->onEachSide(1)->links() }}
+</div>
 @once
 @push('scripts')
 <script type="module">
