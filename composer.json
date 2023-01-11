@@ -9,6 +9,7 @@
         "barryvdh/laravel-debugbar": "^3.7",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
+        "jenssegers/agent": "^2.6",
         "kub-at/php-simple-html-dom-parser": "^1.9",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",

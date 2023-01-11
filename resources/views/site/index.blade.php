@@ -123,8 +123,10 @@
   @if($site->production)
   <div class="site__item site__production">
     {{ $site->production->name }}が作成したサイトです。<br>
-    この会社に<a data-siteid="{{ $site->id }}" class="phoneBtn" href="tel:{{ $site->production->phone }}">電話する</a><br>
-    この会社に<a data-siteid="{{ $site->id }}" class="mailBtn" href="mailto:{{ $site->production->inquiry_email }}?subject={{ rawurlencode('Beautiful Site Listを見てメールしました。') }}">メールする</a>
+    @if($isMobile)
+    この会社に<a data-siteid="{{ $site->id }}" class="phoneBtn" href="">電話する</a><br>
+    @endif
+    この会社に<a data-siteid="{{ $site->id }}" class="mailBtn" href="">メールする</a>
   </div>
   @endif
 
@@ -150,32 +152,36 @@
   const mailBtns = document.querySelectorAll('.mailBtn');
   mailBtns.forEach((mailBtn) => {
     mailBtn.addEventListener('click', (e) => {
+      e.preventDefault();
       const siteId = e.target.dataset.siteid;
       axios.post('/api/inquiries/mail', {
         site_id: siteId
       })
       .then((response) => {
-        // console.log(response);
+        // 新しくaタグを作成してhrefを設定する
+        const a = document.createElement('a');
+        a.href = response.data.mail;
+        a.click();
       })
       .catch((error) => {
         console.log(error);
       })
     });
   });
-
-
-
-
   /* phoneBtnが押されたらaxiosでサーバーにデータを送る */
   const phoneBtns = document.querySelectorAll('.phoneBtn');
   phoneBtns.forEach((phoneBtn) => {
     phoneBtn.addEventListener('click', (e) => {
+      e.preventDefault();
       const siteId = e.target.dataset.siteid;
       axios.post('/api/inquiries/phone', {
         site_id: siteId
       })
       .then((response) => {
-        // console.log(response);
+        // 新しくaタグを作成してhrefを設定する
+        const a = document.createElement('a');
+        a.href = response.data.phone;
+        a.click();
       })
       .catch((error) => {
         console.log(error);
