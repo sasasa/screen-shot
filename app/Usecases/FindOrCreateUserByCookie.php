@@ -15,7 +15,7 @@ final class FindOrCreateUserByCookie
     public function __invoke(?string $cookie, string $ip, string $ua): User
     {
         // updated_atが3分以内に更新されている場合
-        if($user = User::where('ip', $ip)->where('ua', $ua)->where('updated_at', '>=', Carbon::now()->subMinutes(3))->first()) {
+        if($user = User::where('ip', $ip)->where('ua', $ua)->where('updated_at', '>=', Carbon::now()->subMinutes(30))->first()) {
             $user->touch();
         } else if($cookie) {
             $user = User::where('uuid', $cookie)->first();
