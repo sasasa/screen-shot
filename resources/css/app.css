@@ -25,6 +25,10 @@ body {
     grid-template-columns: 1fr;
     padding: 10px;
   }
+  .css-br::after {
+    content: "\A" ;
+    white-space: pre;
+  }
 }
 
 /* サイドバー */
