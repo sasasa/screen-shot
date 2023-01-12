@@ -309,6 +309,39 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://www.city.iyo.lg.jp/',
             ],
+            [
+                'url' => 'https://orf.sfc.keio.ac.jp/2018/',
+            ],
+            [
+                'url' => 'https://www.smappa.net/',
+            ],
+            [
+                'url' => 'https://school.jp.yamaha.com/music_lesson/',
+            ],
+            [
+                'url' => 'https://www.fstage.co.jp/',
+            ],
+            [
+                'url' => 'https://sonarcareer.com/',
+            ],
+            [
+                'url' => 'https://tokyo-festival.jp/2021/',
+            ],
+            [
+                'url' => 'https://artproduce-kua.com/',
+            ],
+            [
+                'url' => 'https://cocolo-gift.jp/',
+            ],
+            [
+                'url' => 'https://mij-international.com/',
+            ],
+            [
+                'url' => 'http://tengusyouten.com/',
+            ],
+            [
+                'url' => 'https://www.ignis.jp/io/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
