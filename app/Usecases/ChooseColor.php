@@ -1,6 +1,7 @@
 <?php
 namespace App\Usecases;
 
+use App\Lib\LinkPreview\LinkPreview;
 use League\ColorExtractor\Color;
 use League\ColorExtractor\Palette;
 use App\Models\Site;
@@ -25,7 +26,7 @@ final class ChooseColor
     public const SKYBLUE = [0, 125, 200];
     public const YELLOW = [200, 230, 0];
     public const ORANGE = [250, 100, 0];
-    public const PURPLE = [128, 0, 128];
+    public const PURPLE = [128, 40, 128];
     public const BLACK = [0, 0, 0];
     public const GRAY = [128, 128, 128];
     public const DARKGRAY = [30, 30, 30];
@@ -86,6 +87,17 @@ final class ChooseColor
         return sprintf("#%02x%02x%02x", $rgb[0], $rgb[1], $rgb[2]);
     }
 
+    // ヒストグラムのビンを計算
+    // private function rgb2no($rgb) {
+    //     $r = $rgb[0];
+    //     $g = $rgb[1];
+    //     $b = $rgb[2];
+    //     $rn = floor($r / 64);
+    //     $gn = floor($g / 64);
+    //     $bn = floor($b / 64);
+    //     return 16 * $rn + 4 * $gn + $bn;
+    // }
+
     /**
      * 近い色を選択して保存する
      * @param Site $site
@@ -93,7 +105,8 @@ final class ChooseColor
      */
     public function __invoke(Site $site)
     {
-        $path = storage_path('app/public/images'). "/". $site->imgsrc;
+        // $path = storage_path('app/public/images'). "/". $site->imgsrc;
+        $path = LinkPreview::getPath($site->url);
         if(!file_exists($path)) {
             try {
                 $linkPreview = app()->make(LinkPreviewInterface::class);
@@ -106,6 +119,15 @@ final class ChooseColor
             $site = $usecase($res);
         }
         $palette = Palette::fromFilename($path);
+        // $new_palette = array_fill(0, 64, 0);
+        // foreach($palette as $color => $count) {
+        //     // dd(Color::fromIntToRgb($color));
+        //     $no = $this->rgb2no(array_values(Color::fromIntToRgb($color)));
+        //     $new_palette[$no] += $count;
+        // }
+        // dd($new_palette);
+
+
         $all_color_count = 0;
         $extracted_color_counts = [
             'pink' => 0,
@@ -120,6 +142,25 @@ final class ChooseColor
             'black' => 0,
             'orange' => 0,
         ];
+
+        // foreach($new_palette as $color => $count) {
+        //     $min_distance = 765; // 最大距離からスタート
+        //     $color_key = '';
+
+        //     foreach(self::BASE_COLORS as $key => $rgb) {
+        //         $no = $this->rgb2no($rgb);
+
+        //         if($no == $color) {
+        //             $color_key = $key;
+        //         }
+        //     }
+        //     if(in_array($color_key, ['orange', 'pink', 'brown', 'skyblue', 'black', 'red', 'blue', 'yellow', 'green', 'purple', 'darkgreen'])) {
+        //         $extracted_color_counts[$color_key] += $count;
+        //         $all_color_count += $count;
+        //     }
+        // }
+        // dump($all_color_count);
+        // dd($extracted_color_counts);
 
         foreach($palette as $color => $count) {
             $extracted_rgb = array_values(
@@ -140,8 +181,13 @@ final class ChooseColor
                 $all_color_count += $count;
             }
         }
+        // dump($all_color_count);
+        // dd($extracted_color_counts);
 
         foreach($extracted_color_counts as $color_key => $count) {
+            if($all_color_count == 0) {
+                continue;
+            }
             $percentage = $count / $all_color_count * 100;
             if($count > 0 && in_array($color_key, ['orange', 'pink', 'skyblue', 'red', 'blue', 'yellow', 'green', 'purple','darkgreen'])) {
                 if($percentage > self::THRESHOLD) { // しきい値より大きければ保存する

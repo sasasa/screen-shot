@@ -115,7 +115,10 @@ final class LinkPreview implements LinkPreviewInterface
                 // ドメイン直下からproduction.jsonを取得する
                 $production_code = @file_get_contents($url_domain. "/production.json", false, $options);
                 if($production_code) {
-                    $production_code = json_decode($production_code, true)['production'];
+                    $decode = json_decode($production_code, true);
+                    if($decode && isset($decode['production'])) {
+                        $production_code = $decode['production'];
+                    }
                 }
             }
             $production = Production::where('register_url', $production_code)->first();
