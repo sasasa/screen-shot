@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SortOrder;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
 use App\Models\Site;
@@ -43,9 +44,10 @@ class SiteController extends Controller
         $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
 
         return response()->view('site.index', [
+            'sort_orders' => SortOrder::cases(),
             'background_color' => ChooseColor::choose($request->color),
             'colors' => ChooseColor::getBaseColors(),
-            'sites' => $getSitesUsecase($request->search, $request->color, $request->tag, $request->favorites, $user),
+            'sites' => $getSitesUsecase(SortOrder::from($request->order), $request->search, $request->color, $request->tag, $request->favorites, $user),
             'users_sites' => $user->sites->pluck('id')->toArray(),
         ])->cookie('userid', $user->uuid, 60*24*365*10, null, null, false, false);
     }

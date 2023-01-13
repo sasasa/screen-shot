@@ -1,6 +1,7 @@
 <?php
 namespace App\Usecases;
 
+use App\Enums\SortOrder;
 use App\Models\Site;
 use App\Models\Tag;
 use Illuminate\Database\Query\JoinClause;
@@ -12,7 +13,7 @@ final class GetSitesWithTagsAndColors
      * @param string|null $tag
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
-    public function __invoke(?string $search, ?string $color, ?string $tag, ?string $favorites, User $user): \Illuminate\Pagination\LengthAwarePaginator
+    public function __invoke(SortOrder $order, ?string $search, ?string $color, ?string $tag, ?string $favorites, User $user): \Illuminate\Pagination\LengthAwarePaginator
     {
         if($color) {
             if($tag) {
@@ -23,28 +24,28 @@ final class GetSitesWithTagsAndColors
                     })->join('site_tag', function (JoinClause $join) use($tag){
                         $join->on('site_tag.site_id', '=', 'sites.id');
                         $join->whereRaw('site_tag.tag_id = (SELECT tags.id FROM tags WHERE tags.name = ?)', [$tag]);
-                    })
-                    ->orderBy('site_colors.order', 'DESC');
+                    });
+                    // ->orderBy('site_colors.order', 'DESC');
                 } else {
                     $query = Tag::where('name', $tag)->first()->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
                         $join->on('site_colors.site_id', '=', 'sites.id');
                         $join->where('site_colors.color', '=', $color);
-                    })
-                    ->orderBy('site_colors.order', 'DESC');
+                    });
+                    // ->orderBy('site_colors.order', 'DESC');
                 }
             } else {
                 if($favorites) {
                     $query = $user->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
                         $join->on('site_colors.site_id', '=', 'sites.id');
                         $join->where('site_colors.color', '=', $color);
-                    })
-                    ->orderBy('site_colors.order', 'DESC');
+                    });
+                    // ->orderBy('site_colors.order', 'DESC');
                 } else {
                     $query = Site::query()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_colors', function (JoinClause $join) use($color){
                         $join->on('site_colors.site_id', '=', 'sites.id');
                         $join->where('site_colors.color', '=', $color);
-                    })
-                    ->orderBy('site_colors.order', 'DESC');
+                    });
+                    // ->orderBy('site_colors.order', 'DESC');
                 }
             }
         } elseif($tag) {
@@ -52,16 +53,19 @@ final class GetSitesWithTagsAndColors
                 $query = $user->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->join('site_tag', function (JoinClause $join) use($tag){
                     $join->on('site_tag.site_id', '=', 'sites.id');
                     $join->whereRaw('site_tag.tag_id = (SELECT tags.id FROM tags WHERE tags.name = ?)', [$tag]);
-                })
-                ->orderBy('sites.id', 'DESC');
+                });
+                // ->orderBy('sites.id', 'DESC');
             } else {
-                $query = Tag::where('name', $tag)->first()->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
+                $query = Tag::where('name', $tag)->first()->sites()->with(['production', 'tags', 'site_colors'])->withCount('users');
+                // ->orderBy('sites.id', 'DESC');
             }
         } else {
             if($favorites) {
-                $query = $user->sites()->with(['production', 'tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
+                $query = $user->sites()->with(['production', 'tags', 'site_colors'])->withCount('users');
+                // ->orderBy('sites.id', 'DESC');
             } else {
-                $query = Site::query()->with(['production', 'tags', 'site_colors'])->withCount('users')->orderBy('sites.id', 'DESC');
+                $query = Site::query()->with(['production', 'tags', 'site_colors'])->withCount('users');
+                // ->orderBy('sites.id', 'DESC');
             }
         }
 
@@ -73,6 +77,20 @@ final class GetSitesWithTagsAndColors
                 $query->orWhere('sites.description','like', '%'.$word.'%');
                 $query->orWhere('sites.body','like', '%'.$word.'%');
             }
+        }
+
+        if($order == SortOrder::RANDOM) {
+            $query->inRandomOrder();
+        } else if($order == SortOrder::POPULAR) {
+            $query->orderBy('users_count', 'DESC')->orderBy('sites.id', 'DESC');
+        } else if($order == SortOrder::NEW) {
+            $query->orderBy('sites.id', 'DESC');
+        } else if($order == SortOrder::OLD) {
+            $query->orderBy('sites.id', 'ASC');
+        } else if($order == SortOrder::COLOR && $color) {
+            $query->orderBy('site_colors.order', 'DESC');
+        } else {
+            $query->orderBy('sites.id', 'DESC');
         }
 
         return $query->paginate(15)->withQueryString();
