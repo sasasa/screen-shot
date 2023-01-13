@@ -88,6 +88,7 @@ final class GetSitesWithTagsAndColors
         } else if($order == SortOrder::OLD) {
             $query->orderBy('sites.id', 'ASC');
         } else if($order == SortOrder::COLOR && $color) {
+            // カラー指定時のみ設定可能なソート
             $query->orderBy('site_colors.order', 'DESC');
         } else {
             $query->orderBy('sites.id', 'DESC');
