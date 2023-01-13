@@ -342,6 +342,9 @@ class SiteSeeder extends Seeder
             [
                 'url' => 'https://www.ignis.jp/io/',
             ],
+            [
+                'url' => 'https://hc.kowa.co.jp/hokkairo/',
+            ],
         ];
         foreach($urls as $url) {
             Site::create($url);
