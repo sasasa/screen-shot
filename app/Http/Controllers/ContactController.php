@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use App\Mail\SendContactMail;
 use App\Models\Contact;
 use App\Models\Site;
 use App\Models\User;
 use App\Services\IpService;
 use App\Usecases\FindOrCreateUserByCookie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -50,12 +53,17 @@ class ContactController extends Controller
     public function store(StoreContactRequest $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
         $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
-        Contact::create([
+        $contact = Contact::create([
             'uuid' => $user->uuid,
             'site_id' => $request->site_id,
             'subject' => $request->subject,
             'message' => $request->message,
+            'ip' => IpService::getIp($request),
+            'production_id' => Auth::guard('production')->id(),
         ]);
+        Mail::to([
+            'email' => 'masaakisaeki@gmail.com',
+        ])->send(new SendContactMail($contact));
 
         return redirect()->route('sites.index')->with([
             'status' => "success",

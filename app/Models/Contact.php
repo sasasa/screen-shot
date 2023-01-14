@@ -19,10 +19,17 @@ class Contact extends Model
         'site_id',
         'subject',
         'message',
+        'ip',
+        'production_id',
     ];
 
     public function site()
     {
         return $this->belongsTo('App\Models\Site', 'site_id', 'id');
+    }
+
+    public function production()
+    {
+        return $this->belongsTo('App\Models\Production', 'production_id', 'id');
     }
 }
