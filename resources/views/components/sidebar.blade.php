@@ -2,7 +2,7 @@
     <h3>よく使われているタグTOP10</h3>
     <div class="tags">
     @foreach ($popular_tags as $tag)
-        <a href="{{ route('sites.index', ['tag'=>$tag->name, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tagcloud__item tagcloud__item{{ $tag->level }}">{{ $tag->name }}</a>
+        <a href="{{ route('sites.index', ['tag'=>$tag->name, 'search' => request()->search, 'order' => request()->order, 'favorites' => request()->favorites, 'color'=> request()->color]) }}" class="tagcloud__item tagcloud__item{{ $tag->level }}">{{ $tag->name }}</a>
     @endforeach
     </div>
 
@@ -31,7 +31,7 @@
         </p>
         <p class="site__item site__tags">
             @forelse ($site->tags->map(fn($tag) => $tag->name ) as $tag)
-            <a href="{{ route('sites.index', ['tag' => $tag, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tag">{{ $tag }}</a>
+            <a href="{{ route('sites.index', ['tag' => $tag, 'search' => request()->search, 'order' => request()->order, 'favorites' => request()->favorites, 'color'=> request()->color]) }}" class="tag">{{ $tag }}</a>
             @empty
             タグはありません。
             @endforelse
@@ -64,7 +64,7 @@
         </p>
         <p class="site__item site__tags">
             @forelse ($site->tags->map(fn($tag) => $tag->name ) as $tag)
-            <a href="{{ route('sites.index', ['tag' => $tag, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tag">{{ $tag }}</a>
+            <a href="{{ route('sites.index', ['tag' => $tag, 'search' => request()->search, 'order' => request()->order, 'favorites' => request()->favorites, 'color'=> request()->color]) }}" class="tag">{{ $tag }}</a>
             @empty
             タグはありません。
             @endforelse
@@ -75,7 +75,7 @@
     <h3>新着タグ</h3>
     <div class="tags">
     @foreach ($tags as $tag)
-        <a href="{{ route('sites.index', ['tag'=>$tag->name, 'color' => request()->color, 'favorites' => request()->favorites]) }}" class="tagcloud__item tagcloud__item{{ $tag->level }}">{{ $tag->name }}</a>
+        <a href="{{ route('sites.index', ['tag'=>$tag->name, 'search' => request()->search, 'order' => request()->order, 'favorites' => request()->favorites, 'color'=> request()->color]) }}" class="tagcloud__item tagcloud__item{{ $tag->level }}">{{ $tag->name }}</a>
     @endforeach
     </div>
 </div>

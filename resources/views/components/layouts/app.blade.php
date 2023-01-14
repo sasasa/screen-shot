@@ -15,8 +15,8 @@
                 <a class="no-underline" href="{{ route('sites.index') }}">Beautiful Site List</a>
             </h1>
             <div>
-                <span class="css-br">素敵なサイトを見つけて、保存したり、</span>
-                <span class="css-br">制作会社に問い合わせたりできる</span>
+                <span class="css-br">素敵なサイトを見つけて保存したり</span>
+                <span class="css-br">制作会社に問い合わせできる</span>
                 サービスです。
             </div>
             <div>

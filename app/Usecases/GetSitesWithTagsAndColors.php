@@ -73,9 +73,11 @@ final class GetSitesWithTagsAndColors
             $spaceConvert = mb_convert_kana($search, 's'); //全角スペースを半角に
             $keywords = preg_split('/[\s]+/', $spaceConvert, -1, PREG_SPLIT_NO_EMPTY); //空白で区切る
             foreach($keywords as $word) {
-                $query->orWhere('sites.title','like', '%'.$word.'%');
-                $query->orWhere('sites.description','like', '%'.$word.'%');
-                $query->orWhere('sites.body','like', '%'.$word.'%');
+                $query->where(function($q) use($word) {
+                    $q->orWhere('sites.title','like', '%'.$word.'%');
+                    $q->orWhere('sites.description','like', '%'.$word.'%');
+                    $q->orWhere('sites.body','like', '%'.$word.'%');
+                });
             }
         }
 
