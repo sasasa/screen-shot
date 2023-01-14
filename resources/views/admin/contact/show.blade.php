@@ -3,11 +3,17 @@
   <x-message />
   <x-admin.menu />
   <div class="contacts">
-    <div>{{ $contact->subject }}</div>
-    <div>{!! nl2br(e( $contact->message)) !!}</div>
+    <div>件名：{{ $contact->subject }}</div>
+    <div>本文：{!! nl2br(e( $contact->message)) !!}</div>
     @if($contact->site)
-      <div><a target="_blank" href="{{ route('system_admin.sites.edit', ['site' => $contact->site]) }}">{{  $contact->site->title }}</a></div>
+      <div>サイト：<a target="_blank" href="{{ route('system_admin.sites.edit', ['site' => $contact->site]) }}">{{  $contact->site->title }}</a></div>
     @endif
+    @if ($contact->production)
+      <div>Web制作会社：<a target="_blank" href="{{ route('system_admin.productions.edit', ['production' => $contact->production]) }}">{{  $contact->production->name }}</a></div>
+    @endif
+    <div>作成日：{{ $contact->created_at }}</div>
+    <div>IP：{{ $contact->ip }}</div>
+    <div>uuid：{{ $contact->uuid }}</div>
   </div>
   <div class="contacts">
     <form method="POST" action="{{ route('system_admin.contacts.update', ['contact' => $contact]) }}">
