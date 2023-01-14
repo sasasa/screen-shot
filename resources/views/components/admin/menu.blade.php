@@ -1,5 +1,5 @@
-<div class="inputbox flex-row justify-between">
-  <ul class="flex gap-x-4">
+<div class="inputbox lg:flex-row justify-between flex-col">
+  <ul class="flex gap-x-4 lg:flex-row flex-col">
     <li>
       <a href="{{ route('system_admin.sites.index') }}">管理ページトップ</a>
     </li>

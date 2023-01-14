@@ -1,8 +1,8 @@
-<x-layouts.admin>
+<x-layouts.production>
 <x-slot name="title">「{{ $site->title }} 」の管理画面</x-slot>
 @inject('colorPresenter', '\App\Services\Presenters\ColorService')
 <x-message />
-<x-admin.menu />
+<x-production.menu />
 <div class="sites">
     <div class="site gap-y-4">
         <div class="site mt-4 site__crawl">
@@ -138,6 +138,7 @@ document.querySelectorAll('.delete').forEach(function(btn) {
         }
     });
 });
+
 /* .crawlがクリックされたら確認confirmを出してからformをsubmitする */
 document.querySelectorAll('.crawl').forEach(function(btn) {
     btn.addEventListener('click', function(e) {
@@ -150,4 +151,4 @@ document.querySelectorAll('.crawl').forEach(function(btn) {
 </script>
 @endpush
 @endonce
-</x-layouts.admin>
+</x-layouts.production>

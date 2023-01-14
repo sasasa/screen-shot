@@ -32,6 +32,9 @@
             <a href="{{ route('contact_us', ['site_id' => $site->id]) }}">問題を知らせる</a>
           </div>
           <div class="site__actions">
+              <a href="{{ route('production.sites.edit', ['site' => $site]) }}">修正する</a>
+          </div>
+          <div class="site__actions">
               <a class="destroy" href="{{ route('production.sites.destroy', ['site' => $site]) }}">削除</a>
           </div>
       </div>

@@ -164,6 +164,10 @@ return [
         'word' => 'NGワード',
         'email' => 'Email',
         'password' => 'パスワード',
+        'colors' => '色',
+        'colors.*' => '色',
+        'orders' => '色の割合',
+        'orders.*' => '色の割合',
 
         'company_type' => '会社形態',
         'name' => '会社名',

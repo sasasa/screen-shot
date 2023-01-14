@@ -58,7 +58,15 @@ Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => [
     // ログアウト
     Route::post('/logout', [ProductionLoginController::class, 'logout'])->name('logout');
     // サイト削除
-    Route::delete('/sites/{site}', [ProductionSiteController::class, 'destroy'])->name('sites.destroy');
+    // サイト管理
+    Route::controller(ProductionSiteController::class)->prefix('sites')->name("sites.")->group(function () {
+        Route::get('/{site}/edit', 'edit')->name('edit');
+        Route::delete('/{site}', 'destroy')->name('destroy');
+        Route::put('/{site}', 'update')->name('update');
+        Route::put('/{site}/colors', 'update_colors')->name('update_colors');
+        Route::put('/{site}/tags', 'update_tags')->name('update_tags');
+        Route::put('/{site}/crawl', 'crawl')->name('crawl');
+    });
 });
 Route::group(['middleware' => ['auth:production']], function () {
     Route::resource('production', ProductionController::class);
