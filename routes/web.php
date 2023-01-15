@@ -59,7 +59,7 @@ Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => [
     Route::post('/logout', [ProductionLoginController::class, 'logout'])->name('logout');
     // サイト削除
     // サイト管理
-    Route::controller(ProductionSiteController::class)->prefix('sites')->name("sites.")->group(function () {
+    Route::controller(ProductionSiteController::class)->prefix('sites')->name("sites.")->middleware(['owner_site'])->group(function () {
         Route::get('/{site}/edit', 'edit')->name('edit');
         Route::delete('/{site}', 'destroy')->name('destroy');
         Route::put('/{site}', 'update')->name('update');

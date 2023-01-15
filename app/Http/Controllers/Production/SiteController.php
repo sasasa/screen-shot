@@ -18,10 +18,6 @@ class SiteController extends Controller
 {
     public function destroy(Request $request, Site $site)
     {
-        $production = Auth::guard('production')->user();
-        if ($production->id !== $site->production_id) {
-            return abort(404);
-        }
         $site->inquiries->each(function ($inquiry) {
             $inquiry->site_id = null;
             $inquiry->save();
@@ -36,10 +32,6 @@ class SiteController extends Controller
 
     public function edit(Site $site)
     {
-        $production = Auth::guard('production')->user();
-        if ($production->id !== $site->production_id) {
-            return abort(404);
-        }
         return view('production.sites.edit', [
             'site' => $site,
             // サイトの色
@@ -51,10 +43,6 @@ class SiteController extends Controller
 
     public function update_tags(UpdateTagsRequest $request, Site $site, RelateTags $usecase)
     {
-        $production = Auth::guard('production')->user();
-        if ($production->id !== $site->production_id) {
-            return abort(404);
-        }
         $usecase($site, $request->tags);
         return redirect()->back()->with([
             'status' => "success",
@@ -64,10 +52,6 @@ class SiteController extends Controller
 
     public function update_colors(UpdateColorsRequest $request, Site $site, RelateColors $usecase)
     {
-        $production = Auth::guard('production')->user();
-        if ($production->id !== $site->production_id) {
-            return abort(404);
-        }
         $usecase($site, $request->colors, $request->orders);
         return redirect()->back()->with([
             'status' => "success",
@@ -77,10 +61,6 @@ class SiteController extends Controller
 
     public function update(UpdateSiteRequest $request, Site $site, UpdateSiteWithImageUpdate $usecase)
     {
-        $production = Auth::guard('production')->user();
-        if ($production->id !== $site->production_id) {
-            return abort(404);
-        }
         $usecase($site, $request->file('img'));
         return redirect()->back()->with([
             'status' => "success",
@@ -90,10 +70,6 @@ class SiteController extends Controller
 
     public function crawl(Site $site, UpdateSiteEverytingWithImageUpdate $usecase)
     {
-        $production = Auth::guard('production')->user();
-        if ($production->id !== $site->production_id) {
-            return abort(404);
-        }
         $usecase($site);
         return redirect()->back()->with([
             'status' => "success",
