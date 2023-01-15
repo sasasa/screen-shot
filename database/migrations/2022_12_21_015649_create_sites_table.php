@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->string('url')->unique()->comment('URL');
+            $table->text('url')->comment('URL');
             $table->string('title')->comment('サイトのタイトル')->nullable();
             $table->string('description')->comment('サイトの要約')->nullable();
             $table->longText('body')->comment('サイトの内容')->nullable();
