@@ -27,8 +27,15 @@ class UrlWithoutQuery implements Rule
     public function passes($attribute, $value)
     {
         $parsed_url = parse_url($value);
+        if(!isset($parsed_url['host'])) {
+            return false;
+        }
         $domain = $parsed_url['host'];
-        $path = $parsed_url['path'];
+        if(isset($parsed_url['path'])) {
+            $path = $parsed_url['path'];
+        } else {
+            $path = '/';
+        }
         $url1 = 'https://'. $domain. $path;
         $site1 = Site::query()->where('url', $url1)->first();
         $url2 = 'http://'. $domain. $path;

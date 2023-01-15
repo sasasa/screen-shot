@@ -27,6 +27,9 @@ class DomainLimit implements Rule
     public function passes($attribute, $value)
     {
         $parsed_url = parse_url($value);
+        if(!isset($parsed_url['host'])) {
+            return false;
+        }
         $domain = $parsed_url['host'];
         return Site::where("url", "LIKE", "%".$domain."%")->count() <= 3;
     }

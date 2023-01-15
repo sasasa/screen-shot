@@ -26,7 +26,7 @@ class StoreSiteRequest extends FormRequest
     public function rules()
     {
         return [
-            'url' => ['required', 'url', 'max:255', new UrlWithoutQuery(), new DomainLimit()],
+            'url' => ['bail', 'required', 'url', 'max:255', new UrlWithoutQuery(), new DomainLimit()],
         ];
     }
 }
