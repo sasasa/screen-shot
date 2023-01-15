@@ -12,10 +12,12 @@ class LoginRequireMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, string $guard = 'admin')
     {
-        if(!Auth::guard('admin')->check()){
+        if(!Auth::guard($guard)->check() && $guard == 'admin'){
             return redirect()->route('system_admin.login');
+        } else if(!Auth::guard($guard)->check() && $guard == 'production'){
+            return redirect()->route('production.login');
         }
         return $next($request);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class Authenticate extends Middleware
 {
@@ -15,7 +16,12 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('system_admin.login');
+            // アクセス先が管理画面の場合は管理画面ログイン画面へリダイレクト
+            if ($request->is('system_admin/*')) {
+                return route('system_admin.login');
+            } else if ($request->is('production/*')) {
+                return route('production.login');
+            }
         }
     }
 }

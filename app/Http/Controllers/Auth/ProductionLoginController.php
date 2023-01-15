@@ -79,6 +79,7 @@ class ProductionLoginController extends Controller
         $production = Production::where('register_url', $url)->first();
         if($production) {
             $production->confirm_at = now();
+            $production->email_verified_at = now();
             $production->save();
             return redirect()->route('production.login')->with([
                 'message' => 'ユーザー登録が完了しました。ログインしてください。',
@@ -113,7 +114,7 @@ class ProductionLoginController extends Controller
             $this->fail_count_up($user);
             return redirect()->back()->withErrors('Emailもしくはパスワードが違うためログインできません。'. $this->add_message);
         }
-        if(!$user->confirm_at) {
+        if(!$user->confirm_at || !$user->email_verified_at) {
             return redirect()->back()->withErrors('ユーザー登録時に送信したURLにアクセスしてユーザー登録を完了してください。');
         }
 

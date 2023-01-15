@@ -68,6 +68,7 @@ class LoginController extends Controller
           $admin->save();
 
           return $this->sendLoginResponse($request);
+          // return redirect()->intended($this->redirectPath());
           // return redirect()->route('system_admin.index');
       } else {
           return abort(404);

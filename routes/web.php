@@ -54,7 +54,8 @@ Route::controller(ProductionLoginController::class)->prefix('production')->name(
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'authenticate')->name('authenticate');
 });
-Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => ['auth:production']], function () {
+Route::redirect('/login', '/production/login', 301)->name('login');
+Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => ['auth:production', 'login_require:production', 'verified']], function () {
     // ログアウト
     Route::post('/logout', [ProductionLoginController::class, 'logout'])->name('logout');
     // サイト削除
@@ -68,9 +69,10 @@ Route::group(['as' => 'production.', 'prefix' => 'production', 'middleware' => [
         Route::put('/{site}/crawl', 'crawl')->name('crawl');
     });
 });
-Route::group(['middleware' => ['auth:production']], function () {
+Route::group(['middleware' => ['auth:production', 'login_require:production']], function () {
     Route::resource('production', ProductionController::class);
 });
+
 
 
 /**
@@ -81,7 +83,7 @@ Route::group(['as' => 'system_admin.', 'prefix' => 'system_admin', 'middleware' 
     Route::get('/login', [LoginController::class, 'login'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
 });
-Route::group(['as' => 'system_admin.', 'prefix' => 'system_admin', 'middleware' => ['auth:admin', 'login_require', ]], function () {
+Route::group(['as' => 'system_admin.', 'prefix' => 'system_admin', 'middleware' => ['auth:admin', 'login_require:admin', ]], function () {
     // サイト管理
     Route::controller(AdminSiteController::class)->prefix('sites')->name("sites.")->group(function () {
         Route::get('/', 'index')->name('index');

@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Auth\MustVerifyEmail;
 
-class Production extends Authenticatable
+class Production extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, MustVerifyEmail;
 
     protected $guarded = [
         'id',
@@ -21,6 +23,9 @@ class Production extends Authenticatable
         'deleted_at',
         'confirm_at',
         'lock_at',
+        'email_verified_at',
+        'pass_update_date',
+        'deleted_at',
     ];
 
     public function sites()
