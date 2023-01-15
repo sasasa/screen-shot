@@ -12,13 +12,13 @@
     <div class="inputbox__inner flex flex-col">
       会社形態：
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__company_type" type="radio" id="" name="company_type" value="1" @checked($production->company_type==1)>法人
+        <input class="inputbox__item inputbox__company_type" type="radio" id="" name="company_type" value="1" @checked(old('company_type', $production->company_type)==1)>法人
       </label>
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__company_type" type="radio" id="" name="company_type" value="2" @checked($production->company_type==2)>任意団体
+        <input class="inputbox__item inputbox__company_type" type="radio" id="" name="company_type" value="2" @checked(old('company_type', $production->company_type)==2)>任意団体
       </label>
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__company_type" type="radio" id="" name="company_type" value="3" @checked($production->company_type==3)>個人・個人事業
+        <input class="inputbox__item inputbox__company_type" type="radio" id="" name="company_type" value="3" @checked(old('company_type', $production->company_type)==3)>個人・個人事業
       </label>
       @error('company_type')
         <p class="errorMessage">{{$message}}</p>
@@ -99,25 +99,25 @@
     <div class="inputbox__inner flex flex-col">
       スタッフ数：
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="1" @checked($production->staff==1)>1人
+        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="1" @checked(old('staff', $production->staff)==1)>1人
       </label>
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="2" @checked($production->staff==2)>2人～5人
+        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="2" @checked(old('staff', $production->staff)==2)>2人～5人
       </label>
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="3" @checked($production->staff==3)>6人～9人
+        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="3" @checked(old('staff', $production->staff)==3)>6人～9人
       </label>
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="4" @checked($production->staff==4)>10人～19人
+        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="4" @checked(old('staff', $production->staff)==4)>10人～19人
       </label>
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="5" @checked($production->staff==5)>20人～49人
+        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="5" @checked(old('staff', $production->staff)==5)>20人～49人
       </label>
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="6" @checked($production->staff==6)>50人～99人
+        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="6" @checked(old('staff', $production->staff)==6)>50人～99人
       </label>
       <label class="inputbox__item inputbox__label">
-        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="7" @checked($production->staff==7)>100人以上
+        <input class="inputbox__item inputbox__staff" type="radio" id="" name="staff" value="7" @checked(old('staff', $production->staff)==7)>100人以上
       </label>
       @error('staff')
         <p class="errorMessage">{{$message}}</p>
