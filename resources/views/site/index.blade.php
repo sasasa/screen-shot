@@ -181,6 +181,9 @@
 @once
 @push('scripts')
 <script type="module">
+  // 画面遷移時にsessionStorageにtransitionSourceを削除しておく
+  sessionStorage.removeItem('transitionSource');
+
   /* mailBtnが押されたらaxiosでサーバーにデータを送る */
   const mailBtns = document.querySelectorAll('.mailBtn');
   mailBtns.forEach((mailBtn) => {

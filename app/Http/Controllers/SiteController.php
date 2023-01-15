@@ -83,7 +83,9 @@ class SiteController extends Controller
                 'url' => '何らかの理由で読み込めませんでした。時間をおいて再度投稿してください。'
             ]);
         }
-        return to_route('sites.index')->with([
+
+        $return_url = $request->return_url ?? route('sites.index');
+        return redirect($return_url)->with([
             'message' => "【{$site->title}】の登録okです。",
             'status' => 'success',
         ]);

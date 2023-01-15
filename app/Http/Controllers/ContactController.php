@@ -52,6 +52,7 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request, FindOrCreateUserByCookie $findOrCreateUserUseCase)
     {
+        // sleep(100);
         $user = $findOrCreateUserUseCase($request->cookie('userid'), IpService::getIp($request), $request->header('User-Agent'));
         $contact = Contact::create([
             'uuid' => $user->uuid,
@@ -65,7 +66,8 @@ class ContactController extends Controller
             'email' => 'masaakisaeki@gmail.com',
         ])->send(new SendContactMail($contact));
 
-        return redirect()->route('sites.index')->with([
+        $return_url = $request->return_url ?? route('sites.index');
+        return redirect($return_url)->with([
             'status' => "success",
             'message' => "ありがとうございました。お問い合わせを受け付けました。",
         ]);
