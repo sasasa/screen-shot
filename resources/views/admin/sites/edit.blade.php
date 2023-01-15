@@ -7,7 +7,7 @@
     <div class="site gap-y-4">
         <div class="site mt-4 site__crawl">
             <p>サイトがリニューアルしたときなど情報を再設定したいときに利用してください。</p>
-            <form action="{{ route('production.sites.crawl', ['site' => $site]) }}" method="POST">
+            <form action="{{ route('system_admin.sites.crawl', ['site' => $site]) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <input class="mt-2 form-input crawl" type="submit" value="再構築">
@@ -16,7 +16,7 @@
         <div class="site site__img"><img src="{{ asset("storage/images/$site->imgsrc") }}"></div>
         <div class="site site__fileupload">
             <p>自動でスクリーンショットを取得できないときは画像をアップロードしてください。</p>
-            <form action="{{ route('production.sites.update', ['site' => $site]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('system_admin.sites.update', ['site' => $site]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <input class="form-input" type="file" name="img">
@@ -42,7 +42,7 @@
         <div class="site">
             <p class="site__item site__tags">
                 <p>タグを設定して検索できるようにしてください。</p>
-                <form action="{{ route('production.sites.update_tags', ['site' => $site]) }}" method="POST">
+                <form action="{{ route('system_admin.sites.update_tags', ['site' => $site]) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <input class="w-4/5" type="text" name="tags" value="{{ old('tags', $site->tags->map(fn($tag) => "[".$tag->name."]" )->implode(" "))  }}">
@@ -110,7 +110,7 @@
 
         <div class="site site__actions">
             <p>サイト削除したいときに利用してください。</p>
-            <form action="{{ route('production.sites.destroy', ['site' => $site]) }}" method="POST">
+            <form action="{{ route('system_admin.sites.destroy', ['site' => $site]) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <input class="mt-2 form-input delete" type="submit" value="削除">

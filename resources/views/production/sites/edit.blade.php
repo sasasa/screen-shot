@@ -77,7 +77,7 @@
 
         <div class="site">
             <p class="site__item site__colors_orders">
-                <form action="{{ route('system_admin.sites.update_colors', ['site' => $site]) }}" method="POST">
+                <form action="{{ route('production.sites.update_colors', ['site' => $site]) }}" method="POST">
                     <p>色で検索させるための設定です。画面で使われている色の割合を設定してください。</p>
                     @csrf
                     @method('PUT')
