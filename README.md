@@ -59,7 +59,7 @@ sail artisan make:model SiteColor -m
 sail composer require league/color-extractor
 sail artisan make:event SiteSaved
 
-sail composer require barryvdh/laravel-debugbar
+sail composer require --dev barryvdh/laravel-debugbar
 
 sudo apt-get install mecab
 sudo apt-get install libmecab-dev
