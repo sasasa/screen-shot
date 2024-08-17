@@ -5,6 +5,13 @@ docker run --rm \
     -w /var/www/html \
     laravelsail/php81-composer:latest \
     composer install --ignore-platform-reqs
+cp .env.example .env
+sail up -d
+sail npm install
+sail artisan migrate:fresh --seed
+sail npm run dev
+sail artisan key:generate
+sail artisan storage:link
 
 sail composer require dusterio/link-preview
 

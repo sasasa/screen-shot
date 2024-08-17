@@ -105,9 +105,9 @@ final class LinkPreview implements LinkPreviewInterface
             }
         }
         if ($dom = @HtmlDomParser::file_get_html($url, false, $options)) {
-            $title =  mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('title', 0)->plaintext));
+            $title =  mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('title', 0)?->plaintext));
             $description = mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('meta[name=description]', 0)?->content));
-            $body = mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('body', 0)->plaintext));
+            $body = mb_ereg_replace('/　|\s|\)/', '', trim($dom->find('body', 0)?->plaintext));
             $tags = (new GetTags($title. $description. $body))->getTags();
 
             $production_code = $dom->find('meta[name=production]', 0)?->content;

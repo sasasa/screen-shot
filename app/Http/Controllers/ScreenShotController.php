@@ -73,7 +73,7 @@ class ScreenShotController extends Controller
         exit;
         try {
             $dom = HtmlDomParser::file_get_html('https://blog.capilano-fw.com/?p=3958');
-            $body = trim($dom->find('body', 0)->plaintext);
+            $body = trim($dom->find('body', 0)?->plaintext);
             $tags = [];
             /**
              * Receive data from mecab command

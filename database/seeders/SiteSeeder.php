@@ -28,9 +28,6 @@ class SiteSeeder extends Seeder
                 'url' => 'https://www.cocacola.jp/2022xmas/',
             ],
             [
-                'url' => 'https://toyota.jp/passo/',
-            ],
-            [
                 'url' => 'https://qiita.com/azu369yu/items/3d8e7df610fe35dc1ad3',
             ],
             [
@@ -52,12 +49,6 @@ class SiteSeeder extends Seeder
                 'url' => 'https://midori-no-mori.jp/',
             ],
             [
-                'url' => 'https://www2.mejiro.ac.jp/univ/mejinavi2022/',
-            ],
-            [
-                'url' => 'https://www.beams.co.jp/special/kids_outer/',
-            ],
-            [
                 'url' => 'https://www.care-plus.jp/staff/',
             ],
             [
@@ -70,9 +61,6 @@ class SiteSeeder extends Seeder
                 'url' => 'https://www.cocacola.jp/',
             ],
             [
-                'url' => 'https://globalwork.jp/dadsday2022/',
-            ],
-            [
                 'url' => 'https://infinity-lawfirm.com/',
             ],
             [
@@ -80,9 +68,6 @@ class SiteSeeder extends Seeder
             ],
             [
                 'url' => 'https://alleeomotesando.jp/',
-            ],
-            [
-                'url' => 'https://zizo.ne.jp/',
             ],
             [
                 'url' => 'https://www.wacoal.jp/wacoalbrand/happylingerie/',
@@ -304,9 +289,6 @@ class SiteSeeder extends Seeder
                 'url' => 'https://shop.fruoats.jp/',
             ],
             [
-                'url' => 'http://urecyworks.com/',
-            ],
-            [
                 'url' => 'https://www.city.iyo.lg.jp/',
             ],
             [
@@ -335,9 +317,6 @@ class SiteSeeder extends Seeder
             ],
             [
                 'url' => 'https://mij-international.com/',
-            ],
-            [
-                'url' => 'http://tengusyouten.com/',
             ],
             [
                 'url' => 'https://www.ignis.jp/io/',
